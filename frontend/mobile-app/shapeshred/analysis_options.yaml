@@ -1,0 +1,27 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    todo: ignore # Allow TODOs during early development if needed, or remove to enforce removal
+    missing_required_param: error
+    missing_return: error
+
+linter:
+  rules:
+    # Essential quality
+    always_declare_return_types: true
+    avoid_print: true
+    avoid_relative_lib_imports: true
+    avoid_returning_null_for_void: true
+    prefer_const_constructors: true
+    prefer_final_fields: true
+    sort_pub_dependencies: true
+    unawaited_futures: true
+    use_key_in_widget_constructors: true
+    use_super_parameters: true
+    # Documentation
+    public_member_api_docs: false # Enabling this is good but often too noisy early on; setting to false but will enforce in future

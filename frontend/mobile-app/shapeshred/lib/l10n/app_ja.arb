@@ -1,0 +1,27 @@
+﻿{
+  "@@locale": "ja",
+  "appTitle": "ShapeShred",
+  "welcome": "ようこそ",
+  "welcomeBack": "おかえりなさい",
+  "email": "メールアドレス",
+  "password": "パスワード",
+  "login": "ログイン",
+  "signup": "サインアップ",
+  "forgotPassword": "パスワードをお忘れですか？",
+  "orContinueWith": "または次で続ける",
+  "dontHaveAccount": "アカウントをお持ちでないですか？",
+  "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+  "continueAction": "続ける",
+  "skip": "スキップ",
+  "getStarted": "始める",
+  "onboardingTitle1": "いつでもどこでもトレーニング",
+  "onboardingDesc1": "自宅でプロのトレーニングとリアルタイムコーチングを。",
+  "onboardingTitle2": "AIによる進捗管理",
+  "onboardingDesc2": "スマートテクノロジーでパーソナライズされたプランと即時フィードバックを。",
+  "onboardingTitle3": "コーチとの直接連携",
+  "onboardingDesc3": "ビデオ通話と日々のタスクでコーチとつながる。"
+}
+
+
+
+

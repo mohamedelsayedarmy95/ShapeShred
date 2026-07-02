@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "796172535933",
+    "project_id": "shapeshred-858c5",
+    "storage_bucket": "shapeshred-858c5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796172535933:android:ce32d475020462628a0914",
+        "android_client_info": {
+          "package_name": "com.example.shapeshred"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796172535933-6u5bbncacm3v8ncdoscdvhv17l2tn4gn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shapeshred",
+            "certificate_hash": "5e2b21e74f7ab67d550d2d7c1c09ce702b97db90"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA83v1dJ2wHmd_HRcXZInd8yhdWRoMfBow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

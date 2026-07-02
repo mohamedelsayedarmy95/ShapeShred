@@ -1,0 +1,27 @@
+﻿{
+  "@@locale": "zh",
+  "appTitle": "ShapeShred",
+  "welcome": "欢迎",
+  "welcomeBack": "欢迎回来",
+  "email": "电子邮件",
+  "password": "密码",
+  "login": "登录",
+  "signup": "注册",
+  "forgotPassword": "忘记密码？",
+  "orContinueWith": "或继续使用",
+  "dontHaveAccount": "没有帐户？",
+  "alreadyHaveAccount": "已有帐户？",
+  "continueAction": "继续",
+  "skip": "跳过",
+  "getStarted": "开始",
+  "onboardingTitle1": "随时随地训练",
+  "onboardingDesc1": "在家即可获得专业训练和实时指导。",
+  "onboardingTitle2": "AI驱动的进步",
+  "onboardingDesc2": "通过智能技术获得个性化计划和即时反馈。",
+  "onboardingTitle3": "与教练直接连接",
+  "onboardingDesc3": "通过视频通话和日常任务与教练保持联系。"
+}
+
+
+
+

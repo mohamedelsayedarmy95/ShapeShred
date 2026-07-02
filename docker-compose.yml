@@ -1,0 +1,257 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14-alpine
+    container_name: shapeshred-postgres
+    environment:
+      POSTGRES_USER: shapeshred
+      POSTGRES_PASSWORD: shapeshred_password
+      POSTGRES_DB: shapeshred
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - shapeshred-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: shapeshred-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - shapeshred-network
+
+  # RabbitMQ Message Queue
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: shapeshred-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: shapeshred
+      RABBITMQ_DEFAULT_PASS: shapeshred_password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - shapeshred-network
+
+  # Elasticsearch
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    container_name: shapeshred-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - shapeshred-network
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-auth-service
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your_jwt_secret_here
+      - JWT_EXPIRES_IN=15m
+      - REFRESH_TOKEN_SECRET=your_refresh_token_secret_here
+      - REFRESH_TOKEN_EXPIRES_IN=30d
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shapeshred-network
+
+  # User Service
+  user-service:
+    build:
+      context: ./backend/user-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-user-service
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+      - AWS_ACCESS_KEY_ID=your_aws_access_key
+      - AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+      - AWS_REGION=us-east-1
+      - S3_BUCKET=shapeshred-uploads
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shapeshred-network
+
+  # Workout Service
+  workout-service:
+    build:
+      context: ./backend/workout-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-workout-service
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shapeshred-network
+
+  # Nutrition Service
+  nutrition-service:
+    build:
+      context: ./backend/nutrition-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-nutrition-service
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=development
+      - PORT=3004
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shapeshred-network
+
+  # Coach Service
+  coach-service:
+    build:
+      context: ./backend/coach-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-coach-service
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=development
+      - PORT=3005
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shapeshred-network
+
+  # AI Service
+  ai-service:
+    build:
+      context: ./backend/ai-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-ai-service
+    ports:
+      - "3006:3006"
+    environment:
+      - NODE_ENV=development
+      - PORT=3006
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=your_openai_api_key
+    depends_on:
+      - redis
+    networks:
+      - shapeshred-network
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./backend/notification-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-notification-service
+    ports:
+      - "3007:3007"
+    environment:
+      - NODE_ENV=development
+      - PORT=3007
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+      - SENDGRID_API_KEY=your_sendgrid_api_key
+      - TWILIO_ACCOUNT_SID=your_twilio_account_sid
+      - TWILIO_AUTH_TOKEN=your_twilio_auth_token
+      - FIREBASE_PROJECT_ID=your_firebase_project_id
+      - FIREBASE_PRIVATE_KEY=your_firebase_private_key
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - shapeshred-network
+
+  # Payment Service
+  payment-service:
+    build:
+      context: ./backend/payment-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-payment-service
+    ports:
+      - "3008:3008"
+    environment:
+      - NODE_ENV=development
+      - PORT=3008
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+      - STRIPE_SECRET_KEY=your_stripe_secret_key
+      - STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shapeshred-network
+
+  # Analytics Service
+  analytics-service:
+    build:
+      context: ./backend/analytics-service
+      dockerfile: Dockerfile
+    container_name: shapeshred-analytics-service
+    ports:
+      - "3009:3009"
+    environment:
+      - NODE_ENV=development
+      - PORT=3009
+      - DATABASE_URL=postgresql://shapeshred:shapeshred_password@postgres:5432/shapeshred
+      - REDIS_URL=redis://redis:6379
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    networks:
+      - shapeshred-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+  elasticsearch_data:
+
+networks:
+  shapeshred-network:
+    driver: bridge

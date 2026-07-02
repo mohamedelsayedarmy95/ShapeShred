@@ -1,0 +1,27 @@
+﻿{
+  "@@locale": "ar",
+  "appTitle": "ShapeShred",
+  "welcome": "مرحباً",
+  "welcomeBack": "مرحباً بعودتك",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "login": "تسجيل الدخول",
+  "signup": "إنشاء حساب",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "orContinueWith": "أو استمر باستخدام",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+  "continueAction": "استمرار",
+  "skip": "تخطي",
+  "getStarted": "ابدأ الآن",
+  "onboardingTitle1": "تمرن في أي وقت، أي مكان",
+  "onboardingDesc1": "تمتع بتمارين احترافية من منزلك مع متابعة مباشرة من مدرب.",
+  "onboardingTitle2": "تقدم مدعوم بالذكاء الاصطناعي",
+  "onboardingDesc2": "احصل على خطط مخصصة وتغذية راجعة فورية باستخدام تقنيات ذكية.",
+  "onboardingTitle3": "اتصال مباشر مع المدرب",
+  "onboardingDesc3": "تواصل مع مدربك عبر مكالمات فيديو ومهام يومية."
+}
+
+
+
+

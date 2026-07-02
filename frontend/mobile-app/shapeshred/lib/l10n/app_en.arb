@@ -1,0 +1,27 @@
+﻿{
+  "@@locale": "en",
+  "appTitle": "ShapeShred",
+  "welcome": "Welcome",
+  "welcomeBack": "Welcome Back",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "signup": "Sign Up",
+  "forgotPassword": "Forgot Password?",
+  "orContinueWith": "Or continue with",
+  "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "continueAction": "continueAction",
+  "skip": "Skip",
+  "getStarted": "Get Started",
+  "onboardingTitle1": "Train Anytime, Anywhere",
+  "onboardingDesc1": "Access professional workouts from your home with real-time coaching.",
+  "onboardingTitle2": "AI-Powered Progress",
+  "onboardingDesc2": "Get personalized plans and instant feedback using smart technology.",
+  "onboardingTitle3": "Live Coach Connection",
+  "onboardingDesc3": "Connect with your coach via video calls and daily tasks."
+}
+
+
+
+

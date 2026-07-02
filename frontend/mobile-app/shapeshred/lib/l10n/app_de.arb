@@ -1,0 +1,27 @@
+﻿{
+  "@@locale": "de",
+  "appTitle": "ShapeShred",
+  "welcome": "Willkommen",
+  "welcomeBack": "Willkommen zurück",
+  "email": "E-Mail",
+  "password": "Passwort",
+  "login": "Anmelden",
+  "signup": "Registrieren",
+  "forgotPassword": "Passwort vergessen?",
+  "orContinueWith": "Oder fortsetzen mit",
+  "dontHaveAccount": "Sie haben kein Konto?",
+  "alreadyHaveAccount": "Sie haben bereits ein Konto?",
+  "continueAction": "Weiter",
+  "skip": "Überspringen",
+  "getStarted": "Loslegen",
+  "onboardingTitle1": "Trainieren Sie jederzeit, überall",
+  "onboardingDesc1": "Professionelle Workouts von zu Hause mit Echtzeit-Coaching.",
+  "onboardingTitle2": "KI-gestützter Fortschritt",
+  "onboardingDesc2": "Personalisierte Pläne und sofortiges Feedback durch intelligente Technologie.",
+  "onboardingTitle3": "Direkte Verbindung zum Coach",
+  "onboardingDesc3": "Verbinden Sie sich mit Ihrem Coach über Videoanrufe und tägliche Aufgaben."
+}
+
+
+
+

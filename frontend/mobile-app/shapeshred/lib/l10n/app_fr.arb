@@ -1,0 +1,27 @@
+﻿{
+  "@@locale": "fr",
+  "appTitle": "ShapeShred",
+  "welcome": "Bienvenue",
+  "welcomeBack": "Bon retour",
+  "email": "E-mail",
+  "password": "Mot de passe",
+  "login": "Se connecter",
+  "signup": "S'inscrire",
+  "forgotPassword": "Mot de passe oublié ?",
+  "orContinueWith": "Ou continuez avec",
+  "dontHaveAccount": "Vous n'avez pas de compte ?",
+  "alreadyHaveAccount": "Vous avez déjà un compte ?",
+  "continueAction": "Continuer",
+  "skip": "Passer",
+  "getStarted": "Commencer",
+  "onboardingTitle1": "Entraînez-vous n'importe quand, n'importe où",
+  "onboardingDesc1": "Accédez à des entraînements professionnels depuis chez vous avec un coaching en direct.",
+  "onboardingTitle2": "Progression alimentée par l'IA",
+  "onboardingDesc2": "Obtenez des plans personnalisés et des retours instantanés grâce à la technologie intelligente.",
+  "onboardingTitle3": "Connexion directe avec votre coach",
+  "onboardingDesc3": "Connectez-vous avec votre coach via des appels vidéo et des tâches quotidiennes."
+}
+
+
+
+
