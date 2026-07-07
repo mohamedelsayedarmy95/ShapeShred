@@ -125,18 +125,19 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: AppSpacing.space8.h),
 
               // Forgot Password
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Forgot password?',
-                    style: AppTypography.labelLarge.copyWith(
-                      color: AppColorPalette.gray700,
-                    ),
-                  ),
-                ),
-              ),
+              // TODO: Implement forgot password functionality
+              // Align(
+              //   alignment: Alignment.centerRight,
+              //   child: TextButton(
+              //     onPressed: () {},
+              //     child: Text(
+              //       'Forgot password?',
+              //       style: AppTypography.labelLarge.copyWith(
+              //         color: AppColorPalette.gray700,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: AppSpacing.space16.h),
 
               // Login Button
@@ -191,23 +192,24 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: AppSpacing.space20.h),
 
               // Social Login Buttons
-              SocialLoginButton(
-                icon: Icons.g_mobiledata,
-                label: 'Continue with Google',
-                onTap: () {},
-              ),
-              SizedBox(height: AppSpacing.space12.h),
-              SocialLoginButton(
-                icon: Icons.apple,
-                label: 'Continue with Apple',
-                onTap: () {},
-              ),
-              SizedBox(height: AppSpacing.space12.h),
-              SocialLoginButton(
-                icon: Icons.facebook,
-                label: 'Continue with Facebook',
-                onTap: () {},
-              ),
+              // TODO: Implement social login functionality
+              // SocialLoginButton(
+              //   icon: Icons.g_mobiledata,
+              //   label: 'Continue with Google',
+              //   onTap: () {},
+              // ),
+              // SizedBox(height: AppSpacing.space12.h),
+              // SocialLoginButton(
+              //   icon: Icons.apple,
+              //   label: 'Continue with Apple',
+              //   onTap: () {},
+              // ),
+              // SizedBox(height: AppSpacing.space12.h),
+              // SocialLoginButton(
+              //   icon: Icons.facebook,
+              //   label: 'Continue with Facebook',
+              //   onTap: () {},
+              // ),
               SizedBox(height: AppSpacing.space24.h),
 
               // Sign Up Link

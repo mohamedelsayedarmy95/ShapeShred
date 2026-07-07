@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String name;
@@ -53,9 +54,30 @@ class ProfileHeader extends StatelessWidget {
             ),
             child: avatarUrl != null
                 ? ClipOval(
-                    child: Image.network(
-                      avatarUrl!,
+                    child: CachedNetworkImage(
+                      imageUrl: avatarUrl!,
                       fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: AppColorPalette.gray700,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColorPalette.pureWhite,
+                            ),
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: AppColorPalette.gray700,
+                        child: Center(
+                          child: Icon(
+                            Icons.person,
+                            color: AppColorPalette.pureWhite,
+                            size: 32.sp,
+                          ),
+                        ),
+                      ),
                     ),
                   )
                 : Center(
