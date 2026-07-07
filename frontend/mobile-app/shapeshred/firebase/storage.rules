@@ -1,0 +1,42 @@
+﻿rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    function isValidImage() {
+      return request.resource.contentType.matches('image/.*') &&
+             request.resource.size < 5 * 1024 * 1024;
+    }
+    function isValidVideo() {
+      return request.resource.contentType.matches('video/.*') &&
+             request.resource.size < 50 * 1024 * 1024;
+    }
+    match /avatars/{userId}/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
+    }
+    match /workouts/{workoutId}/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /workout_videos/{workoutId}/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidVideo();
+    }
+    match /progress_photos/{userId}/{fileName} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
+    }
+    match /nutrition_images/{userId}/{fileName} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

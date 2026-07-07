@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
-import 'package:shapeshred/core/design_system/atoms/app_button.dart';
-import 'package:shapeshred/core/design_system/atoms/press_feedback.dart';
-import 'package:shapeshred/features/training/presentation/widgets/workout_card.dart';
+import 'package:shapeshred/core/design_system/molecules/stat_card.dart';
+import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,7 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppSurfaceLevel.background,
+      backgroundColor: AppColorPalette.pureWhite,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
@@ -24,25 +22,36 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(context),
+              // Header Section
+              _buildHeader(),
               SizedBox(height: AppSpacing.space32.h),
-              _buildHeroCard(context),
+              
+              // Hero Card - Today's Workout
+              _buildHeroCard(),
               SizedBox(height: AppSpacing.space32.h),
+              
+              // Stats Row
               _buildStatsRow(),
               SizedBox(height: AppSpacing.space40.h),
-              _buildSectionTitle('Recommended'),
+              
+              // Section Title
+              Text(
+                'Recommended',
+                style: AppTypography.headlineSmall,
+              ),
               SizedBox(height: AppSpacing.space16.h),
+              
+              // Recommendations Carousel
               _buildRecommendationsCarousel(),
               SizedBox(height: AppSpacing.space32.h),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: _buildBottomNav(context),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -51,80 +60,126 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               'Welcome back,',
-              style: AppTypography.textTheme.bodyLarge?.copyWith(
+              style: AppTypography.bodyLarge.copyWith(
                 color: AppTextColor.secondary,
               ),
             ),
+            SizedBox(height: AppSpacing.space4.h),
             Text(
               'Ahmed 👋',
-              style: AppTypography.textTheme.headlineMedium,
+              style: AppTypography.headlineMedium,
             ),
           ],
         ),
-        PressFeedback(
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.all(10.r),
-            decoration: BoxDecoration(
-              color: AppSurfaceLevel.elevated,
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColorPalette.gray200),
-            ),
-            child: Icon(
-              Icons.notifications_none_outlined,
-              color: AppColorPalette.gray900,
-              size: 24.sp,
-            ),
+        Container(
+          padding: EdgeInsets.all(10.r),
+          decoration: BoxDecoration(
+            color: AppColorPalette.gray50,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColorPalette.gray200),
+          ),
+          child: Icon(
+            Icons.notifications_none_outlined,
+            color: AppColorPalette.gray900,
+            size: 24.sp,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildHeroCard(BuildContext context) {
+  Widget _buildHeroCard() {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(AppSpacing.space24.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.gray900,
-        borderRadius: BorderRadius.circular(24.r),
-        boxShadow: const [
+        gradient: const LinearGradient(
+          colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x1A000000),
-            blurRadius: 24,
-            offset: Offset(0, 12),
+            color: AppColorPalette.gray900.withValues(alpha: 0.2),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '🔥 TODAY\'S WORKOUT',
-            style: AppTypography.textTheme.labelSmall?.copyWith(
-              color: AppColorPalette.gray400,
-              letterSpacing: 1.5,
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 6.h,
+            ),
+            decoration: BoxDecoration(
+              color: AppColorPalette.gray700,
+              borderRadius: BorderRadius.circular(AppRadius.full),
+            ),
+            child: Text(
+              '🔥 TODAY\'S WORKOUT',
+              style: AppTypography.labelSmall.copyWith(
+                color: AppColorPalette.pureWhite,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
-          SizedBox(height: AppSpacing.space12.h),
+          SizedBox(height: AppSpacing.space20.h),
           Text(
             'HIIT Cardio Blast',
-            style: AppTypography.textTheme.headlineSmall?.copyWith(
+            style: AppTypography.headlineMedium.copyWith(
               color: AppColorPalette.pureWhite,
             ),
           ),
           SizedBox(height: AppSpacing.space4.h),
-          Text(
-            '20 min • High Intensity',
-            style: AppTypography.textTheme.bodyMedium?.copyWith(
-              color: AppColorPalette.gray400,
-            ),
+          Row(
+            children: [
+              Icon(
+                Icons.timer_outlined,
+                color: AppColorPalette.gray400,
+                size: 16.sp,
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                '20 min',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColorPalette.gray400,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Icon(
+                Icons.bolt,
+                color: AppColorPalette.gray400,
+                size: 16.sp,
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                'High Intensity',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColorPalette.gray400,
+                ),
+              ),
+            ],
           ),
           SizedBox(height: AppSpacing.space24.h),
-          AppButton(
-            text: 'START NOW',
-            variant: AppButtonVariant.secondary,
-            onPressed: () => context.go('/workout-player'),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 12.h),
+            decoration: BoxDecoration(
+              color: AppColorPalette.pureWhite,
+              borderRadius: BorderRadius.circular(AppRadius.l),
+            ),
+            child: Center(
+              child: Text(
+                'START WORKOUT',
+                style: AppTypography.labelLarge.copyWith(
+                  color: AppColorPalette.gray900,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -134,111 +189,45 @@ class HomePage extends StatelessWidget {
   Widget _buildStatsRow() {
     return Row(
       children: [
-        _buildStatItem('🔥', '450', 'Calories'),
+        const StatCard(icon: '🔥', value: '450', label: 'Calories'),
         SizedBox(width: AppSpacing.space12.w),
-        _buildStatItem('⏱️', '32', 'Min'),
+        const StatCard(icon: '⏱️', value: '32', label: 'Min'),
         SizedBox(width: AppSpacing.space12.w),
-        _buildStatItem('💪', '4', 'Exercises'),
+        const StatCard(icon: '💪', value: '4', label: 'Exercises'),
       ],
-    );
-  }
-
-  Widget _buildStatItem(String icon, String value, String label) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: AppSpacing.space16.h),
-        decoration: BoxDecoration(
-          color: AppSurfaceLevel.elevated,
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: AppColorPalette.gray200),
-        ),
-        child: Column(
-          children: [
-            Text(icon, style: TextStyle(fontSize: 24.sp)),
-            SizedBox(height: AppSpacing.space4.h),
-            Text(
-              value,
-              style: AppTypography.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            Text(
-              label,
-              style: AppTypography.textTheme.labelSmall?.copyWith(
-                color: AppTextColor.secondary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: AppTypography.textTheme.headlineSmall,
     );
   }
 
   Widget _buildRecommendationsCarousel() {
     return SizedBox(
-      height: 180.h,
+      height: 200.h,
       child: ListView(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
         children: const [
           WorkoutCard(
-              title: 'Strength', duration: '30 min', level: 'Intermediate'),
-          SizedBox(width: 16),
-          WorkoutCard(title: 'Yoga', duration: '20 min', level: 'Beginner'),
-          SizedBox(width: 16),
-          WorkoutCard(title: 'Pilates', duration: '25 min', level: 'Advanced'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomNav(BuildContext context) {
-    return Container(
-      height: 84.h,
-      decoration: BoxDecoration(
-        color: AppSurfaceLevel.background,
-        border: Border(top: BorderSide(color: AppColorPalette.gray200)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(context, Icons.home, 'Home', true, '/home'),
-          _buildNavItem(
-              context, Icons.fitness_center_outlined, 'Training', false, '/training'),
-          _buildNavItem(
-              context, Icons.restaurant_outlined, 'Nutrition', false, '/nutrition'),
-          _buildNavItem(context, Icons.person_outline, 'Profile', false, '/profile'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNavItem(BuildContext context, IconData icon, String label,
-      bool isActive, String route) {
-    return PressFeedback(
-      onTap: isActive ? null : () => context.go(route),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? AppColorPalette.gray900 : AppTextColor.tertiary,
-            size: 28.sp,
+            title: 'Strength',
+            duration: '30 min',
+            level: 'Intermediate',
+            icon: Icons.fitness_center,
           ),
-          SizedBox(height: 4.h),
-          Text(
-            label,
-            style: AppTypography.textTheme.labelSmall?.copyWith(
-              color: isActive ? AppColorPalette.gray900 : AppTextColor.tertiary,
-              fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-            ),
+          WorkoutCard(
+            title: 'Yoga',
+            duration: '20 min',
+            level: 'Beginner',
+            icon: Icons.self_improvement,
+          ),
+          WorkoutCard(
+            title: 'Pilates',
+            duration: '25 min',
+            level: 'Advanced',
+            icon: Icons.accessibility_new,
+          ),
+          WorkoutCard(
+            title: 'HIIT',
+            duration: '15 min',
+            level: 'All Levels',
+            icon: Icons.flash_on,
           ),
         ],
       ),

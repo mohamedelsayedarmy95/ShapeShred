@@ -5,6 +5,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/atoms/press_feedback.dart';
+import 'package:shapeshred/core/design_system/atoms/app_back_button.dart';
 import '../bloc/training_bloc.dart';
 
 class TrainingLibraryPage extends StatelessWidget {
@@ -18,7 +19,7 @@ class TrainingLibraryPage extends StatelessWidget {
         backgroundColor: AppSurfaceLevel.background,
         appBar: AppBar(
           title: const Text('Training'),
-          centerTitle: true,
+          leading: const AppBackButton(),
         ),
         body: BlocBuilder<TrainingBloc, TrainingState>(
           builder: (context, state) {

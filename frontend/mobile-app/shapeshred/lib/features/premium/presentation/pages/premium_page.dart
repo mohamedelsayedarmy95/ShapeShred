@@ -4,7 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shapeshred/core/constants/app_colors.dart';
+import 'package:shapeshred/core/design_system/tokens/colors.dart';
+import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/atoms/press_feedback.dart';
+import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/premium/domain/entities/subscription_plan_entity.dart';
 
 class PremiumPage extends StatefulWidget {
@@ -48,16 +51,23 @@ class _PremiumPageState extends State<PremiumPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppSurfaceLevel.background,
       appBar: AppBar(
-        title:
-            const Text('Go Premium', style: TextStyle(color: AppColors.black)),
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: AppColors.black),
-          onPressed: () => context.go('/'),
+        title: const Text('Go Premium'),
+        leading: PressFeedback(
+          onTap: () {
+            HapticHelper.light();
+            context.pop();
+          },
+          child: Container(
+            margin: EdgeInsets.all(8.r),
+            decoration: BoxDecoration(
+              color: AppSurfaceLevel.elevated,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColorPalette.gray200),
+            ),
+            child: Icon(Icons.close_rounded, size: 20.sp, color: AppTextColor.primary),
+          ),
         ),
       ),
       body: Column(
@@ -65,24 +75,32 @@ class _PremiumPageState extends State<PremiumPage> {
           // Header
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
-            color: AppColors.black,
+            padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 24.w),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             child: Column(
               children: [
-                Icon(Icons.star, color: AppColors.white, size: 48.sp),
-                SizedBox(height: 8.h),
+                Icon(Icons.stars_rounded, color: AppColorPalette.pureWhite, size: 48.sp),
+                SizedBox(height: 16.h),
                 Text(
                   'Unlock Your Full Potential',
-                  style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.white),
+                  style: AppTypography.textTheme.headlineSmall?.copyWith(
+                    color: AppColorPalette.pureWhite,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   'Get access to all premium features including live coaching, AI workouts, and personalized nutrition.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14.sp, color: AppColors.grey300),
+                  style: AppTypography.textTheme.bodyMedium?.copyWith(
+                    color: AppColorPalette.gray400,
+                  ),
                 ),
               ],
             ),
@@ -95,19 +113,15 @@ class _PremiumPageState extends State<PremiumPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'What you\'ll get:',
-                    style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.black),
+                    'Premium Benefits',
+                    style: AppTypography.textTheme.titleLarge,
                   ),
-                  SizedBox(height: 12.h),
-                  _buildFeature(Icons.person, 'Live 1-on-1 Coaching'),
-                  _buildFeature(Icons.fitness_center, 'AI-Powered Workouts'),
-                  _buildFeature(Icons.restaurant, 'Custom Nutrition Plans'),
-                  _buildFeature(Icons.video_call, 'Video Call Support'),
-                  _buildFeature(Icons.insert_chart, 'Progress Analytics'),
                   SizedBox(height: 16.h),
+                  _buildFeature(Icons.person_rounded, 'Live 1-on-1 Coaching'),
+                  _buildFeature(Icons.bolt_rounded, 'AI-Powered Workouts'),
+                  _buildFeature(Icons.restaurant_rounded, 'Custom Nutrition Plans'),
+                  _buildFeature(Icons.analytics_rounded, 'Progress Analytics'),
+                  SizedBox(height: 24.h),
                   // Plan Selection
                   Expanded(
                     child: ListView.builder(
@@ -118,33 +132,29 @@ class _PremiumPageState extends State<PremiumPage> {
                       },
                     ),
                   ),
+                  SizedBox(height: 16.h),
                   // Subscribe Button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _subscribe,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.black,
-                        foregroundColor: AppColors.white,
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14.r)),
-                      ),
                       child: _isLoading
-                          ? const CircularProgressIndicator(
-                              color: AppColors.white)
-                          : Text(
-                              'Subscribe Now',
-                              style: TextStyle(
-                                  fontSize: 16.sp, fontWeight: FontWeight.w600),
-                            ),
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: AppColorPalette.pureWhite),
+                            )
+                          : const Text('Subscribe Now'),
                     ),
                   ),
                   SizedBox(height: 16.h),
-                  Text(
-                    'Cancel anytime. No commitment.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12.sp, color: AppColors.grey500),
+                  Center(
+                    child: Text(
+                      'Cancel anytime. No commitment.',
+                      style: AppTypography.textTheme.labelSmall?.copyWith(
+                        color: AppTextColor.tertiary,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -160,10 +170,12 @@ class _PremiumPageState extends State<PremiumPage> {
       padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
         children: [
-          Icon(icon, color: AppColors.black, size: 20.sp),
+          Icon(icon, color: AppColorPalette.gray900, size: 20.sp),
           SizedBox(width: 12.w),
-          Text(label,
-              style: TextStyle(fontSize: 14.sp, color: AppColors.black)),
+          Text(
+            label,
+            style: AppTypography.textTheme.bodyLarge,
+          ),
         ],
       ),
     );
@@ -171,17 +183,17 @@ class _PremiumPageState extends State<PremiumPage> {
 
   Widget _buildPlanCard(SubscriptionPlan plan) {
     final isSelected = _selectedPlanId == plan.id;
-    return GestureDetector(
+    return PressFeedback(
       onTap: () => setState(() => _selectedPlanId = plan.id),
       child: Container(
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.black : AppColors.white,
-          borderRadius: BorderRadius.circular(12.r),
+          color: isSelected ? AppColorPalette.gray900 : AppSurfaceLevel.elevated,
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isSelected ? AppColors.black : AppColors.grey200,
-            width: isSelected ? 2 : 1,
+            color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+            width: 1.5,
           ),
         ),
         child: Row(
@@ -194,26 +206,23 @@ class _PremiumPageState extends State<PremiumPage> {
                     children: [
                       Text(
                         plan.name,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: isSelected ? AppColors.white : AppColors.black,
+                        style: AppTypography.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: isSelected ? AppColorPalette.pureWhite : AppTextColor.primary,
                         ),
                       ),
                       if (plan.isPopular)
                         Padding(
                           padding: EdgeInsets.only(left: 8.w),
                           child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8.w, vertical: 2.h),
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                             decoration: BoxDecoration(
-                              color: AppColors.black,
+                              color: isSelected ? AppColorPalette.gray700 : AppColorPalette.gray900,
                               borderRadius: BorderRadius.circular(4.r),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Best Value',
-                              style: TextStyle(
-                                  fontSize: 10.sp, color: AppColors.white),
+                              style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -221,9 +230,8 @@ class _PremiumPageState extends State<PremiumPage> {
                   ),
                   Text(
                     plan.description,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: isSelected ? AppColors.grey300 : AppColors.grey500,
+                    style: AppTypography.textTheme.bodySmall?.copyWith(
+                      color: isSelected ? AppColorPalette.gray400 : AppTextColor.secondary,
                     ),
                   ),
                 ],
@@ -234,28 +242,17 @@ class _PremiumPageState extends State<PremiumPage> {
               children: [
                 Text(
                   plan.priceLabel,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w700,
-                    color: isSelected ? AppColors.white : AppColors.black,
+                  style: AppTypography.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: isSelected ? AppColorPalette.pureWhite : AppTextColor.primary,
                   ),
                 ),
                 Text(
                   plan.periodLabel,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: isSelected ? AppColors.grey400 : AppColors.grey500,
+                  style: AppTypography.textTheme.labelSmall?.copyWith(
+                    color: isSelected ? AppColorPalette.gray400 : AppTextColor.secondary,
                   ),
                 ),
-                if (plan.discountLabel.isNotEmpty)
-                  Text(
-                    plan.discountLabel,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.white,
-                    ),
-                  ),
               ],
             ),
           ],
@@ -266,7 +263,7 @@ class _PremiumPageState extends State<PremiumPage> {
 
   Future<void> _subscribe() async {
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 2)); // Simulate payment
+    await Future<void>.delayed(const Duration(seconds: 2)); // Simulate payment
     final selectedPlan = _plans.firstWhere((p) => p.id == _selectedPlanId);
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -278,14 +275,14 @@ class _PremiumPageState extends State<PremiumPage> {
         'plan': selectedPlan.id,
         'expiryDate': DateTime.now().add(const Duration(days: 30)),
       });
-      await SharedPreferences.getInstance()
-          .then((prefs) => prefs.setBool('isPremium', true));
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isPremium', true);
     }
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('?? Welcome to Premium!')),
+        const SnackBar(content: Text('Welcome to Premium!')),
       );
-      context.go('/');
+      context.pop();
     }
     setState(() => _isLoading = false);
   }

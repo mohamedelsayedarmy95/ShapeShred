@@ -9,6 +9,7 @@ import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/atoms/app_button.dart';
 import 'package:shapeshred/core/design_system/atoms/app_input.dart';
+import 'package:shapeshred/core/design_system/atoms/app_back_button.dart';
 import 'package:shapeshred/l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
@@ -83,10 +84,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: AppSurfaceLevel.background,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/onboarding'),
-        ),
+        leading: const AppBackButton(),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),

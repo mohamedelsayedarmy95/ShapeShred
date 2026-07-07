@@ -1,85 +1,106 @@
-import 'package:flutter/material.dart';
-import '../tokens/colors.dart';
-import '../tokens/typography.dart';
-import '../tokens/radius.dart';
-import 'shapeshred_theme_extension.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shapeshred/core/design_system/tokens/colors.dart';
+import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 
+/// Premium Material Theme
 class AppTheme {
+  AppTheme._();
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      primaryColor: AppColorPalette.gray900,
-      scaffoldBackgroundColor: AppSurfaceLevel.background,
-      textTheme: AppTypography.textTheme,
+      
       colorScheme: const ColorScheme.light(
-        primary: AppColorPalette.gray900,
+        primary: AppColorPalette.absoluteBlack,
+        onPrimary: AppColorPalette.pureWhite,
         secondary: AppColorPalette.gray700,
-        surface: AppSurfaceLevel.background,
-        onSurface: AppTextColor.primary,
-        error: AppColorPalette.gray800, // Monochromatic danger
+        onSecondary: AppColorPalette.pureWhite,
+        surface: AppColorPalette.pureWhite,
+        onSurface: AppColorPalette.gray900,
+        error: AppColorPalette.error,
+        onError: AppColorPalette.pureWhite,
       ),
+
+      scaffoldBackgroundColor: AppColorPalette.pureWhite,
+      textTheme: _buildTextTheme(),
+
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppSurfaceLevel.background,
         elevation: 0,
-        iconTheme: IconThemeData(color: AppTextColor.primary),
-        titleTextStyle: TextStyle(
-          color: AppTextColor.primary,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-        ),
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        backgroundColor: AppColorPalette.pureWhite,
+        foregroundColor: AppColorPalette.gray900,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
+
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColorPalette.gray900,
+          backgroundColor: AppColorPalette.absoluteBlack,
           foregroundColor: AppColorPalette.pureWhite,
-          minimumSize: const Size(double.infinity, 56),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.radiusPill),
-          ),
           elevation: 0,
-          textStyle: AppTypography.textTheme.labelLarge,
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: AppTextColor.primary,
-          minimumSize: const Size(double.infinity, 56),
-          side: const BorderSide(color: AppColorPalette.gray300, width: 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.radiusPill),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.buttonPaddingHorizontal,
+            vertical: AppSpacing.buttonPaddingVertical,
           ),
-          textStyle: AppTypography.textTheme.labelLarge,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.l),
+          ),
+          textStyle: AppTypography.labelLarge,
         ),
       ),
+
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppSurfaceLevel.elevated,
-        contentPadding: const EdgeInsets.all(16),
+        fillColor: AppColorPalette.gray50,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.inputPaddingHorizontal,
+          vertical: AppSpacing.inputPaddingVertical,
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
-          borderSide: const BorderSide(color: AppColorPalette.gray300),
+          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderSide: const BorderSide(color: AppColorPalette.gray200),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
+          borderRadius: BorderRadius.circular(AppRadius.m),
           borderSide: const BorderSide(color: AppColorPalette.gray200),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
-          borderSide:
-              const BorderSide(color: AppColorPalette.gray900, width: 2),
+          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderSide: const BorderSide(
+            color: AppColorPalette.absoluteBlack,
+            width: 2,
+          ),
         ),
-        hintStyle: AppTypography.textTheme.bodyMedium?.copyWith(
-          color: AppTextColor.tertiary,
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderSide: const BorderSide(color: AppColorPalette.error),
         ),
       ),
-      extensions: const [
-        ShapeShredThemeExtension(
-          workoutCardElevation: 2.0,
-          modalElevation: 16.0,
-          cardBackground: AppSurfaceLevel.elevated,
+
+      cardTheme: CardThemeData(
+        elevation: 0,
+        color: AppColorPalette.pureWhite,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.l),
+          side: const BorderSide(color: AppColorPalette.gray200),
         ),
-      ],
+      ),
+    );
+  }
+
+  static TextTheme _buildTextTheme() {
+    return const TextTheme(
+      bodyMedium: AppTypography.bodyMedium,
+      bodyLarge: AppTypography.bodyLarge,
+      bodySmall: AppTypography.bodySmall,
+      headlineMedium: AppTypography.headlineMedium,
+      headlineSmall: AppTypography.headlineSmall,
+      titleMedium: AppTypography.titleMedium,
+      labelLarge: AppTypography.labelLarge,
+      labelSmall: AppTypography.labelSmall,
     );
   }
 }

@@ -1,87 +1,150 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shapeshred/core/constants/app_colors.dart';
+import 'package:shapeshred/core/design_system/tokens/colors.dart';
+import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/features/training/presentation/widgets/category_filter.dart';
+import 'package:shapeshred/features/training/presentation/widgets/workout_list_item.dart';
 
-class TrainingPage extends StatelessWidget {
+class TrainingPage extends StatefulWidget {
   const TrainingPage({super.key});
+
+  @override
+  State<TrainingPage> createState() => _TrainingPageState();
+}
+
+class _TrainingPageState extends State<TrainingPage> {
+  String _selectedCategory = 'All';
+
+  final List<String> _categories = [
+    'All',
+    'HIIT',
+    'Strength',
+    'Yoga',
+    'Cardio',
+    'Pilates',
+  ];
+
+  final List<Map<String, dynamic>> _workouts = [
+    {
+      'title': 'HIIT Cardio Blast',
+      'duration': '20 min',
+      'exercises': 8,
+      'level': 'High Intensity',
+      'category': 'HIIT',
+      'icon': Icons.flash_on,
+      'color': AppColorPalette.gray900,
+    },
+    {
+      'title': 'Full Body Strength',
+      'duration': '35 min',
+      'exercises': 12,
+      'level': 'Intermediate',
+      'category': 'Strength',
+      'icon': Icons.fitness_center,
+      'color': AppColorPalette.gray700,
+    },
+    {
+      'title': 'Morning Yoga Flow',
+      'duration': '25 min',
+      'exercises': 10,
+      'level': 'Beginner',
+      'category': 'Yoga',
+      'icon': Icons.self_improvement,
+      'color': AppColorPalette.gray600,
+    },
+    {
+      'title': 'Core Crusher',
+      'duration': '15 min',
+      'exercises': 6,
+      'level': 'Advanced',
+      'category': 'HIIT',
+      'icon': Icons.bolt,
+      'color': AppColorPalette.gray800,
+    },
+    {
+      'title': 'Upper Body Power',
+      'duration': '30 min',
+      'exercises': 10,
+      'level': 'Intermediate',
+      'category': 'Strength',
+      'icon': Icons.fitness_center,
+      'color': AppColorPalette.gray700,
+    },
+    {
+      'title': 'Pilates Core',
+      'duration': '20 min',
+      'exercises': 8,
+      'level': 'All Levels',
+      'category': 'Pilates',
+      'icon': Icons.accessibility_new,
+      'color': AppColorPalette.gray600,
+    },
+  ];
+
+  List<Map<String, dynamic>> get _filteredWorkouts {
+    if (_selectedCategory == 'All') {
+      return _workouts;
+    }
+    return _workouts.where((w) => w['category'] == _selectedCategory).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Training'),
-        backgroundColor: AppColors.white,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+      backgroundColor: AppColorPalette.pureWhite,
+      body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 16.h),
-            // Tabs
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.grey50,
-                borderRadius: BorderRadius.circular(12.r),
+            // Header
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.screenPadding.w,
+                vertical: AppSpacing.space16.h,
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildTab('HIIT', true),
-                  _buildTab('Strength', false),
-                  _buildTab('Yoga', false),
+                  Text(
+                    'Training Library',
+                    style: AppTypography.headlineLarge,
+                  ),
+                  SizedBox(height: AppSpacing.space8.h),
+                  Text(
+                    'Choose your workout',
+                    style: AppTypography.bodyLarge.copyWith(
+                      color: AppTextColor.secondary,
+                    ),
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: 24.h),
+
+            // Category Filter
+            CategoryFilter(
+              categories: _categories,
+              selectedCategory: _selectedCategory,
+              onCategorySelected: (category) {
+                setState(() {
+                  _selectedCategory = category;
+                });
+              },
+            ),
+
+            SizedBox(height: AppSpacing.space16.h),
+
+            // Workouts List
             Expanded(
               child: ListView.separated(
-                itemCount: 5,
-                separatorBuilder: (_, __) => SizedBox(height: 16.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.screenPadding.w,
+                ),
+                itemCount: _filteredWorkouts.length,
+                separatorBuilder: (context, index) => SizedBox(height: AppSpacing.space12.h),
                 itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.grey200),
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 60.w,
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.grey100,
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child:
-                              const Icon(Icons.play_arrow, color: AppColors.grey600),
-                        ),
-                        SizedBox(width: 16.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Workout ${index + 1}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                              Text(
-                                '${12 + index * 5} min • ${4 + index} exercises',
-                                style: TextStyle(
-                                  color: AppColors.grey500,
-                                  fontSize: 12.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(Icons.arrow_forward_ios,
-                            color: AppColors.grey400, size: 16.sp),
-                      ],
-                    ),
-                  );
+                  final workout = _filteredWorkouts[index];
+                  return WorkoutListItem(workout: workout);
                 },
               ),
             ),
@@ -90,25 +153,5 @@ class TrainingPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildTab(String title, bool isSelected) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.h),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.black : Colors.transparent,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              color: isSelected ? AppColors.white : AppColors.grey600,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
+

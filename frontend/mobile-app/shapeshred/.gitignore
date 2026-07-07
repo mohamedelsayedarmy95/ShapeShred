@@ -1,15 +1,13 @@
-# Miscellaneous
+﻿# Miscellaneous
 *.class
 *.log
 *.pyc
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
-.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -27,11 +25,12 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
-/coverage/
 
 # Symbolication related
 app.*.symbols
@@ -43,3 +42,32 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Coverage
+coverage/
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.config.dart
+
+# Keys and certificates
+*.jks
+*.keystore
+*.p12
+*.pem
+**/android/app/*.jks
+**/android/app/*.keystore
+
+# IDE
+.vscode/
+*.code-workspace

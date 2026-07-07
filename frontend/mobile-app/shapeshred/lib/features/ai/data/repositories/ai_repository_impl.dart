@@ -15,7 +15,7 @@ class AiRepositoryImpl implements AiRepository {
   Future<Either<Failure, ChatMessage>> sendMessage(
       String message, List<ChatMessage> history) async {
     try {
-      final response = await _dioClient.dio.post(
+      final response = await _dioClient.dio.post<Map<String, dynamic>>(
         'http://localhost:3006/ai/chat',
         data: {
           'message': message,

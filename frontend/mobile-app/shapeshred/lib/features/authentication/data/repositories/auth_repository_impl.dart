@@ -20,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> signIn(String email, String password) async {
-    final response = await _dioClient.dio.post('/auth/login', data: {
+    final response = await _dioClient.dio.post<Map<String, dynamic>>('/auth/login', data: {
       'email': email,
       'password': password,
     });
@@ -37,7 +37,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signUp(SignUpParams params) async {
     final response =
-        await _dioClient.dio.post('/auth/register', data: params.toJson());
+        await _dioClient.dio.post<Map<String, dynamic>>('/auth/register', data: params.toJson());
 
     if (response.statusCode != 201 && response.statusCode != 200) {
       throw Exception('Failed to sign up');

@@ -15,9 +15,9 @@ class TrainingRepositoryImpl implements TrainingRepository {
   Future<Either<Failure, List<Exercise>>> getExercises() async {
     try {
       final response =
-          await _dioClient.dio.get('http://localhost:3003/exercises');
+          await _dioClient.dio.get<List<dynamic>>('http://localhost:3003/exercises');
       if (response.statusCode == 200) {
-        final data = response.data as List<dynamic>;
+        final data = response.data!;
         return Right(data
             .map((json) => _mapToEntity(json as Map<String, dynamic>))
             .toList());
@@ -32,11 +32,11 @@ class TrainingRepositoryImpl implements TrainingRepository {
   Future<Either<Failure, List<Exercise>>> getExercisesByCategory(
       String category) async {
     try {
-      final response = await _dioClient.dio.get(
+      final response = await _dioClient.dio.get<List<dynamic>>(
           'http://localhost:3003/exercises',
           queryParameters: {'category': category});
       if (response.statusCode == 200) {
-        final data = response.data as List<dynamic>;
+        final data = response.data!;
         return Right(data
             .map((json) => _mapToEntity(json as Map<String, dynamic>))
             .toList());

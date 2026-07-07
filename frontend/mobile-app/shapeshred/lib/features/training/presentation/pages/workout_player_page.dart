@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shapeshred/core/constants/app_colors.dart';
+import 'package:shapeshred/core/design_system/tokens/colors.dart';
+import 'package:shapeshred/core/design_system/atoms/app_back_button.dart';
 
 class WorkoutPlayerPage extends StatefulWidget {
   const WorkoutPlayerPage({super.key});
@@ -24,21 +25,13 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppSurfaceLevel.background,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
-          onPressed: () => context.go('/training'),
-        ),
+        leading: const AppBackButton(),
         title: Text(
-          '$_currentExercise + 1 / ${exercises.length}',
-          style: const TextStyle(color: AppColors.black),
+          '${_currentExercise + 1} / ${exercises.length}',
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -50,23 +43,20 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
               width: double.infinity,
               height: 250.h,
               decoration: BoxDecoration(
-                color: AppColors.grey50,
+                color: AppSurfaceLevel.elevated,
                 borderRadius: BorderRadius.circular(24.r),
-                border: Border.all(color: AppColors.grey200, width: 1),
+                border: Border.all(color: AppColorPalette.gray200, width: 1),
               ),
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.fitness_center,
-                        size: 80.sp, color: AppColors.grey300),
+                        size: 80.sp, color: AppColorPalette.gray300),
                     SizedBox(height: 16.h),
                     Text(
                       exercises[_currentExercise],
-                      style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ],
                 ),
@@ -76,10 +66,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
             // Timer
             Text(
               _formatTime(_seconds),
-              style: TextStyle(
-                  fontSize: 48.sp,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.black),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             SizedBox(height: 32.h),
             // Controls
@@ -88,7 +75,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.skip_previous,
-                      size: 40, color: AppColors.black),
+                      size: 40, color: AppColorPalette.gray900),
                   onPressed: _isPlaying ? null : _prevExercise,
                 ),
                 IconButton(
@@ -97,13 +84,13 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                         ? Icons.pause_circle_outline
                         : Icons.play_circle_outline,
                     size: 72,
-                    color: AppColors.black,
+                    color: AppColorPalette.gray900,
                   ),
                   onPressed: _togglePlay,
                 ),
                 IconButton(
                   icon: const Icon(Icons.skip_next,
-                      size: 40, color: AppColors.black),
+                      size: 40, color: AppColorPalette.gray900),
                   onPressed: _isPlaying ? null : _nextExercise,
                 ),
               ],
@@ -112,23 +99,14 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
             // Progress
             LinearProgressIndicator(
               value: (_currentExercise + 1) / exercises.length,
-              backgroundColor: AppColors.grey200,
-              color: AppColors.black,
+              backgroundColor: AppColorPalette.gray200,
+              color: AppColorPalette.gray900,
               minHeight: 6.h,
             ),
             SizedBox(height: 32.h),
             ElevatedButton(
-              onPressed: () => context.go('/training'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.black,
-                foregroundColor: AppColors.white,
-                padding: EdgeInsets.symmetric(horizontal: 48.w, vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14.r)),
-              ),
-              child: Text('Finish Workout',
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+              onPressed: () => context.go('/home'),
+              child: const Text('Finish Workout'),
             ),
           ],
         ),

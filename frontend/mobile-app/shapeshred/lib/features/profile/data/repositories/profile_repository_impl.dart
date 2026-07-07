@@ -15,7 +15,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, UserProfile>> getProfile() async {
     try {
       final response =
-          await _dioClient.dio.get('http://localhost:3002/users/profile');
+          await _dioClient.dio.get<Map<String, dynamic>>('http://localhost:3002/users/profile');
       if (response.statusCode == 200) {
         final data = response.data as Map<String, dynamic>;
         return Right(_mapToEntity(data));
@@ -30,7 +30,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, UserProfile>> updateProfile(
       UserProfile profile) async {
     try {
-      final response = await _dioClient.dio.put(
+      final response = await _dioClient.dio.put<Map<String, dynamic>>(
         'http://localhost:3002/users/profile',
         data: {
           'firstName': profile.firstName,

@@ -5,6 +5,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/atoms/app_back_button.dart';
 import 'package:shapeshred/features/ai/presentation/bloc/ai_chat_bloc.dart';
 import 'package:shapeshred/features/ai/domain/entities/chat_message.dart';
 
@@ -25,7 +26,7 @@ class _CoachChatPageState extends State<CoachChatPage> {
       backgroundColor: AppSurfaceLevel.background,
       appBar: AppBar(
         title: const Text('AI Coach'),
-        centerTitle: true,
+        leading: const AppBackButton(),
       ),
       body: Column(
         children: [

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/atoms/app_back_button.dart';
 import 'package:shapeshred/core/design_system/atoms/press_feedback.dart';
 import '../bloc/nutrition_bloc.dart';
 
@@ -19,10 +20,10 @@ class NutritionDashboardPage extends StatelessWidget {
         backgroundColor: AppSurfaceLevel.background,
         appBar: AppBar(
           title: const Text('Nutrition'),
-          centerTitle: true,
+          leading: const AppBackButton(),
           actions: [
             IconButton(
-              icon: const Icon(Icons.add),
+              icon: const Icon(Icons.add_rounded),
               onPressed: () => context.go('/meal-logger'),
             ),
           ],

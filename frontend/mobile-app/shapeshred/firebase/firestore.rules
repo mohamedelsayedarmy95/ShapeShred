@@ -1,0 +1,55 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    function isValidTimestamp() {
+      return request.resource.data.createdAt is timestamp &&
+             request.resource.data.updatedAt is timestamp;
+    }
+    match /users/{userId} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId) && isValidTimestamp();
+      allow update: if isAuthenticated() && isOwner(userId) && isValidTimestamp();
+      allow delete: if false;
+    }
+    match /user_profiles/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
+    match /workouts/{workoutId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.createdBy == request.auth.uid;
+      allow update: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+    }
+    match /user_workouts/{userId}/{workoutId} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
+    match /nutrition_logs/{userId}/{logId} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
+    match /achievements/{achievementId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+    match /user_achievements/{userId}/{achievementId} {
+      allow read: if isAuthenticated() && isOwner(userId);
+      allow write: if false;
+    }
+    match /conversations/{conversationId}/messages/{messageId} {
+      allow read: if isAuthenticated() && resource.data.participants.has(request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.participants.has(request.auth.uid);
+      allow update, delete: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

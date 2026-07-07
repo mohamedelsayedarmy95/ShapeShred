@@ -15,7 +15,7 @@ class NutritionRepositoryImpl implements NutritionRepository {
   Future<Either<Failure, NutritionPlan>> getActivePlan() async {
     try {
       final response = await _dioClient.dio
-          .get('http://localhost:3004/nutrition/active-plan');
+          .get<Map<String, dynamic>>('http://localhost:3004/nutrition/active-plan');
       if (response.statusCode == 200) {
         final data = response.data as Map<String, dynamic>;
         return Right(_mapToEntity(data));
