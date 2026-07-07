@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class MealListItem extends StatelessWidget {
   final String mealType;
@@ -28,7 +29,7 @@ class MealListItem extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
         color: isEmpty ? AppColorPalette.gray50 : AppColorPalette.pureWhite,
-        borderRadius: BorderRadius.circular(AppRadius.l),
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(
           color: isEmpty ? AppColorPalette.gray300 : AppColorPalette.gray200,
           style: isEmpty ? BorderStyle.solid : BorderStyle.solid,
@@ -44,7 +45,7 @@ class MealListItem extends StatelessWidget {
               color: isEmpty 
                   ? AppColorPalette.gray200 
                   : AppColorPalette.gray100,
-              borderRadius: BorderRadius.circular(AppRadius.m),
+              borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
             ),
             child: Icon(
               isEmpty ? Icons.add : icon,

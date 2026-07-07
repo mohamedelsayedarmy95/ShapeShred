@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -167,7 +167,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
                   padding: EdgeInsets.all(12.h),
                   decoration: BoxDecoration(
                     color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(AppRadius.m),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                   ),
                   child: Row(
                     children: [
@@ -196,7 +196,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
                     foregroundColor: AppColorPalette.pureWhite,
                     padding: EdgeInsets.symmetric(vertical: 18.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.l),
+                      borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     ),
                     elevation: 0,
                   ),
@@ -241,7 +241,7 @@ class _GenderButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 20.h),
         decoration: BoxDecoration(
           color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
-          borderRadius: BorderRadius.circular(AppRadius.l),
+          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           border: Border.all(
             color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
             width: 2,
@@ -317,15 +317,15 @@ class _MetricInput extends StatelessWidget {
             filled: true,
             fillColor: AppColorPalette.gray50,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
               borderSide: BorderSide(color: AppColorPalette.gray200),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
               borderSide: BorderSide(color: AppColorPalette.gray200),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
               borderSide: BorderSide(
                 color: AppColorPalette.gray900,
                 width: 2,

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -91,7 +91,7 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                           color: isSelected 
                               ? AppColorPalette.gray900 
                               : AppColorPalette.gray50,
-                          borderRadius: BorderRadius.circular(AppRadius.l),
+                          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                           border: Border.all(
                             color: isSelected 
                                 ? AppColorPalette.gray900 
@@ -108,7 +108,7 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                                 color: isSelected 
                                     ? AppColorPalette.gray800 
                                     : AppColorPalette.pureWhite,
-                                borderRadius: BorderRadius.circular(AppRadius.m),
+                                borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                               ),
                               child: Icon(
                                 level['icon'] as IconData,
@@ -177,7 +177,7 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                     color: _selectedLevel != null 
                         ? AppColorPalette.gray900 
                         : AppColorPalette.gray200,
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

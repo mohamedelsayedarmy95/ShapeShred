@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       if (userCredential != null && mounted) {
-        HapticHelper.successImpact();
+        HapticHelper.success();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } catch (e) {
-      HapticHelper.errorImpact();
+      HapticHelper.error();
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');
       });
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     gradient: const LinearGradient(
                       colors: [AppColorPalette.gray900, AppColorPalette.gray700],
                     ),
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusXL),
                   ),
                   child: Icon(
                     Icons.fitness_center,
@@ -235,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                       setState(() {
                         _obscurePassword = !_obscurePassword;
                       });
-                      HapticHelper.lightImpact();
+                      HapticHelper.light();
                     },
                   ),
                   filled: true,

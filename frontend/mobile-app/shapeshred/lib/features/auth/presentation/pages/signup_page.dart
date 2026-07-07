@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -68,7 +68,7 @@ class _SignupPageState extends State<SignupPage> {
       );
 
       if (userCredential != null && mounted) {
-        HapticHelper.successImpact();
+        HapticHelper.success();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -93,7 +93,7 @@ class _SignupPageState extends State<SignupPage> {
         }
       }
     } catch (e) {
-      HapticHelper.errorImpact();
+      HapticHelper.error();
       setState(() {
         _errorMessage = e.toString().replaceAll('Exception: ', '');
       });
@@ -136,7 +136,7 @@ class _SignupPageState extends State<SignupPage> {
                   padding: EdgeInsets.all(12.h),
                   decoration: BoxDecoration(
                     color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(AppRadius.m),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                   ),
                   child: Row(
                     children: [
@@ -172,15 +172,15 @@ class _SignupPageState extends State<SignupPage> {
                   filled: true,
                   fillColor: AppColorPalette.gray50,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(color: AppColorPalette.gray200),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(color: AppColorPalette.gray200),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(
                       color: AppColorPalette.gray900,
                       width: 2,
@@ -214,7 +214,7 @@ class _SignupPageState extends State<SignupPage> {
                       setState(() {
                         _obscurePassword = !_obscurePassword;
                       });
-                      HapticHelper.lightImpact();
+                      HapticHelper.light();
                     },
                   ),
                   filled: true,
@@ -267,7 +267,7 @@ class _SignupPageState extends State<SignupPage> {
                       setState(() {
                         _obscureConfirmPassword = !_obscureConfirmPassword;
                       });
-                      HapticHelper.lightImpact();
+                      HapticHelper.light();
                     },
                   ),
                   filled: true,
@@ -403,7 +403,7 @@ class _SocialButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 16.h),
         decoration: BoxDecoration(
           border: Border.all(color: AppColorPalette.gray200),
-          borderRadius: BorderRadius.circular(AppRadius.l),
+          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

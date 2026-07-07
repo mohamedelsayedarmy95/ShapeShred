@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/training/domain/models/workout.dart';
 import 'package:shapeshred/features/training/presentation/pages/workout_detail/workout_detail_page.dart';
 
@@ -28,7 +29,7 @@ class WorkoutListItem extends StatelessWidget {
         padding: EdgeInsets.all(AppSpacing.cardPadding.w),
         decoration: BoxDecoration(
           color: AppColorPalette.pureWhite,
-          borderRadius: BorderRadius.circular(AppRadius.l),
+          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           border: Border.all(color: AppColorPalette.gray200),
         ),
         child: Row(
@@ -39,7 +40,7 @@ class WorkoutListItem extends StatelessWidget {
               height: 60.h,
               decoration: BoxDecoration(
                 color: (workout['color'] as Color).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppRadius.m),
+                borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
               ),
               child: Icon(
                 workout['icon'] as IconData,
@@ -95,7 +96,7 @@ class WorkoutListItem extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: AppColorPalette.gray100,
-                      borderRadius: BorderRadius.circular(AppRadius.s),
+                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
                     ),
                     child: Text(
                       workout['level'] as String,

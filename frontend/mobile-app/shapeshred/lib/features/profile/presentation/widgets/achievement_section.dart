@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class AchievementSection extends StatelessWidget {
   final List<Map<String, dynamic>> achievements;
@@ -75,7 +76,7 @@ class _AchievementBadge extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.space12.w),
       decoration: BoxDecoration(
         color: unlocked ? AppColorPalette.gray50 : AppColorPalette.gray100,
-        borderRadius: BorderRadius.circular(AppRadius.l),
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(
           color: unlocked ? AppColorPalette.gray200 : AppColorPalette.gray300,
         ),

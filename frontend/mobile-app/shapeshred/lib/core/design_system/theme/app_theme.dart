@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 /// Premium Material Theme
 class AppTheme {
@@ -46,7 +47,7 @@ class AppTheme {
             vertical: AppSpacing.buttonPaddingVertical,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.l),
+            borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           ),
           textStyle: AppTypography.labelLarge,
         ),
@@ -60,22 +61,22 @@ class AppTheme {
           vertical: AppSpacing.inputPaddingVertical,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
           borderSide: const BorderSide(color: AppColorPalette.gray200),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
           borderSide: const BorderSide(color: AppColorPalette.gray200),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
           borderSide: const BorderSide(
             color: AppColorPalette.absoluteBlack,
             width: 2,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadius.m),
+          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
           borderSide: const BorderSide(color: AppColorPalette.error),
         ),
       ),
@@ -84,7 +85,7 @@ class AppTheme {
         elevation: 0,
         color: AppColorPalette.pureWhite,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.l),
+          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           side: const BorderSide(color: AppColorPalette.gray200),
         ),
       ),

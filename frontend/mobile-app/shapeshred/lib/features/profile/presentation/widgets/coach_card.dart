@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class CoachCard extends StatelessWidget {
   final String coachName;
@@ -26,7 +27,7 @@ class CoachCard extends StatelessWidget {
         padding: EdgeInsets.all(AppSpacing.space16.w),
         decoration: BoxDecoration(
           color: AppColorPalette.pureWhite,
-          borderRadius: BorderRadius.circular(AppRadius.l),
+          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           border: Border.all(color: AppColorPalette.gray200),
         ),
         child: Row(
@@ -124,7 +125,7 @@ class CoachCard extends StatelessWidget {
                           color: isOnline
                               ? AppColorPalette.success.withValues(alpha: 0.1)
                               : AppColorPalette.gray200,
-                          borderRadius: BorderRadius.circular(AppRadius.full),
+                          borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                         ),
                         child: Text(
                           isOnline ? 'Online' : 'Offline',

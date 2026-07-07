@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class BodyMetricsCard extends StatelessWidget {
   final double weight;
@@ -24,7 +25,7 @@ class BodyMetricsCard extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
         color: AppColorPalette.pureWhite,
-        borderRadius: BorderRadius.circular(AppRadius.l),
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(color: AppColorPalette.gray200),
       ),
       child: Column(
@@ -132,7 +133,7 @@ class _MetricItem extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.space12.w),
       decoration: BoxDecoration(
         color: highlight ? AppColorPalette.gray900 : AppColorPalette.gray50,
-        borderRadius: BorderRadius.circular(AppRadius.m),
+        borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

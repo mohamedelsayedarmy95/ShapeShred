@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class MacroBreakdown extends StatelessWidget {
   final int protein;
@@ -82,7 +83,7 @@ class _MacroItem extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
         color: AppColorPalette.gray50,
-        borderRadius: BorderRadius.circular(AppRadius.l),
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(color: AppColorPalette.gray200),
       ),
       child: Column(
@@ -110,7 +111,7 @@ class _MacroItem extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.space12.h),
           ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.full),
+            borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 4.h,

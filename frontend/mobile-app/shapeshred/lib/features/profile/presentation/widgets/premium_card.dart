@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class PremiumCard extends StatelessWidget {
   final bool isPremium;
@@ -33,7 +34,7 @@ class PremiumCard extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(AppRadius.xxl),
+          borderRadius: BorderRadius.circular(AppRadius.radiusXL),
           boxShadow: [
             BoxShadow(
               color: AppColorPalette.absoluteBlack.withValues(alpha: 0.3),
@@ -84,7 +85,7 @@ class PremiumCard extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: AppColorPalette.pureWhite,
-                borderRadius: BorderRadius.circular(AppRadius.full),
+                borderRadius: BorderRadius.circular(AppRadius.radiusPill),
               ),
               child: Text(
                 'Upgrade',
@@ -107,7 +108,7 @@ class PremiumCard extends StatelessWidget {
         gradient: const LinearGradient(
           colors: [AppColorPalette.gray900, AppColorPalette.gray700],
         ),
-        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        borderRadius: BorderRadius.circular(AppRadius.radiusXL),
       ),
       child: Row(
         children: [

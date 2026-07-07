@@ -1,9 +1,10 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/molecules/stat_card.dart';
 import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
 
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: AppSpacing.space4.h),
             Text(
-              '$_userName 👋',
+              '$_userName ??',
               style: AppTypography.headlineMedium,
             ),
           ],
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        borderRadius: BorderRadius.circular(AppRadius.radiusXL),
         boxShadow: [
           BoxShadow(
             color: AppColorPalette.gray900.withValues(alpha: 0.2),
@@ -142,10 +143,10 @@ class _HomePageState extends State<HomePage> {
             ),
             decoration: BoxDecoration(
               color: AppColorPalette.gray700,
-              borderRadius: BorderRadius.circular(AppRadius.full),
+              borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             ),
             child: Text(
-              '🔥 TODAY\'S WORKOUT',
+              '?? TODAY\'S WORKOUT',
               style: AppTypography.labelSmall.copyWith(
                 color: AppColorPalette.pureWhite,
                 letterSpacing: 1.2,
@@ -194,7 +195,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(vertical: 12.h),
             decoration: BoxDecoration(
               color: AppColorPalette.pureWhite,
-              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
             ),
             child: Center(
               child: Text(
@@ -214,11 +215,11 @@ class _HomePageState extends State<HomePage> {
   Widget _buildStatsRow() {
     return Row(
       children: [
-        const StatCard(icon: '🔥', value: '450', label: 'Calories'),
+        const StatCard(icon: '??', value: '450', label: 'Calories'),
         SizedBox(width: AppSpacing.space12.w),
-        const StatCard(icon: '⏱️', value: '32', label: 'Min'),
+        const StatCard(icon: '??', value: '32', label: 'Min'),
         SizedBox(width: AppSpacing.space12.w),
-        const StatCard(icon: '💪', value: '4', label: 'Exercises'),
+        const StatCard(icon: '??', value: '4', label: 'Exercises'),
       ],
     );
   }

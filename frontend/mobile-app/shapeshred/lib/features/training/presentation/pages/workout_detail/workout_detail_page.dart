@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/training/domain/models/workout.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_detail/workout_hero_card.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_detail/workout_stats_row.dart';
@@ -162,7 +163,7 @@ class WorkoutDetailPage extends StatelessWidget {
                 gradient: const LinearGradient(
                   colors: [AppColorPalette.gray900, AppColorPalette.gray800],
                 ),
-                borderRadius: BorderRadius.circular(AppRadius.l),
+                borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                 boxShadow: [
                   BoxShadow(
                     color: AppColorPalette.gray900.withValues(alpha: 0.3),

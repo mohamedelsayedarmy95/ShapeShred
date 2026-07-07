@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 /// Premium Shadow System
 /// Subtle, elegant shadows for depth without breaking the minimalist aesthetic

@@ -5,6 +5,7 @@ abstract class AppRadius {
   static const double radiusMedium = 12.0;
   static const double radiusLarge = 16.0;
   static const double radiusXL = 24.0;
+  static const double radiusXXL = 32.0;
   static const double radiusPill = 999.0;
   static const double radiusCircle =
       2000.0; // effectively infinity for clipping

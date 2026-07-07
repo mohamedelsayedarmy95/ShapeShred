@@ -1,9 +1,10 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/training/domain/models/workout.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_player/exercise_display.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_player/timer_display.dart';
@@ -97,7 +98,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColorPalette.pureWhite,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.xxl),
+          borderRadius: BorderRadius.circular(AppRadius.radiusXL),
         ),
         title: Column(
           children: [
@@ -134,7 +135,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                 foregroundColor: AppColorPalette.pureWhite,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.l),
+                  borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                 ),
               ),
               child: Text(
@@ -225,7 +226,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                 horizontal: AppSpacing.screenPadding.w,
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppRadius.full),
+                borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 child: LinearProgressIndicator(
                   value: progress,
                   minHeight: 8.h,

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/ui/main_layout.dart';
 import 'package:shapeshred/features/training/presentation/pages/home_page.dart';

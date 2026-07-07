@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/training/domain/models/workout.dart';
 
 class WorkoutHeroCard extends StatelessWidget {
@@ -54,7 +55,7 @@ class WorkoutHeroCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: AppColorPalette.pureWhite.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(AppRadius.full),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   ),
                   child: Text(
                     workout.category.toUpperCase(),

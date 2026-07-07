@@ -1,4 +1,4 @@
-﻿import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shapeshred/core/services/firebase_service.dart';
 import 'package:shapeshred/core/services/biometric_service.dart';

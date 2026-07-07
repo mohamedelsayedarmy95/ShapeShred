@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 
 /// Premium Typography System

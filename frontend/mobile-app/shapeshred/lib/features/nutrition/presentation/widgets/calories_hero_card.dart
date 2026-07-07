@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class CaloriesHeroCard extends StatelessWidget {
   final int consumed;
@@ -27,7 +28,7 @@ class CaloriesHeroCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(AppRadius.xxl),
+        borderRadius: BorderRadius.circular(AppRadius.radiusXL),
         boxShadow: [
           BoxShadow(
             color: AppColorPalette.gray900.withValues(alpha: 0.2),
@@ -48,7 +49,7 @@ class CaloriesHeroCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: AppColorPalette.gray600,
-                  borderRadius: BorderRadius.circular(AppRadius.full),
+                  borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 ),
                 child: Text(
                   ' DAILY CALORIES',
@@ -102,7 +103,7 @@ class CaloriesHeroCard extends StatelessWidget {
 
           // Progress Bar
           ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.full),
+            borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 8.h,

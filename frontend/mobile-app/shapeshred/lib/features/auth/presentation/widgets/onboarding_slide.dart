@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class OnboardingSlideData {
   final IconData icon;
@@ -68,7 +69,7 @@ class OnboardingSlide extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: AppColorPalette.gray100,
-              borderRadius: BorderRadius.circular(AppRadius.full),
+              borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             ),
             child: Text(
               slide.highlight.toUpperCase(),

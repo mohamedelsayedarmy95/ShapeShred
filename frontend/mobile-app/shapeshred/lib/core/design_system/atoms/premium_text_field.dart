@@ -135,7 +135,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                 color: widget.enabled
                     ? AppColorPalette.gray50
                     : AppColorPalette.gray100,
-                borderRadius: BorderRadius.circular(AppRadius.m),
+                borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                 border: Border.all(
                   color: hasError
                       ? AppColorPalette.error

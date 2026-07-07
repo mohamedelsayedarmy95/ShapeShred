@@ -1,7 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class WorkoutProgressIndicator extends StatelessWidget {
   final int currentExercise;
@@ -28,7 +29,7 @@ class WorkoutProgressIndicator extends StatelessWidget {
                 color: index < currentExercise
                     ? AppColorPalette.gray900
                     : AppColorPalette.gray200,
-                borderRadius: BorderRadius.circular(AppRadius.full),
+                borderRadius: BorderRadius.circular(AppRadius.radiusPill),
               ),
             ),
           ),

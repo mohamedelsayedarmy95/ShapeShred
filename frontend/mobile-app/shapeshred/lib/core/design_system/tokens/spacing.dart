@@ -1,4 +1,4 @@
-﻿/// Premium Spacing System
+/// Premium Spacing System
 class AppSpacing {
   AppSpacing._();
 

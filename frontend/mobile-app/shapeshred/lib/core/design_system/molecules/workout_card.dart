@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class WorkoutCard extends StatelessWidget {
   final String title;
@@ -26,7 +27,7 @@ class WorkoutCard extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
         color: AppColorPalette.pureWhite,
-        borderRadius: BorderRadius.circular(AppRadius.l),
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(color: AppColorPalette.gray200),
       ),
       child: Column(
@@ -37,7 +38,7 @@ class WorkoutCard extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               color: AppColorPalette.gray100,
-              borderRadius: BorderRadius.circular(AppRadius.m),
+              borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
             ),
             child: Icon(
               icon,

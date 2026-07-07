@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
@@ -139,7 +139,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         gradient: const LinearGradient(
                           colors: [AppColorPalette.gray900, AppColorPalette.gray800],
                         ),
-                        borderRadius: BorderRadius.circular(AppRadius.l),
+                        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                         boxShadow: [
                           BoxShadow(
                             color: AppColorPalette.gray900.withValues(alpha: 0.3),

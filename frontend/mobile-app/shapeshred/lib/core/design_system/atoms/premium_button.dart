@@ -125,7 +125,7 @@ class _PremiumButtonState extends State<PremiumButton>
                 height: 56,
                 decoration: BoxDecoration(
                   color: isEnabled ? _backgroundColor : AppColorPalette.gray200,
-                  borderRadius: BorderRadius.circular(AppRadius.l),
+                  borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   boxShadow: isEnabled
                       ? [
                           AppShadows.buttonShadow,

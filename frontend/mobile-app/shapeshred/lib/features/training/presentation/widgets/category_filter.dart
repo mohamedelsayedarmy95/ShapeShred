@@ -1,8 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 class CategoryFilter extends StatelessWidget {
   final List<String> categories;
@@ -40,7 +41,7 @@ class CategoryFilter extends StatelessWidget {
                 color: isSelected 
                     ? AppColorPalette.absoluteBlack 
                     : AppColorPalette.gray50,
-                borderRadius: BorderRadius.circular(AppRadius.full),
+                borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 border: Border.all(
                   color: isSelected 
                       ? AppColorPalette.absoluteBlack 
