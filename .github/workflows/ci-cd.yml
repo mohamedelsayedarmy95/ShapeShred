@@ -1,0 +1,63 @@
+﻿name: ShapeShred CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.27.0'
+        channel: 'stable'
+        cache: true
+    
+    - name: Verify Flutter Installation
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter --version
+    
+    - name: Get dependencies
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter pub get
+    
+    - name: Analyze project source
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter analyze
+    
+    - name: Run tests
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter test
+    
+    - name: Build APK Debug
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter build apk --debug
+    
+    - name: Build APK Release
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter build apk --release
+    
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: debug-apk
+        path: frontend/mobile-app/shapeshred/build/app/outputs/flutter-apk/app-debug.apk
+    
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-apk
+        path: frontend/mobile-app/shapeshred/build/app/outputs/flutter-apk/app-release.apk
