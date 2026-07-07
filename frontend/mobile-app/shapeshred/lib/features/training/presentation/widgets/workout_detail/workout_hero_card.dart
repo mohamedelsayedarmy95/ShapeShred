@@ -3,9 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/features/training/domain/models/workout.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shapeshred/core/design_system/tokens/colors.dart';
-import 'package:shapeshred/features/training/domain/models/workout.dart';
 
 class WorkoutHeroCard extends StatelessWidget {
   final Workout workout;

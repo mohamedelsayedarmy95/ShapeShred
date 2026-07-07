@@ -17,7 +17,7 @@ class WorkoutListItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
+          MaterialPageRoute<void>(
             builder: (context) => WorkoutDetailPage(
               workout: WorkoutRepository.hiitCardioBlast,
             ),
