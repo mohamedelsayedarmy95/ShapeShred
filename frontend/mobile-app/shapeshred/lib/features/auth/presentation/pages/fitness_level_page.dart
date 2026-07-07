@@ -76,13 +76,13 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                   itemCount: _levels.length,
                   separatorBuilder: (context, index) => SizedBox(height: AppSpacing.space12.h),
                   itemBuilder: (context, index) {
-                    final level = _levels[index];
+                    final Map<String, dynamic> level = _levels[index];
                     final isSelected = _selectedLevel == level['id'];
                     
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          _selectedLevel = level['id'];
+                          _selectedLevel = level['id'] as String?;
                         });
                       },
                       child: Container(
@@ -211,3 +211,4 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
     );
   }
 }
+

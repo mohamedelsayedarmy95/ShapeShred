@@ -72,13 +72,13 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                   itemCount: _goals.length,
                   separatorBuilder: (context, index) => SizedBox(height: AppSpacing.space12.h),
                   itemBuilder: (context, index) {
-                    final goal = _goals[index];
+                    final Map<String, dynamic> goal = _goals[index];
                     final isSelected = _selectedGoal == goal['id'];
                     
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          _selectedGoal = goal['id'];
+                          _selectedGoal = goal['id'] as String?;
                         });
                       },
                       child: Container(
@@ -208,3 +208,4 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
     );
   }
 }
+

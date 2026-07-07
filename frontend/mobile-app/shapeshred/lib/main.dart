@@ -1,34 +1,19 @@
 ﻿import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:shapeshred/core/design_system/theme/app_theme.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:shapeshred/core/routes/app_router.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:shapeshred/core/services/firebase_service.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:shapeshred/core/services/secure_storage_service.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'core/design_system/theme/app_theme.dart';
+import 'core/routes/app_router.dart';
+import 'core/services/secure_storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase
-  await FirebaseService.initialize();
   
   // Initialize Secure Storage
   await SecureStorageService.initialize();
@@ -73,4 +58,3 @@ class ShapeShredApp extends StatelessWidget {
     );
   }
 }
-
