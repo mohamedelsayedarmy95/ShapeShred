@@ -15,6 +15,14 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Force Java 17 for all subprojects to fix flutter_facebook_auth compatibility
+subprojects {
+    tasks.withType<JavaCompile>().configureEach {
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
