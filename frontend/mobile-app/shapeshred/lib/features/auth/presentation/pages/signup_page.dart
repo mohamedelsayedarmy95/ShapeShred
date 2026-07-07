@@ -41,6 +41,12 @@ class _SignupPageState extends State<SignupPage> {
         throw Exception('Please fill in all fields');
       }
 
+      // Email format validation
+      final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+      if (!emailRegex.hasMatch(_emailController.text.trim())) {
+        throw Exception('Please enter a valid email address');
+      }
+
       if (_passwordController.text != _confirmPasswordController.text) {
         throw Exception('Passwords do not match');
       }

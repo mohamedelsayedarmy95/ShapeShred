@@ -17,6 +17,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
   final _weightController = TextEditingController();
   final _ageController = TextEditingController();
   String? _selectedGender;
+  String? _errorMessage;
 
   @override
   void dispose() {
@@ -24,6 +25,55 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
     _weightController.dispose();
     _ageController.dispose();
     super.dispose();
+  }
+
+  void _handleContinue() {
+    setState(() {
+      _errorMessage = null;
+    });
+
+    // Validate gender selection
+    if (_selectedGender == null) {
+      setState(() {
+        _errorMessage = 'Please select your gender';
+      });
+      return;
+    }
+
+    // Validate height
+    final height = double.tryParse(_heightController.text);
+    if (height == null || height < 50 || height > 250) {
+      setState(() {
+        _errorMessage = 'Please enter a valid height (50-250 cm)';
+      });
+      return;
+    }
+
+    // Validate weight
+    final weight = double.tryParse(_weightController.text);
+    if (weight == null || weight < 30 || weight > 300) {
+      setState(() {
+        _errorMessage = 'Please enter a valid weight (30-300 kg)';
+      });
+      return;
+    }
+
+    // Validate age
+    final age = int.tryParse(_ageController.text);
+    if (age == null || age < 10 || age > 120) {
+      setState(() {
+        _errorMessage = 'Please enter a valid age (10-120 years)';
+      });
+      return;
+    }
+
+    // All validations passed, navigate
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const FitnessLevelPage(),
+      ),
+    );
   }
 
   @override
@@ -111,18 +161,36 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
               ),
               SizedBox(height: AppSpacing.space32.h),
 
+              // Error Message
+              if (_errorMessage != null)
+                Container(
+                  padding: EdgeInsets.all(12.h),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(AppRadius.m),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red.shade700),
+                      SizedBox(width: AppSpacing.space12.w),
+                      Expanded(
+                        child: Text(
+                          _errorMessage!,
+                          style: AppTypography.bodySmall.copyWith(
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (_errorMessage != null) SizedBox(height: AppSpacing.space16.h),
+
               // Continue Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FitnessLevelPage(),
-                      ),
-                    );
-                  },
+                  onPressed: _handleContinue,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColorPalette.gray900,
                     foregroundColor: AppColorPalette.pureWhite,

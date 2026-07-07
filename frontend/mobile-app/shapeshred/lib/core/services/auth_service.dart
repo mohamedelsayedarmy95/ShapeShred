@@ -1,9 +1,12 @@
 ﻿import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  static final Logger _logger = Logger();
 
   // Get current user
   User? get currentUser => _auth.currentUser;
@@ -20,7 +23,9 @@ class AuthService {
       );
       return credential;
     } on FirebaseAuthException catch (e) {
-      print('Sign up error: ${e.code} - ${e.message}');
+      if (kDebugMode) {
+        _logger.e('Sign up error: ${e.code} - ${e.message}');
+      }
       rethrow;
     }
   }
@@ -34,7 +39,9 @@ class AuthService {
       );
       return credential;
     } on FirebaseAuthException catch (e) {
-      print('Sign in error: ${e.code} - ${e.message}');
+      if (kDebugMode) {
+        _logger.e('Sign in error: ${e.code} - ${e.message}');
+      }
       rethrow;
     }
   }
@@ -62,7 +69,9 @@ class AuthService {
       // Sign in to Firebase with the Google credentials
       return await _auth.signInWithCredential(credential);
     } catch (e) {
-      print('Google sign in error: $e');
+      if (kDebugMode) {
+        _logger.e('Google sign in error: $e');
+      }
       rethrow;
     }
   }

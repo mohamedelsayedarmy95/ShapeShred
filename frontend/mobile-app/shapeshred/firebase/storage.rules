@@ -15,26 +15,35 @@ service firebase.storage {
       return request.resource.contentType.matches('video/.*') &&
              request.resource.size < 50 * 1024 * 1024;
     }
+    function isValidFileName() {
+      return request.resource.name.matches('^[a-zA-Z0-9._-]+$');
+    }
+    
     match /avatars/{userId}/{fileName} {
-      allow read: if true;
-      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage() && isValidFileName();
     }
+    
     match /workouts/{workoutId}/{fileName} {
-      allow read: if true;
-      allow write: if isAuthenticated();
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidImage() && isValidFileName();
     }
+    
     match /workout_videos/{workoutId}/{fileName} {
-      allow read: if true;
-      allow write: if isAuthenticated() && isValidVideo();
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && isValidVideo() && isValidFileName();
     }
+    
     match /progress_photos/{userId}/{fileName} {
       allow read: if isAuthenticated() && isOwner(userId);
-      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage() && isValidFileName();
     }
+    
     match /nutrition_images/{userId}/{fileName} {
       allow read: if isAuthenticated() && isOwner(userId);
-      allow write: if isAuthenticated() && isOwner(userId) && isValidImage();
+      allow write: if isAuthenticated() && isOwner(userId) && isValidImage() && isValidFileName();
     }
+    
     match /{allPaths=**} {
       allow read, write: if false;
     }

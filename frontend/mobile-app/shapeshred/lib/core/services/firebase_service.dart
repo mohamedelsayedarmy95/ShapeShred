@@ -6,9 +6,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shapeshred/firebase_options.dart';
+import 'package:logger/logger.dart';
 
 class FirebaseService {
   FirebaseService._();
+  
+  static final Logger _logger = Logger();
 
   static Future<void> initialize() async {
     // Initialize Firebase
@@ -49,15 +52,19 @@ class FirebaseService {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       // Get FCM token
       String? token = await messaging.getToken();
-      print('FCM Token: $token');
+      if (kDebugMode) {
+        _logger.d('FCM Token: $token');
+      }
 
       // Handle foreground messages
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print('Got a message whilst in the foreground!');
-        print('Message data: ${message.data}');
+        if (kDebugMode) {
+          _logger.d('Got a message whilst in the foreground!');
+          _logger.d('Message data: ${message.data}');
 
-        if (message.notification != null) {
-          print('Message also contained a notification: ${message.notification}');
+          if (message.notification != null) {
+            _logger.d('Message also contained a notification: ${message.notification}');
+          }
         }
       });
 
@@ -69,7 +76,9 @@ class FirebaseService {
   @pragma('vm:entry-point')
   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp();
-    print('Handling a background message: ${message.messageId}');
+    if (kDebugMode) {
+      _logger.d('Handling a background message: ${message.messageId}');
+    }
   }
 
   // Auth Instance
