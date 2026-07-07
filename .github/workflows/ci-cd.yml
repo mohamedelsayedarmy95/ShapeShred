@@ -60,3 +60,66 @@ jobs:
         name: debug-apk
         path: frontend/mobile-app/shapeshred/build/app/outputs/flutter-apk/app-debug.apk
         retention-days: 30
+
+  # Premium Build - Release APK with code obfuscation
+  build-release:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        cache: true
+    
+    - name: Get dependencies
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter pub get
+    
+    - name: Build APK Release
+      working-directory: frontend/mobile-app/shapeshred
+      run: flutter build apk --release --obfuscate --split-debug-info=./debug-info
+    
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-apk
+        path: frontend/mobile-app/shapeshred/build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 90
+    
+    - name: Upload Debug Symbols
+      uses: actions/upload-artifact@v4
+      with:
+        name: debug-symbols
+        path: frontend/mobile-app/shapeshred/debug-info
+        retention-days: 90
+
+  # Security Scan
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
