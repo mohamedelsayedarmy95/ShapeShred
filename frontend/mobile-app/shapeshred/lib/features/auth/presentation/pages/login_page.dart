@@ -1,13 +1,113 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
+import 'package:shapeshred/core/services/auth_service.dart';
+import 'package:shapeshred/core/services/biometric_service.dart';
+import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/auth/presentation/pages/signup_page.dart';
 import 'package:shapeshred/features/auth/presentation/widgets/social_login_button.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _authService = AuthService();
+  bool _isLoading = false;
+  bool _obscurePassword = true;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogin() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final userCredential = await _authService.signInWithEmail(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      if (userCredential != null && mounted) {
+        HapticHelper.successImpact();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Welcome back!',
+              style: AppTypography.bodyMedium.copyWith(
+                color: AppColorPalette.pureWhite,
+              ),
+            ),
+            backgroundColor: AppColorPalette.success,
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        
+        // Navigate to home
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (mounted) {
+          context.go('/');
+        }
+      }
+    } catch (e) {
+      HapticHelper.errorImpact();
+      setState(() {
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _handleBiometricLogin() async {
+    final hasBiometric = await BiometricService.isAvailable;
+    if (!hasBiometric) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Biometric authentication not available',
+            style: AppTypography.bodyMedium.copyWith(
+              color: AppColorPalette.pureWhite,
+            ),
+          ),
+          backgroundColor: AppColorPalette.warning,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    final success = await BiometricService.authenticate(
+      localizedReason: 'Authenticate to sign in',
+    );
+
+    if (success && mounted) {
+      await _handleLogin();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +153,34 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.space24.h),
 
+              // Error Message
+              if (_errorMessage != null)
+                Container(
+                  padding: EdgeInsets.all(12.h),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red.shade700),
+                      SizedBox(width: AppSpacing.space12.w),
+                      Expanded(
+                        child: Text(
+                          _errorMessage!,
+                          style: AppTypography.bodySmall.copyWith(
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ),
+              if (_errorMessage != null) SizedBox(height: AppSpacing.space16.h),
+
               // Email Input
               TextField(
+                controller: _emailController,
                 style: AppTypography.bodyLarge,
                 decoration: InputDecoration(
                   labelText: 'Email',
@@ -68,15 +194,15 @@ class LoginPage extends StatelessWidget {
                   filled: true,
                   fillColor: AppColorPalette.gray50,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(color: AppColorPalette.gray200),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(color: AppColorPalette.gray200),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(
                       color: AppColorPalette.gray900,
                       width: 2,
@@ -88,7 +214,8 @@ class LoginPage extends StatelessWidget {
 
               // Password Input
               TextField(
-                obscureText: true,
+                controller: _passwordController,
+                obscureText: _obscurePassword,
                 style: AppTypography.bodyLarge,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -99,22 +226,30 @@ class LoginPage extends StatelessWidget {
                     Icons.lock_outline,
                     color: AppColorPalette.gray500,
                   ),
-                  suffixIcon: Icon(
-                    Icons.visibility_outlined,
-                    color: AppColorPalette.gray500,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      color: AppColorPalette.gray500,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                      HapticHelper.lightImpact();
+                    },
                   ),
                   filled: true,
                   fillColor: AppColorPalette.gray50,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(color: AppColorPalette.gray200),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(color: AppColorPalette.gray200),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
+                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(
                       color: AppColorPalette.gray900,
                       width: 2,
@@ -141,35 +276,36 @@ class LoginPage extends StatelessWidget {
               SizedBox(height: AppSpacing.space16.h),
 
               // Login Button
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 18.h),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColorPalette.gray900, AppColorPalette.gray800],
-                  ),
-                  borderRadius: BorderRadius.circular(AppRadius.l),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColorPalette.gray900.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+              PremiumButton(
+                label: 'SIGN IN',
+                onPressed: _handleLogin,
+                isLoading: _isLoading,
+                fullWidth: true,
+              ),
+              SizedBox(height: AppSpacing.space12.h),
+              
+              // Biometric Login Button
+              FutureBuilder(
+                future: BiometricService.getBiometricTypeName(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData || snapshot.data == 'None') {
+                    return const SizedBox.shrink();
+                  }
+                  
+                  return TextButton.icon(
+                    onPressed: _handleBiometricLogin,
+                    icon: Icon(
+                      snapshot.data == 'Face ID' ? Icons.face : Icons.fingerprint,
+                      color: AppColorPalette.gray900,
                     ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'SIGN IN',
+                    label: Text(
+                      'Sign in with ${snapshot.data}',
                       style: AppTypography.labelLarge.copyWith(
-                        color: AppColorPalette.pureWhite,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.2,
+                        color: AppColorPalette.gray900,
                       ),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
               SizedBox(height: AppSpacing.space20.h),
 

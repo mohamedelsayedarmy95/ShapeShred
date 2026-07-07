@@ -1,13 +1,38 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/molecules/stat_card.dart';
 import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _userName = 'User';
+  String _userEmail = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && mounted) {
+      setState(() {
+        _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
+        _userEmail = user.email ?? '';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +91,7 @@ class HomePage extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.space4.h),
             Text(
-              'Ahmed 👋',
+              '$_userName 👋',
               style: AppTypography.headlineMedium,
             ),
           ],
