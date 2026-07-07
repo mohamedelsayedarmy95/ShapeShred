@@ -31,7 +31,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
     return Scaffold(
       backgroundColor: AppColorPalette.pureWhite,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,56 +109,40 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
                 icon: Icons.cake,
                 keyboardType: TextInputType.number,
               ),
-
-              const Spacer(),
+              SizedBox(height: AppSpacing.space32.h),
 
               // Continue Button
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FitnessLevelPage(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 18.h),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [AppColorPalette.gray900, AppColorPalette.gray800],
-                    ),
-                    borderRadius: BorderRadius.circular(AppRadius.l),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColorPalette.gray900.withValues(alpha: 0.3),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FitnessLevelPage(),
                       ),
-                    ],
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColorPalette.gray900,
+                    foregroundColor: AppColorPalette.pureWhite,
+                    padding: EdgeInsets.symmetric(vertical: 18.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.l),
+                    ),
+                    elevation: 0,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'CONTINUE',
-                        style: AppTypography.labelLarge.copyWith(
-                          color: AppColorPalette.pureWhite,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      SizedBox(width: AppSpacing.space8.w),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: AppColorPalette.pureWhite,
-                        size: 20.sp,
-                      ),
-                    ],
+                  child: Text(
+                    'CONTINUE',
+                    style: AppTypography.labelLarge.copyWith(
+                      color: AppColorPalette.pureWhite,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                    ),
                   ),
                 ),
               ),
+              SizedBox(height: AppSpacing.space16.h),
             ],
           ),
         ),
@@ -167,6 +151,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
   }
 }
 
+// Gender Button Widget
 class _GenderButton extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -187,34 +172,26 @@ class _GenderButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 20.h),
         decoration: BoxDecoration(
-          color: isSelected 
-              ? AppColorPalette.gray900 
-              : AppColorPalette.gray50,
+          color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
           borderRadius: BorderRadius.circular(AppRadius.l),
           border: Border.all(
-            color: isSelected 
-                ? AppColorPalette.gray900 
-                : AppColorPalette.gray200,
-            width: isSelected ? 2 : 1,
+            color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+            width: 2,
           ),
         ),
         child: Column(
           children: [
             Icon(
               icon,
-              color: isSelected 
-                  ? AppColorPalette.pureWhite 
-                  : AppColorPalette.gray700,
-              size: 32.sp,
+              size: 40.sp,
+              color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray700,
             ),
             SizedBox(height: AppSpacing.space8.h),
             Text(
               label,
-              style: AppTypography.titleMedium.copyWith(
-                color: isSelected 
-                    ? AppColorPalette.pureWhite 
-                    : AppColorPalette.gray900,
-                fontWeight: FontWeight.w600,
+              style: AppTypography.labelLarge.copyWith(
+                color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray700,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
@@ -224,6 +201,7 @@ class _GenderButton extends StatelessWidget {
   }
 }
 
+// Metric Input Widget
 class _MetricInput extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -251,45 +229,40 @@ class _MetricInput extends StatelessWidget {
           ),
         ),
         SizedBox(height: AppSpacing.space8.h),
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.space16.w,
-            vertical: AppSpacing.space4.h,
-          ),
-          decoration: BoxDecoration(
-            color: AppColorPalette.gray50,
-            borderRadius: BorderRadius.circular(AppRadius.l),
-            border: Border.all(color: AppColorPalette.gray200),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                color: AppColorPalette.gray500,
-                size: 20.sp,
-              ),
-              SizedBox(width: AppSpacing.space12.w),
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  keyboardType: keyboardType,
-                  style: AppTypography.bodyLarge,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Enter $label',
-                    hintStyle: AppTypography.bodyLarge.copyWith(
-                      color: AppColorPalette.gray400,
-                    ),
-                  ),
-                ),
-              ),
-              Text(
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          style: AppTypography.bodyLarge,
+          decoration: InputDecoration(
+            prefixIcon: Icon(icon, color: AppColorPalette.gray500),
+            suffixIcon: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              alignment: Alignment.center,
+              child: Text(
                 unit,
-                style: AppTypography.labelLarge.copyWith(
-                  color: AppColorPalette.gray500,
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppTextColor.secondary,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ],
+            ),
+            filled: true,
+            fillColor: AppColorPalette.gray50,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderSide: BorderSide(color: AppColorPalette.gray200),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderSide: BorderSide(color: AppColorPalette.gray200),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppRadius.l),
+              borderSide: BorderSide(
+                color: AppColorPalette.gray900,
+                width: 2,
+              ),
+            ),
           ),
         ),
       ],

@@ -3,10 +3,77 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
-import 'package:shapeshred/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:shapeshred/core/services/auth_service.dart';
+import 'body_metrics_page.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _authService = AuthService();
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignup() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      // Validate inputs
+      if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+        throw Exception('Please fill in all fields');
+      }
+
+      if (_passwordController.text != _confirmPasswordController.text) {
+        throw Exception('Passwords do not match');
+      }
+
+      if (_passwordController.text.length < 6) {
+        throw Exception('Password must be at least 6 characters');
+      }
+
+      // Sign up with Firebase
+      final userCredential = await _authService.signUpWithEmail(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+
+      if (userCredential != null && mounted) {
+        // Navigate to body metrics page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BodyMetricsPage()),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +85,9 @@ class SignupPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back Button
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.arrow_back_ios_new,
-                  color: AppColorPalette.gray900,
-                  size: 20.sp,
-                ),
-              ),
-              SizedBox(height: AppSpacing.space24.h),
-
               // Header
               Text(
-                'Create account',
+                'Create Account',
                 style: AppTypography.headlineLarge,
               ),
               SizedBox(height: AppSpacing.space8.h),
@@ -43,41 +99,34 @@ class SignupPage extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.space32.h),
 
-              // Name Input
-              TextField(
-                style: AppTypography.bodyLarge,
-                decoration: InputDecoration(
-                  labelText: 'Full Name',
-                  labelStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
+              // Error Message
+              if (_errorMessage != null)
+                Container(
+                  padding: EdgeInsets.all(12.h),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade50,
+                    borderRadius: BorderRadius.circular(AppRadius.m),
                   ),
-                  prefixIcon: Icon(
-                    Icons.person_outline,
-                    color: AppColorPalette.gray500,
-                  ),
-                  filled: true,
-                  fillColor: AppColorPalette.gray50,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.l),
-                    borderSide: BorderSide(
-                      color: AppColorPalette.gray900,
-                      width: 2,
-                    ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.red.shade700),
+                      SizedBox(width: AppSpacing.space12.w),
+                      Expanded(
+                        child: Text(
+                          _errorMessage!,
+                          style: AppTypography.bodySmall.copyWith(
+                            color: Colors.red.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(height: AppSpacing.space16.h),
+              if (_errorMessage != null) SizedBox(height: AppSpacing.space16.h),
 
               // Email Input
               TextField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 style: AppTypography.bodyLarge,
                 decoration: InputDecoration(
@@ -112,6 +161,7 @@ class SignupPage extends StatelessWidget {
 
               // Password Input
               TextField(
+                controller: _passwordController,
                 obscureText: true,
                 style: AppTypography.bodyLarge,
                 decoration: InputDecoration(
@@ -121,10 +171,6 @@ class SignupPage extends StatelessWidget {
                   ),
                   prefixIcon: Icon(
                     Icons.lock_outline,
-                    color: AppColorPalette.gray500,
-                  ),
-                  suffixIcon: Icon(
-                    Icons.visibility_outlined,
                     color: AppColorPalette.gray500,
                   ),
                   filled: true,
@@ -150,6 +196,7 @@ class SignupPage extends StatelessWidget {
 
               // Confirm Password Input
               TextField(
+                controller: _confirmPasswordController,
                 obscureText: true,
                 style: AppTypography.bodyLarge,
                 decoration: InputDecoration(
@@ -182,78 +229,42 @@ class SignupPage extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.space24.h),
 
-              // Terms Checkbox
-              Row(
-                children: [
-                  Checkbox(
-                    value: false,
-                    onChanged: (value) {},
-                    activeColor: AppColorPalette.gray900,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.xs),
-                    ),
-                  ),
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                        style: AppTypography.bodySmall,
-                        children: [
-                          TextSpan(text: 'I agree to the '),
-                          TextSpan(
-                            text: 'Terms of Service',
-                            style: TextStyle(
-                              color: AppColorPalette.gray900,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          TextSpan(text: ' and '),
-                          TextSpan(
-                            text: 'Privacy Policy',
-                            style: TextStyle(
-                              color: AppColorPalette.gray900,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.space24.h),
-
-              // Signup Button
-              Container(
+              // Sign Up Button
+              SizedBox(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 18.h),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _handleSignup,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColorPalette.gray900,
+                    foregroundColor: AppColorPalette.pureWhite,
+                    padding: EdgeInsets.symmetric(vertical: 18.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.l),
+                    ),
+                    elevation: 0,
                   ),
-                  borderRadius: BorderRadius.circular(AppRadius.l),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColorPalette.gray900.withValues(alpha: 0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'CREATE ACCOUNT',
-                      style: AppTypography.labelLarge.copyWith(
-                        color: AppColorPalette.pureWhite,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
+                  child: _isLoading
+                      ? SizedBox(
+                          height: 20.h,
+                          width: 20.w,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColorPalette.pureWhite,
+                            ),
+                          ),
+                        )
+                      : Text(
+                          'CREATE ACCOUNT',
+                          style: AppTypography.labelLarge.copyWith(
+                            color: AppColorPalette.pureWhite,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
                 ),
               ),
-              SizedBox(height: AppSpacing.space24.h),
+              SizedBox(height: AppSpacing.space20.h),
 
               // Divider
               Row(
@@ -271,23 +282,107 @@ class SignupPage extends StatelessWidget {
                   Expanded(child: Divider(color: AppColorPalette.gray200)),
                 ],
               ),
-              SizedBox(height: AppSpacing.space24.h),
+              SizedBox(height: AppSpacing.space20.h),
 
-              // Social Signup Buttons
-              SocialLoginButton(
+              // Google Sign In Button
+              _SocialButton(
                 icon: Icons.g_mobiledata,
-                label: 'Sign up with Google',
-                onTap: () {},
+                label: 'Continue with Google',
+                onTap: () async {
+                  try {
+                    setState(() {
+                      _isLoading = true;
+                      _errorMessage = null;
+                    });
+
+                    final userCredential = await _authService.signInWithGoogle();
+                    
+                    if (userCredential != null && mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const BodyMetricsPage()),
+                      );
+                    }
+                  } catch (e) {
+                    setState(() {
+                      _errorMessage = 'Google Sign-In failed: ${e.toString()}';
+                    });
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+                  }
+                },
               ),
               SizedBox(height: AppSpacing.space12.h),
-              SocialLoginButton(
-                icon: Icons.apple,
-                label: 'Sign up with Apple',
-                onTap: () {},
+
+              // Sign In Link
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Already have an account?',
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppTextColor.secondary,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Sign in',
+                        style: AppTypography.labelLarge.copyWith(
+                          color: AppColorPalette.gray900,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: AppSpacing.space32.h),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SocialButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _SocialButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 16.h),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColorPalette.gray200),
+          borderRadius: BorderRadius.circular(AppRadius.l),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 24.sp),
+            SizedBox(width: AppSpacing.space12.w),
+            Text(
+              label,
+              style: AppTypography.labelLarge.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );
