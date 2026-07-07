@@ -18,8 +18,8 @@ dependencies:
   google_fonts: ^6.2.1
   shimmer: ^3.0.0
   smooth_page_indicator: ^1.2.0+3
-  flutter_native_splash: ^2.4.8
-  intl: ^0.20.3
+  flutter_native_splash: ^2.4.0
+  intl: ^0.20.2
 
   # State Management & DI
   flutter_bloc: ^8.1.6
@@ -34,7 +34,7 @@ dependencies:
   connectivity_plus: ^6.0.3
   shared_preferences: ^2.3.2
   hive_flutter: ^1.1.0
-  json_annotation: ^4.12.0
+  json_annotation: ^4.9.0
   freezed_annotation: ^3.1.0
   cached_network_image: ^3.3.1
 
@@ -64,7 +64,7 @@ dev_dependencies:
   # Code Generation
   build_runner: ^2.4.13
   freezed: ^3.2.5
-  json_serializable: ^6.14.0
+  json_serializable: ^6.13.0
   injectable_generator: ^2.6.0
   
   # Tools
