@@ -26,9 +26,8 @@ jobs:
         channel: 'stable'
         cache: true
     
-    - name: Verify Flutter Installation
-      working-directory: frontend/mobile-app/shapeshred
-      run: flutter --version
+    - name: Navigate to Flutter project
+      run: cd frontend/mobile-app/shapeshred && pwd
     
     - name: Get dependencies
       working-directory: frontend/mobile-app/shapeshred
