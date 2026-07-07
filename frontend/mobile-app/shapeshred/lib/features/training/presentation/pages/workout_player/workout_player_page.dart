@@ -91,7 +91,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
   }
 
   void _showCompletionDialog() {
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(

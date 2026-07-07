@@ -306,7 +306,7 @@ class _SignupPageState extends State<SignupPage> {
                     if (userCredential != null && mounted) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const BodyMetricsPage()),
+                        MaterialPageRoute<void>(builder: (context) => const BodyMetricsPage()),
                       );
                     }
                   } catch (e) {

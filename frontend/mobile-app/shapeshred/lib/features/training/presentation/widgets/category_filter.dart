@@ -7,7 +7,7 @@ import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 class CategoryFilter extends StatelessWidget {
   final List<String> categories;
   final String selectedCategory;
-  final Function(String) onCategorySelected;
+  final void Function(String) onCategorySelected;
 
   const CategoryFilter({
     super.key,

@@ -151,7 +151,7 @@ class WorkoutDetailPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                MaterialPageRoute<void>(
                   builder: (context) => WorkoutPlayerPage(workout: workout),
                 ),
               );

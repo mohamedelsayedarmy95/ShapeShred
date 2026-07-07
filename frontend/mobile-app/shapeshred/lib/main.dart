@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'core/design_system/theme/app_theme.dart';
 import 'core/design_system/tokens/colors.dart';
-import 'core/design_system/tokens/typography.dart';
 import 'core/routes/app_router.dart';
 import 'core/services/secure_storage_service.dart';
 
