@@ -1,28 +1,43 @@
-import 'package:flutter/services.dart';
+﻿import 'package:flutter/services.dart';
 
 class HapticHelper {
-  static Future<void> light() async {
-    await HapticFeedback.lightImpact();
+  static void light() {
+    HapticFeedback.lightImpact();
   }
 
-  static Future<void> medium() async {
-    await HapticFeedback.mediumImpact();
+  static void lightImpact() {
+    HapticFeedback.lightImpact();
   }
 
-  static Future<void> heavy() async {
-    await HapticFeedback.heavyImpact();
+  static void mediumImpact() {
+    HapticFeedback.mediumImpact();
   }
 
-  static Future<void> selection() async {
-    await HapticFeedback.selectionClick();
+  static void heavyImpact() {
+    HapticFeedback.heavyImpact();
   }
 
-  static Future<void> success() async {
-    // Custom success pattern if needed, or just light impact
-    await HapticFeedback.lightImpact();
+  static void selectionClick() {
+    HapticFeedback.selectionClick();
   }
 
-  static Future<void> error() async {
-    await HapticFeedback.vibrate();
+  static void success() {
+    HapticFeedback.lightImpact();
+  }
+
+  static void error() {
+    HapticFeedback.heavyImpact();
+  }
+
+  static void errorImpact() {
+    HapticFeedback.heavyImpact();
+  }
+
+  static void successImpact() {
+    HapticFeedback.lightImpact();
+  }
+
+  static void vibrate() {
+    HapticFeedback.vibrate();
   }
 }

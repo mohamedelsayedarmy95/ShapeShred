@@ -426,6 +426,7 @@ class _EnhancedWorkoutPlayerPageState extends State<EnhancedWorkoutPlayerPage> {
           decoration: BoxDecoration(
             color: AppColorPalette.gray50,
             borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+            border: Border.all(color: AppColorPalette.gray200),
           ),
           child: TextField(
             keyboardType: TextInputType.number,
@@ -433,9 +434,12 @@ class _EnhancedWorkoutPlayerPageState extends State<EnhancedWorkoutPlayerPage> {
               border: InputBorder.none,
               hintText: 'Enter weight',
               hintStyle: AppTypography.bodyMedium.copyWith(
-                color: AppTextColor.secondary,
+                color: AppColorPalette.gray400,
               ),
               suffixText: 'kg',
+              contentPadding: EdgeInsets.symmetric(
+                vertical: AppSpacing.inputPaddingVertical,
+              ),
             ),
             onChanged: (value) {
               _loggedWeight = double.tryParse(value);
@@ -654,7 +658,7 @@ class _EnhancedWorkoutPlayerPageState extends State<EnhancedWorkoutPlayerPage> {
                 label: 'Back to Home',
                 onPressed: () {
                   HapticHelper.success();
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
                 },
                 fullWidth: true,
               ),

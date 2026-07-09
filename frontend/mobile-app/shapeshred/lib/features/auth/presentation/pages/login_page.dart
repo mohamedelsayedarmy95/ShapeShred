@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
-import 'package:shapeshred/core/services/auth_service.dart';
-import 'package:shapeshred/core/services/biometric_service.dart';
-import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
-import 'package:shapeshred/features/auth/presentation/pages/signup_page.dart';
-import 'package:shapeshred/features/auth/presentation/widgets/social_login_button.dart';
+import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/features/auth/presentation/pages/onboarding_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,93 +20,90 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _authService = AuthService();
   bool _isLoading = false;
-  bool _obscurePassword = true;
-  String? _errorMessage;
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _checkOnboardingStatus();
   }
 
-  Future<void> _handleLogin() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+  Future<void> _checkOnboardingStatus() async {
+    final completed = await PreferencesService.isOnboardingComplete();
+    if (!completed && mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingPage()),
+      );
+    }
+  }
 
+  Future<void> _signInWithGoogle() async {
     try {
-      final userCredential = await _authService.signInWithEmail(
-        _emailController.text.trim(),
-        _passwordController.text,
+      setState(() => _isLoading = true);
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
-
-      if (userCredential != null && mounted) {
-        HapticHelper.success();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Welcome back!',
-              style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
-              ),
-            ),
-            backgroundColor: AppColorPalette.success,
-            behavior: SnackBarBehavior.floating,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        
-        // Navigate to home
-        await Future.delayed(const Duration(milliseconds: 500));
-        if (mounted) {
-          context.go('/');
-        }
-      }
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      if (!mounted) return;
+      context.go('/home');
     } catch (e) {
-      HapticHelper.error();
-      setState(() {
-        _errorMessage = e.toString().replaceAll('Exception: ', '');
-      });
+      _showError(e.toString());
     } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  Future<void> _handleBiometricLogin() async {
-    final hasBiometric = await BiometricService.isAvailable;
-    if (!hasBiometric) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Biometric authentication not available',
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColorPalette.pureWhite,
-            ),
-          ),
-          backgroundColor: AppColorPalette.warning,
-          behavior: SnackBarBehavior.floating,
-        ),
+  Future<void> _signInWithFacebook() async {
+    try {
+      setState(() => _isLoading = true);
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.cancelled) return;
+      final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      if (!mounted) return;
+      context.go('/home');
+    } catch (e) {
+      _showError(e.toString());
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    try {
+      setState(() => _isLoading = true);
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
       );
-      return;
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: credential.identityToken,
+        accessToken: credential.authorizationCode,
+      );
+      await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      if (!mounted) return;
+      context.go('/home');
+    } catch (e) {
+      _showError(e.toString());
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
+  }
 
-    final success = await BiometricService.authenticate(
-      localizedReason: 'Authenticate to sign in',
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: AppColorPalette.gray900,
+      ),
     );
-
-    if (success && mounted) {
-      await _handleLogin();
-    }
   }
 
   @override
@@ -114,272 +111,108 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: AppColorPalette.pureWhite,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo/Brand
-              Center(
-                child: Container(
-                  width: 80.w,
-                  height: 80.h,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [AppColorPalette.gray900, AppColorPalette.gray700],
-                    ),
-                    borderRadius: BorderRadius.circular(AppRadius.radiusXL),
-                  ),
-                  child: Icon(
-                    Icons.fitness_center,
-                    color: AppColorPalette.pureWhite,
-                    size: 40.sp,
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSpacing.space24.h),
-
-              // Header
               Text(
-                'Welcome back',
+                'Welcome Back',
                 style: AppTypography.headlineLarge,
               ),
-              SizedBox(height: AppSpacing.space8.h),
+              SizedBox(height: 8.h),
               Text(
-                'Sign in to continue your journey',
+                'Sign in to continue your fitness journey.',
                 style: AppTypography.bodyLarge.copyWith(
                   color: AppTextColor.secondary,
                 ),
               ),
-              SizedBox(height: AppSpacing.space24.h),
-
-              // Error Message
-              if (_errorMessage != null)
-                Container(
-                  padding: EdgeInsets.all(12.h),
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.error_outline, color: Colors.red.shade700),
-                      SizedBox(width: AppSpacing.space12.w),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: AppTypography.bodySmall.copyWith(
-                            color: Colors.red.shade700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              SizedBox(height: 48.h),
+              _buildSocialButton(
+                icon: Icons.g_translate,
+                label: 'Continue with Google',
+                backgroundColor: AppColorPalette.pureWhite,
+                textColor: AppColorPalette.gray900,
+                onTap: _signInWithGoogle,
               ),
-              if (_errorMessage != null) SizedBox(height: AppSpacing.space16.h),
-
-              // Email Input
-              TextField(
-                controller: _emailController,
-                style: AppTypography.bodyLarge,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.email_outlined,
-                    color: AppColorPalette.gray500,
-                  ),
-                  filled: true,
-                  fillColor: AppColorPalette.gray50,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(
-                      color: AppColorPalette.gray900,
-                      width: 2,
+              SizedBox(height: 12.h),
+              _buildSocialButton(
+                icon: Icons.facebook,
+                label: 'Continue with Facebook',
+                backgroundColor: AppColorPalette.gray900,
+                textColor: AppColorPalette.pureWhite,
+                onTap: _signInWithFacebook,
+              ),
+              SizedBox(height: 12.h),
+              _buildSocialButton(
+                icon: Icons.apple,
+                label: 'Continue with Apple',
+                backgroundColor: AppColorPalette.gray900,
+                textColor: AppColorPalette.pureWhite,
+                onTap: _signInWithApple,
+              ),
+              SizedBox(height: 24.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account?",
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppTextColor.secondary,
                     ),
                   ),
-                ),
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-
-              // Password Input
-              TextField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                style: AppTypography.bodyLarge,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.lock_outline,
-                    color: AppColorPalette.gray500,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                      color: AppColorPalette.gray500,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                      HapticHelper.light();
-                    },
-                  ),
-                  filled: true,
-                  fillColor: AppColorPalette.gray50,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(
-                      color: AppColorPalette.gray900,
-                      width: 2,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSpacing.space8.h),
-
-              // Forgot Password
-              // TODO: Implement forgot password functionality
-              // Align(
-              //   alignment: Alignment.centerRight,
-              //   child: TextButton(
-              //     onPressed: () {},
-              //     child: Text(
-              //       'Forgot password?',
-              //       style: AppTypography.labelLarge.copyWith(
-              //         color: AppColorPalette.gray700,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              SizedBox(height: AppSpacing.space16.h),
-
-              // Login Button
-              PremiumButton(
-                label: 'SIGN IN',
-                onPressed: _handleLogin,
-                isLoading: _isLoading,
-                fullWidth: true,
-              ),
-              SizedBox(height: AppSpacing.space12.h),
-              
-              // Biometric Login Button
-              FutureBuilder(
-                future: BiometricService.getBiometricTypeName(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData || snapshot.data == 'None') {
-                    return const SizedBox.shrink();
-                  }
-                  
-                  return TextButton.icon(
-                    onPressed: _handleBiometricLogin,
-                    icon: Icon(
-                      snapshot.data == 'Face ID' ? Icons.face : Icons.fingerprint,
-                      color: AppColorPalette.gray900,
-                    ),
-                    label: Text(
-                      'Sign in with ${snapshot.data}',
+                  TextButton(
+                    onPressed: () => context.go('/signup'),
+                    child: Text(
+                      'Sign Up',
                       style: AppTypography.labelLarge.copyWith(
                         color: AppColorPalette.gray900,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: AppSpacing.space20.h),
-
-              // Divider
-              Row(
-                children: [
-                  Expanded(child: Divider(color: AppColorPalette.gray200)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      'OR',
-                      style: AppTypography.labelSmall.copyWith(
-                        color: AppTextColor.secondary,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
-                  Expanded(child: Divider(color: AppColorPalette.gray200)),
                 ],
               ),
-              SizedBox(height: AppSpacing.space20.h),
-
-              // Social Login Buttons
-              // TODO: Implement social login functionality
-              // SocialLoginButton(
-              //   icon: Icons.g_mobiledata,
-              //   label: 'Continue with Google',
-              //   onTap: () {},
-              // ),
-              // SizedBox(height: AppSpacing.space12.h),
-              // SocialLoginButton(
-              //   icon: Icons.apple,
-              //   label: 'Continue with Apple',
-              //   onTap: () {},
-              // ),
-              // SizedBox(height: AppSpacing.space12.h),
-              // SocialLoginButton(
-              //   icon: Icons.facebook,
-              //   label: 'Continue with Facebook',
-              //   onTap: () {},
-              // ),
-              SizedBox(height: AppSpacing.space24.h),
-
-              // Sign Up Link
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Don\'t have an account?',
-                      style: AppTypography.bodyMedium.copyWith(
-                        color: AppTextColor.secondary,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignupPage(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Sign up',
-                        style: AppTypography.labelLarge.copyWith(
-                          color: AppColorPalette.gray900,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ],
+              if (_isLoading)
+                Padding(
+                  padding: EdgeInsets.only(top: 16.h),
+                  child: const CircularProgressIndicator(
+                    color: AppColorPalette.gray900,
+                  ),
                 ),
-              ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSocialButton({
+    required IconData icon,
+    required String label,
+    required Color backgroundColor,
+    required Color textColor,
+    required VoidCallback onTap,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: _isLoading ? null : onTap,
+        icon: Icon(icon, color: textColor, size: 24.sp),
+        label: Text(
+          label,
+          style: AppTypography.labelLarge.copyWith(
+            color: textColor,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: textColor,
+          padding: EdgeInsets.symmetric(vertical: 16.h),
+          side: BorderSide(color: AppColorPalette.gray200, width: 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           ),
         ),
       ),

@@ -24,7 +24,7 @@ void main() async {
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Material(
       child: Container(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.white,
         child: SafeArea(
           child: Center(
             child: Padding(
@@ -35,7 +35,7 @@ void main() async {
                   Icon(
                     Icons.error_outline,
                     size: 64,
-                    color: AppColorPalette.gray900,
+                    color: AppColors.gray900,
                   ),
                   const SizedBox(height: 24),
                   const Text(
@@ -43,7 +43,7 @@ void main() async {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColorPalette.gray900,
+                      color: AppColors.gray900,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -52,7 +52,7 @@ void main() async {
                     'An unexpected error occurred. Please restart the app.',
                     style: TextStyle(
                       fontSize: 16,
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                     textAlign: TextAlign.center,
                   ),

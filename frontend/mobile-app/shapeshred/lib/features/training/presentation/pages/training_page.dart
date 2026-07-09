@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
-import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/features/training/presentation/widgets/category_filter.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_list_item.dart';
 
@@ -15,6 +18,10 @@ class TrainingPage extends StatefulWidget {
 
 class _TrainingPageState extends State<TrainingPage> {
   String _selectedCategory = 'All';
+  String _userName = 'User';
+  String _userGoal = '';
+  String _userFitnessLevel = '';
+  bool _isLoading = true;
 
   final List<String> _categories = [
     'All',
@@ -82,6 +89,66 @@ class _TrainingPageState extends State<TrainingPage> {
     },
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    setState(() => _isLoading = true);
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // Try to get data from Firestore first
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        if (doc.exists && doc.data() != null) {
+          final data = doc.data()!;
+          setState(() {
+            _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
+            _userGoal = data['goal'] ?? '';
+            _userFitnessLevel = data['fitnessLevel'] ?? '';
+          });
+        } else {
+          // Fallback to SharedPreferences for goal and fitness level
+          _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
+          _userGoal = await PreferencesService.getUserGoal() ?? '';
+          _userFitnessLevel =
+              await PreferencesService.getFitnessLevel() ?? '';
+        }
+      }
+
+      // Set initial category based on goal
+      if (_userGoal == 'Lose Weight') {
+        _selectedCategory = 'Cardio';
+      } else if (_userGoal == 'Build Muscle') {
+        _selectedCategory = 'Strength';
+      } else if (_userGoal == 'Endurance') {
+        _selectedCategory = 'Cardio';
+      } else if (_userGoal == 'Stay Fit') {
+        _selectedCategory = 'All';
+      } else {
+        _selectedCategory = 'All';
+      }
+    } catch (e) {
+      debugPrint('Error loading user data: $e');
+      // Fallback to defaults
+      final user = FirebaseAuth.instance.currentUser;
+      _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
+      _userGoal = '';
+      _userFitnessLevel = '';
+      _selectedCategory = 'All';
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   List<Map<String, dynamic>> get _filteredWorkouts {
     if (_selectedCategory == 'All') {
       return _workouts;
@@ -91,13 +158,23 @@ class _TrainingPageState extends State<TrainingPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: AppColorPalette.primary,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColorPalette.pureWhite,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // Header with greeting
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.screenPadding.w,
@@ -107,12 +184,14 @@ class _TrainingPageState extends State<TrainingPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Training Library',
-                    style: AppTypography.headlineLarge,
+                    'Hello, $_userName!',
+                    style: AppTypography.headlineLarge.copyWith(
+                      color: AppColorPalette.gray900,
+                    ),
                   ),
-                  SizedBox(height: AppSpacing.space8.h),
+                  SizedBox(height: AppSpacing.space4.h),
                   Text(
-                    'Choose your workout',
+                    'Let\'s find your perfect workout',
                     style: AppTypography.bodyLarge.copyWith(
                       color: AppTextColor.secondary,
                     ),
@@ -154,4 +233,3 @@ class _TrainingPageState extends State<TrainingPage> {
     );
   }
 }
-

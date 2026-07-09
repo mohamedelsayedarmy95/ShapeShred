@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart';
+﻿import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 
@@ -36,7 +36,7 @@ class BiometricService {
   }
 
   /// Authenticate with biometrics
-  /// 
+  ///
   /// Returns true if authentication succeeds, false otherwise
   static Future<bool> authenticate({
     String localizedReason = 'Authenticate to continue',
@@ -53,9 +53,9 @@ class BiometricService {
       HapticHelper.lightImpact();
       final bool didAuthenticate = await _localAuth.authenticate(
         localizedReason: localizedReason,
-        useErrorDialogs: useErrorDialogs,
-        stickyAuth: stickyAuth,
-        biometricOnly: biometricOnly,
+        options: AuthenticationOptions(
+          biometricOnly: biometricOnly,
+        ),
       );
 
       if (didAuthenticate) {

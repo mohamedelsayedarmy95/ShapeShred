@@ -388,13 +388,25 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
                 ),
               ),
               SizedBox(height: AppSpacing.space8.h),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColorPalette.gray50,
+                  borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                  border: Border.all(color: AppColorPalette.gray200),
+                ),
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '${food.servingSize}',
+                    hintStyle: AppTypography.bodyMedium.copyWith(
+                      color: AppColorPalette.gray400,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.inputPaddingHorizontal,
+                      vertical: AppSpacing.inputPaddingVertical,
+                    ),
                   ),
-                  hintText: '${food.servingSize}',
                 ),
               ),
               SizedBox(height: AppSpacing.space24.h),

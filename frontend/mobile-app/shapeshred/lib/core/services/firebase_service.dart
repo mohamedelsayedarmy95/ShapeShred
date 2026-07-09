@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+﻿import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -180,7 +180,7 @@ class FirebaseService {
   /// Log premium analytics event
   static Future<void> logEvent({
     required String name,
-    Map<String, Object?>? parameters,
+    Map<String, Object>? parameters,
   }) async {
     if (!kDebugMode) {
       await analytics.logEvent(
@@ -208,7 +208,7 @@ class FirebaseService {
     if (!kDebugMode) {
       await analytics.logScreenView(
         screenName: screenName,
-        screenClassOverride: screenClassOverride,
+        
       );
     }
   }
@@ -227,4 +227,7 @@ class FirebaseService {
     }
   }
 }
+
+
+
 

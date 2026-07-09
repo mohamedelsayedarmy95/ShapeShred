@@ -1,160 +1,147 @@
-import 'package:flutter/material.dart';
-import 'package:shapeshred/core/design_system/tokens/colors.dart';
+// ENHANCED TYPOGRAPHY SYSTEM
+// Based on a harmonious scale with proper hierarchy and responsiveness
 
-/// Premium Typography System
-/// Using Inter font family for modern, clean look
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+/// PREMIUM TYPOGRAPHY SYSTEM
+// Using Inter var variable font for maximum flexibility and performance
 class AppTypography {
   AppTypography._();
 
-  static const String fontFamily = 'Inter';
+  // Type scale based on 4px grid with 1.125 ratio (major third)
+  // Base size: 16px (1.0 rem)
 
-  /// Display Large - Hero text, main headlines
-  static const TextStyle displayLarge = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 57,
-    fontWeight: FontWeight.w800,
+  // Display styles - for short, important text
+  static final TextStyle displayLarge = GoogleFonts.inter(
+    fontSize: 57.0, // 3.6625rem
+    fontWeight: FontWeight.w400,
     letterSpacing: -0.25,
     height: 1.12,
-    color: AppTextColor.primary,
   );
 
-  /// Display Medium
-  static const TextStyle displayMedium = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 45,
-    fontWeight: FontWeight.w700,
+  static final TextStyle displayMedium = GoogleFonts.inter(
+    fontSize: 45.0, // 2.8125rem
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.2,
+    height: 1.16,
+  );
+
+  static final TextStyle displaySmall = GoogleFonts.inter(
+    fontSize: 36.0, // 2.25rem
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.15,
+    height: 1.2,
+  );
+
+  // Headline styles - for longer-form headings
+  static final TextStyle headlineLarge = GoogleFonts.inter(
+    fontSize: 32.0, // 2.0rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0,
-    height: 1.15,
-    color: AppTextColor.primary,
+    height: 1.28,
   );
 
-  /// Display Small
-  static const TextStyle displaySmall = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 36,
-    fontWeight: FontWeight.w700,
+  static final TextStyle headlineMedium = GoogleFonts.inter(
+    fontSize: 28.0, // 1.75rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0,
-    height: 1.22,
-    color: AppTextColor.primary,
+    height: 1.28,
   );
 
-  /// Headline Large - Section titles
-  static const TextStyle headlineLarge = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 32,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0,
-    height: 1.25,
-    color: AppTextColor.primary,
-  );
-
-  /// Headline Medium - Card titles
-  static const TextStyle headlineMedium = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 28,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0,
-    height: 1.29,
-    color: AppTextColor.primary,
-  );
-
-  /// Headline Small
-  static const TextStyle headlineSmall = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 24,
+  static final TextStyle headlineSmall = GoogleFonts.inter(
+    fontSize: 24.0, // 1.5rem
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
-    height: 1.33,
-    color: AppTextColor.primary,
+    height: 1.28,
   );
 
-  /// Title Large - Button text, important labels
-  static const TextStyle titleLarge = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 22,
-    fontWeight: FontWeight.w600,
+  // Title styles - for UI elements like cards, sections
+  static final TextStyle titleLarge = GoogleFonts.inter(
+    fontSize: 22.0, // 1.375rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0,
-    height: 1.27,
-    color: AppTextColor.primary,
+    height: 1.36,
   );
 
-  /// Title Medium - Card subtitles
-  static const TextStyle titleMedium = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
+  static final TextStyle titleMedium = GoogleFonts.inter(
+    fontSize: 16.0, // 1.0rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0.15,
     height: 1.5,
-    color: AppTextColor.primary,
   );
 
-  /// Title Small - Small labels
-  static const TextStyle titleSmall = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
+  static final TextStyle titleSmall = GoogleFonts.inter(
+    fontSize: 14.0, // 0.875rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0.1,
     height: 1.43,
-    color: AppTextColor.primary,
   );
 
-  /// Body Large - Main body text
-  static const TextStyle bodyLarge = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 16,
+  // Body styles - for long-form reading
+  static final TextStyle bodyLarge = GoogleFonts.inter(
+    fontSize: 16.0, // 1.0rem
     fontWeight: FontWeight.w400,
     letterSpacing: 0.5,
     height: 1.5,
-    color: AppTextColor.primary,
   );
 
-  /// Body Medium - Secondary body text
-  static const TextStyle bodyMedium = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 14,
+  static final TextStyle bodyMedium = GoogleFonts.inter(
+    fontSize: 14.0, // 0.875rem
     fontWeight: FontWeight.w400,
     letterSpacing: 0.25,
     height: 1.43,
-    color: AppTextColor.primary,
   );
 
-  /// Body Small - Captions, hints
-  static const TextStyle bodySmall = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 12,
+  static final TextStyle bodySmall = GoogleFonts.inter(
+    fontSize: 12.0, // 0.75rem
     fontWeight: FontWeight.w400,
     letterSpacing: 0.4,
     height: 1.33,
-    color: AppTextColor.secondary,
   );
 
-  /// Label Large - Button labels
-  static const TextStyle labelLarge = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
+  // Label styles - for UI components like buttons, chips
+  static final TextStyle labelLarge = GoogleFonts.inter(
+    fontSize: 14.0, // 0.875rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0.1,
     height: 1.43,
-    color: AppTextColor.primary,
   );
 
-  /// Label Medium - Small labels
-  static const TextStyle labelMedium = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 12,
-    fontWeight: FontWeight.w600,
+  static final TextStyle labelMedium = GoogleFonts.inter(
+    fontSize: 12.0, // 0.75rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0.5,
     height: 1.33,
-    color: AppTextColor.primary,
   );
 
-  /// Label Small - Tiny labels, badges
-  static const TextStyle labelSmall = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 11,
-    fontWeight: FontWeight.w600,
+  static final TextStyle labelSmall = GoogleFonts.inter(
+    fontSize: 11.0, // 0.6875rem
+    fontWeight: FontWeight.w500,
     letterSpacing: 0.5,
     height: 1.45,
-    color: AppTextColor.secondary,
   );
+
+  // CONVENIENT STATIC ACCESSORS (for backward compatibility)
+  static TextStyle get display1 => displayLarge;
+  static TextStyle get display2 => displayMedium;
+  static TextStyle get display3 => displaySmall;
+  static TextStyle get headline1 => headlineLarge;
+  static TextStyle get headline2 => headlineMedium;
+  static TextStyle get headline3 => headlineSmall;
+  static TextStyle get subtitle1 => titleLarge;
+  static TextStyle get subtitle2 => titleMedium;
+  static TextStyle get body1 => bodyLarge;
+  static TextStyle get body2 => bodyMedium;
+  static TextStyle get caption => bodySmall;
+  static TextStyle get button => labelLarge;
+  static TextStyle get overline => labelSmall;
+
+  // DYNAMIC TYPE SCALE HELPER
+  static TextStyle applyFontSizeToStyle(TextStyle baseStyle, double fontSize) {
+    return baseStyle.copyWith(
+      fontSize: fontSize,
+      height: (baseStyle.height ?? 1.0) * (baseStyle.fontSize ?? 14.0) / fontSize,
+    );
+  }
 }

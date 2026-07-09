@@ -77,7 +77,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
     );
     _borderColorAnimation = ColorTween(
       begin: AppColorPalette.gray200,
-      end: AppColorPalette.absoluteBlack,
+      end: AppColorPalette.gray900,
     ).animate(
       CurvedAnimation(parent: _controller, curve: AppCurves.premiumEase),
     );
@@ -101,7 +101,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
       setState(() => _isFocused = isFocused);
       if (isFocused) {
         _controller.forward();
-        HapticHelper.lightImpact();
+        HapticHelper.light();
       } else {
         _controller.reverse();
       }
@@ -168,7 +168,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                       ? Icon(
                           widget.prefixIcon,
                           color: _isFocused
-                              ? AppColorPalette.absoluteBlack
+                              ? AppColorPalette.gray900
                               : AppColorPalette.gray400,
                           size: 20,
                         )
@@ -178,7 +178,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                           icon: Icon(
                             widget.suffixIcon,
                             color: _isFocused
-                                ? AppColorPalette.absoluteBlack
+                                ? AppColorPalette.gray900
                                 : AppColorPalette.gray400,
                             size: 20,
                           ),

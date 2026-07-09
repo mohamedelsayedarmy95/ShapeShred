@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
@@ -65,7 +65,7 @@ class _PremiumButtonState extends State<PremiumButton>
     if (widget.onPressed != null && !widget.isLoading) {
       setState(() => _isPressed = true);
       _controller.forward();
-      HapticHelper.lightImpact();
+      HapticHelper.light();
     }
   }
 
@@ -86,7 +86,7 @@ class _PremiumButtonState extends State<PremiumButton>
   Color get _backgroundColor {
     if (widget.isDestructive) return AppColorPalette.error;
     if (widget.isSecondary) return AppColorPalette.gray100;
-    return AppColorPalette.absoluteBlack;
+    return AppColorPalette.gray900;
   }
 
   Color get _foregroundColor {
@@ -108,7 +108,7 @@ class _PremiumButtonState extends State<PremiumButton>
           onTapCancel: _handleTapCancel,
           onTap: isEnabled
               ? () {
-                  HapticHelper.mediumImpact();
+                  HapticHelper.medium();
                   widget.onPressed!();
                 }
               : null,
@@ -128,7 +128,7 @@ class _PremiumButtonState extends State<PremiumButton>
                   borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   boxShadow: isEnabled
                       ? [
-                          AppShadows.buttonShadow,
+                          AppShadows.buttonShadow[0],
                         ]
                       : null,
                 ),
@@ -179,3 +179,4 @@ class _PremiumButtonState extends State<PremiumButton>
     );
   }
 }
+

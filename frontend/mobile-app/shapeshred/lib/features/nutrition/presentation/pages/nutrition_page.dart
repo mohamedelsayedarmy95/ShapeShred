@@ -1,25 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
-import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/calories_hero_card.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/macro_breakdown.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/meal_list_item.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/water_tracker.dart';
 
-class NutritionPage extends StatelessWidget {
+class NutritionPage extends StatefulWidget {
   const NutritionPage({super.key});
 
   @override
+  State<NutritionPage> createState() => _NutritionPageState();
+}
+
+class _NutritionPageState extends State<NutritionPage> {
+  String _userName = 'User';
+  String _userGoal = '';
+  String _userFitnessLevel = '';
+  bool _isLoading = true;
+
+  // Default nutrition goals (can be personalized later with more user data)
+  int _calorieGoal = 2200;
+  int _proteinGoal = 150;
+  int _carbsGoal = 250;
+  int _fatGoal = 70;
+  int _waterGoal = 8;
+
+  // Current intake (mock data - in real app this would come from a database)
+  int _caloriesConsumed = 1450;
+  int _proteinConsumed = 95;
+  int _carbsConsumed = 180;
+  int _fatConsumed = 55;
+  int _waterConsumed = 5;
+
+  String _motivationalMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    setState(() => _isLoading = true);
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // Try to get data from Firestore first
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        if (exists && doc.data() != null) {
+          final data = doc.data()!;
+          setState(() {
+            _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
+            _userGoal = data['goal'] ?? '';
+            _userFitnessLevel = data['fitnessLevel'] ?? '';
+          });
+        } else {
+          // Fallback to SharedPreferences for goal and fitness level
+          _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
+          _userGoal = await PreferencesService.getUserGoal() ?? '';
+          _userFitnessLevel =
+              await PreferencesService.getFitnessLevel() ?? '';
+        }
+      }
+
+      // Set motivational message based on goal
+      switch (_userGoal) {
+        case 'Lose Weight':
+          _motivationalMessage =
+              'You\'re on a weight loss journey. Aim for a calorie deficit.';
+          // Adjust goals for weight loss (example values)
+          _calorieGoal = 1800;
+          _proteinGoal = 120;
+          _carbsGoal = 200;
+          _fatGoal = 50;
+          break;
+        case 'Build Muscle':
+          _motivationalMessage =
+              'You\'re building muscle. Make sure to get enough protein.';
+          // Adjust goals for muscle gain (example values)
+          _calorieGoal = 2500;
+          _proteinGoal = 180;
+          _carbsGoal = 250;
+          _fatGoal = 70;
+          break;
+        case 'Endurance':
+          _motivationalMessage =
+              'You\'re building endurance. Focus on carbs for energy.';
+          // Adjust goals for endurance (example values)
+          _calorieGoal = 2400;
+          _proteinGoal = 100;
+          _carbsGoal = 300;
+          _fatGoal = 60;
+          break;
+        case 'Stay Fit':
+          _motivationalMessage =
+              'Maintain a balanced diet to stay healthy and active.';
+          // Keep default goals for general fitness
+          break;
+        default:
+          _motivationalMessage = 'Track your nutrition to reach your goals.';
+          break;
+      }
+
+      // Adjust water goal based on weight? We don't have weight, so keep default
+    } catch (e) {
+      debugPrint('Error loading user data: $e');
+      // Fallback to defaults
+      final user = FirebaseAuth.instance.currentUser;
+      _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
+      _userGoal = '';
+      _userFitnessLevel = '';
+      _motivationalMessage = 'Track your nutrition to reach your goals.';
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            color: AppColorPalette.primary,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColorPalette.pureWhite,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // Personalized Header
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.screenPadding.w,
@@ -29,17 +156,28 @@ class NutritionPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Nutrition',
-                    style: AppTypography.headlineLarge,
+                    'Hello, $_userName!',
+                    style: AppTypography.headlineLarge.copyWith(
+                      color: AppColorPalette.gray900,
+                    ),
                   ),
-                  SizedBox(height: AppSpacing.space8.h),
+                  SizedBox(height: AppSpacing.space4.h),
                   Text(
-                    'Track your daily intake',
+                    _motivationalMessage,
                     style: AppTypography.bodyLarge.copyWith(
                       color: AppTextColor.secondary,
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            // Divider
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+              child: Divider(
+                color: AppColorPalette.gray200,
+                height: 1,
               ),
             ),
 
@@ -53,20 +191,20 @@ class NutritionPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Calories Hero Card
-                    const CaloriesHeroCard(
-                      consumed: 1450,
-                      goal: 2200,
+                    CaloriesHeroCard(
+                      consumed: _caloriesConsumed,
+                      goal: _calorieGoal,
                     ),
                     SizedBox(height: AppSpacing.space24.h),
 
                     // Macro Breakdown
-                    const MacroBreakdown(
-                      protein: 95,
-                      proteinGoal: 150,
-                      carbs: 180,
-                      carbsGoal: 250,
-                      fat: 55,
-                      fatGoal: 70,
+                    MacroBreakdown(
+                      protein: _proteinConsumed,
+                      proteinGoal: _proteinGoal,
+                      carbs: _carbsConsumed,
+                      carbsGoal: _carbsGoal,
+                      fat: _fatConsumed,
+                      fatGoal: _fatGoal,
                     ),
                     SizedBox(height: AppSpacing.space32.h),
 
@@ -113,9 +251,9 @@ class NutritionPage extends StatelessWidget {
                     SizedBox(height: AppSpacing.space32.h),
 
                     // Water Tracker
-                    const WaterTracker(
-                      current: 5,
-                      goal: 8,
+                    WaterTracker(
+                      current: _waterConsumed,
+                      goal: _waterGoal,
                     ),
                     SizedBox(height: AppSpacing.space32.h),
                   ],

@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/auth/presentation/pages/fitness_level_page.dart';
+import 'package:shapeshred/core/services/preferences_service.dart';
 
 class BodyMetricsPage extends StatefulWidget {
   const BodyMetricsPage({super.key});
@@ -13,9 +15,9 @@ class BodyMetricsPage extends StatefulWidget {
 }
 
 class _BodyMetricsPageState extends State<BodyMetricsPage> {
-  final _heightController = TextEditingController();
-  final _weightController = TextEditingController();
-  final _ageController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   String? _selectedGender;
   String? _errorMessage;
 
@@ -27,12 +29,11 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
     super.dispose();
   }
 
-  void _handleContinue() {
+  Future<void> _handleContinue() async {
     setState(() {
       _errorMessage = null;
     });
 
-    // Validate gender selection
     if (_selectedGender == null) {
       setState(() {
         _errorMessage = 'Please select your gender';
@@ -40,7 +41,6 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
       return;
     }
 
-    // Validate height
     final height = double.tryParse(_heightController.text);
     if (height == null || height < 50 || height > 250) {
       setState(() {
@@ -49,7 +49,6 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
       return;
     }
 
-    // Validate weight
     final weight = double.tryParse(_weightController.text);
     if (weight == null || weight < 30 || weight > 300) {
       setState(() {
@@ -58,7 +57,6 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
       return;
     }
 
-    // Validate age
     final age = int.tryParse(_ageController.text);
     if (age == null || age < 10 || age > 120) {
       setState(() {
@@ -67,7 +65,12 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
       return;
     }
 
-    // All validations passed, navigate
+    // Save data
+    await PreferencesService.setUserGender(_selectedGender!);
+    await PreferencesService.setUserHeight(height);
+    await PreferencesService.setUserWeight(weight);
+    await PreferencesService.setUserAge(age);
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -86,7 +89,6 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Text(
                 'Your body metrics',
                 style: AppTypography.headlineLarge,
@@ -300,7 +302,7 @@ class _MetricInput extends StatelessWidget {
         TextField(
           controller: controller,
           keyboardType: keyboardType,
-          style: AppTypography.bodyLarge,
+          style: AppTypography.bodyLarge.copyWith(color: AppColorPalette.gray900),
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: AppColorPalette.gray500),
             suffixIcon: Container(

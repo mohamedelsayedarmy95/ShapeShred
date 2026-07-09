@@ -213,7 +213,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
                   label: 'Calves',
                   hint: 'Enter calves measurement (cm)',
                   controller: _calvesController,
-                  icon: Icons.footprint,
+                  icon: Icons.directions_run,
                 ),
                 SizedBox(height: AppSpacing.space32.h),
 
@@ -262,22 +262,28 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
           ],
         ),
         SizedBox(height: AppSpacing.space8.h),
-        PremiumTextField(
-          label: '',
-          hint: hint,
-          controller: controller,
-          keyboardType: TextInputType.number,
-          suffixText: 'cm',
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter $label measurement';
-            }
-            final measurement = double.tryParse(value);
-            if (measurement == null || measurement <= 0 || measurement > 200) {
-              return 'Please enter a valid measurement';
-            }
-            return null;
-          },
+        Container(
+          decoration: BoxDecoration(
+            color: AppColorPalette.gray50,
+            borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+            border: Border.all(color: AppColorPalette.gray200),
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: AppTypography.bodyMedium.copyWith(
+                color: AppColorPalette.gray400,
+              ),
+              suffixText: 'cm',
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.inputPaddingHorizontal,
+                vertical: AppSpacing.inputPaddingVertical,
+              ),
+            ),
+          ),
         ),
       ],
     );

@@ -288,16 +288,21 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   style: AppTypography.labelMedium,
                 ),
                 SizedBox(height: AppSpacing.space8.h),
-                TextField(
-                  controller: setsController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.space16.w,
-                      vertical: AppSpacing.space12.h,
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColorPalette.gray50,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                    border: Border.all(color: AppColorPalette.gray200),
+                  ),
+                  child: TextField(
+                    controller: setsController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.inputPaddingHorizontal,
+                        vertical: AppSpacing.inputPaddingVertical,
+                      ),
                     ),
                   ),
                 ),
@@ -308,16 +313,21 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   style: AppTypography.labelMedium,
                 ),
                 SizedBox(height: AppSpacing.space8.h),
-                TextField(
-                  controller: repsController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.space16.w,
-                      vertical: AppSpacing.space12.h,
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColorPalette.gray50,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                    border: Border.all(color: AppColorPalette.gray200),
+                  ),
+                  child: TextField(
+                    controller: repsController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.inputPaddingHorizontal,
+                        vertical: AppSpacing.inputPaddingVertical,
+                      ),
                     ),
                   ),
                 ),
@@ -328,16 +338,21 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   style: AppTypography.labelMedium,
                 ),
                 SizedBox(height: AppSpacing.space8.h),
-                TextField(
-                  controller: durationController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.space16.w,
-                      vertical: AppSpacing.space12.h,
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColorPalette.gray50,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                    border: Border.all(color: AppColorPalette.gray200),
+                  ),
+                  child: TextField(
+                    controller: durationController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.inputPaddingHorizontal,
+                        vertical: AppSpacing.inputPaddingVertical,
+                      ),
                     ),
                   ),
                 ),
@@ -348,16 +363,21 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   style: AppTypography.labelMedium,
                 ),
                 SizedBox(height: AppSpacing.space8.h),
-                TextField(
-                  controller: weightController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.space16.w,
-                      vertical: AppSpacing.space12.h,
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColorPalette.gray50,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                    border: Border.all(color: AppColorPalette.gray200),
+                  ),
+                  child: TextField(
+                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.inputPaddingHorizontal,
+                        vertical: AppSpacing.inputPaddingVertical,
+                      ),
                     ),
                   ),
                 ),

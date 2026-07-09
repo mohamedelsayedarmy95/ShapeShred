@@ -11,13 +11,10 @@ class AppRouter {
   AppRouter._();
 
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  
-  // TODO: Replace with actual auth state check
-  static bool _isOnboardingComplete = false;
 
   static final GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
-    initialLocation: _isOnboardingComplete ? '/' : '/onboarding',
+    initialLocation: '/onboarding',
     debugLogDiagnostics: true,
     routes: [
       // Onboarding Route
@@ -26,7 +23,7 @@ class AppRouter {
         name: 'onboarding',
         builder: (context, state) => const OnboardingPage(),
       ),
-      
+
       // Main App Routes
       ShellRoute(
         builder: (context, state, child) {
