@@ -176,16 +176,16 @@ class AdvancedAnalyticsService {
 
     for (final workout in recentWorkouts) {
       double volume = 0.0;
-      for (final exercise in workout['exercises']) {
+      for (final exercise in (workout['exercises'] as List? ?? const [])) {
         final weight = (exercise['weight'] as double?) ?? 0.0;
-        final reps = (exercise['reps'] as int)?.toDouble() ?? 0.0;
-        final sets = (exercise['set'] as int)?.toDouble() ?? 0.0;
+        final reps = (exercise['reps'] as int?)?.toDouble() ?? 0.0;
+        final sets = (exercise['set'] as int?)?.toDouble() ?? 0.0;
         volume += weight * reps * sets;
       }
       recentVolumes.add(volume);
 
       final List<int> rpeValues = [];
-      for (final exercise in workout['exercises']) {
+      for (final exercise in (workout['exercises'] as List? ?? const [])) {
         final rpe = exercise['rpe'] as int?;
         if (rpe != null) rpeValues.add(rpe);
       }
@@ -441,7 +441,7 @@ class AdvancedAnalyticsService {
     }
 
     // Long slow distance
-    if (trendAnalysis['workoutCount'] > 4) {
+    if ((trendAnalysis['workoutCount'] as int? ?? 0) > 4) {
       // Enough data to make recommendation
       recs.add({
         'type': 'long_distance',
@@ -525,7 +525,7 @@ class AdvancedAnalyticsService {
     final List<double> recentRPE = [];
     for (final workout in recentWorkouts.reversed.take(3)) {
       final List<int> rpeValues = [];
-      for (final exercise in workout['exercises']) {
+      for (final exercise in (workout['exercises'] as List? ?? const [])) {
         final rpe = exercise['rpe'] as int?;
         if (rpe != null) rpeValues.add(rpe);
       }
@@ -557,7 +557,7 @@ class AdvancedAnalyticsService {
     // Check for monotony (same exercises repeatedly)
     final Set<String> exerciseIds = {};
     for (final workout in recentWorkouts) {
-      for (final exercise in workout['exercises']) {
+      for (final exercise in (workout['exercises'] as List? ?? const [])) {
         exerciseIds.add(exercise['exerciseId'] as String);
       }
     }
@@ -594,7 +594,7 @@ class AdvancedAnalyticsService {
     int fitnessAge = chronologicalAge;
 
     // Adjust based on resting heart rate (if available)
-    final int? restingHR = recentMetrics['restingHeartRate'];
+    final int? restingHR = recentMetrics['restingHeartRate'] as int?;
     if (restingHR != null) {
       // Lower resting HR = younger fitness age
       if (restingHR < 60) {
@@ -605,7 +605,7 @@ class AdvancedAnalyticsService {
     }
 
     // Adjust based on VO2 max estimate (if available)
-    final double? vo2Max = recentMetrics['vo2Max'];
+    final double? vo2Max = recentMetrics['vo2Max'] as double?;
     if (vo2Max != null) {
       // Higher VO2 max = younger fitness age
       // Average VO2 max for age: roughly 50 - (0.5 * age)
@@ -618,7 +618,7 @@ class AdvancedAnalyticsService {
     }
 
     // Adjust based on strength-to-weight ratio (if available)
-    final double? strengthRatio = recentMetrics['strengthToWeightRatio'];
+    final double? strengthRatio = recentMetrics['strengthToWeightRatio'] as double?;
     if (strengthRatio != null) {
       // Higher ratio = younger fitness age
       // Rough benchmark: 1.0+ for excellent strength-to-weight

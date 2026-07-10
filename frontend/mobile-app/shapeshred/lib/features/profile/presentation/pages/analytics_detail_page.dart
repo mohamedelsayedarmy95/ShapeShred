@@ -167,11 +167,11 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    final String trend = _trendAnalysis!['trend'] ?? 'unknown';
+    final String trend = _trendAnalysis!['trend'] as String? ?? 'unknown';
     final double volumeChange = (_trendAnalysis!['volumeChange'] as num?)?.toDouble() ?? 0.0;
     final double intensityChange =
         (_trendAnalysis!['intensityChange'] as num?)?.toDouble() ?? 0.0;
-    final bool isPlateau = _trendAnalysis!['isPlateau'] ?? false;
+    final bool isPlateau = _trendAnalysis!['isPlateau'] as bool? ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,10 +342,10 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
                   itemBuilder: (context, index) {
                     final rec = _recommendations![index];
                     return _RecommendationItem(
-                      icon: rec['icon'] ?? Icons.tips_and_updates,
-                      title: rec['title'] ?? 'Recommendation',
-                      description: rec['description'] ?? '',
-                      priority: rec['priority'] ?? 'medium',
+                      icon: rec['icon'] as IconData? ?? Icons.tips_and_updates,
+                      title: rec['title'] as String? ?? 'Recommendation',
+                      description: rec['description'] as String? ?? '',
+                      priority: rec['priority'] as String? ?? 'medium',
                     );
                   },
                 ),
@@ -512,7 +512,7 @@ class VolumeTrendChart extends StatelessWidget {
     // Calculate volume for each workout
     final List<double> volumes = workoutHistory.map((workout) {
       double volume = 0.0;
-      for (final exercise in workout['exercises']) {
+      for (final exercise in (workout['exercises'] as List? ?? const [])) {
         final double weight = (exercise['weight'] as num?)?.toDouble() ?? 0.0;
         final double reps = (exercise['reps'] as num?)?.toDouble() ?? 0.0;
         final double sets = (exercise['set'] as num?)?.toDouble() ?? 0.0;

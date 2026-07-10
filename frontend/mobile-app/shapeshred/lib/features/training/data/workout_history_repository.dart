@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/error/failures.dart';
-import 'package:shapeshred/features/training/domain/entities/exercise.dart';
 
 /// Repository for managing workout history data
 abstract class WorkoutHistoryRepository {
@@ -110,8 +109,8 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
           'duration': workout['duration'] ?? 0,
         });
 
-        final int duration = (workout['duration'] ?? 0).toInt();
-        final int calories = (workout['caloriesBurned'] ?? 0).toInt();
+        final int duration = ((workout['duration'] ?? 0) as num).toInt();
+        final int calories = ((workout['caloriesBurned'] ?? 0) as num).toInt();
         totalDuration += duration;
         totalCalories += calories;
       }

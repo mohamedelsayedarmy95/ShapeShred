@@ -1,5 +1,6 @@
 ﻿import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -99,7 +100,7 @@ void main() async {
     ),
   );
 
-  runApp(const ShapeShredApp());
+  runApp(const ProviderScope(child: ShapeShredApp()));
 }
 
 class ShapeShredApp extends StatefulWidget {

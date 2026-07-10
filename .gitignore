@@ -70,3 +70,8 @@ Thumbs.db
 
 # Project exclude paths
 /.gradle/
+# Windows cruft
+desktop.ini
+
+# Gradle (Flutter android/ only)
+local.properties

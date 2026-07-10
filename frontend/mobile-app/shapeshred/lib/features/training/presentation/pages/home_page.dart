@@ -20,6 +20,7 @@ import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/providers/firebase_providers.dart';
+import 'package:shapeshred/providers/workout_session_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -47,7 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Future<void> _loadUserData() async {
     setState(() => _isLoading = true);
     try {
-      final user = ref.read(firebaseAuthProvider);
+      final user = ref.read(firebaseAuthProvider).currentUser;
       if (user != null) {
         // Try to get data from Firestore first
         final doc = await FirebaseFirestore.instance
@@ -84,7 +85,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     } catch (e) {
       debugPrint('Error loading user data: $e');
       // Fallback to defaults
-      final user = ref.read(firebaseAuthProvider);
+      final user = ref.read(firebaseAuthProvider).currentUser;
       _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
       _userEmail = user?.email ?? '';
       _userGoal = '';
@@ -428,7 +429,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _startWorkout() {
     if (_todaysWorkout != null) {
       // Set the selected workout in the provider
-      ref.read(selectedWorkoutProvider.notifier).state = _todaysWorkout;
+      ref.read(selectedWorkoutProvider.notifier).select(_todaysWorkout);
       // Navigate to the player page
       Navigator.push(
         context,
@@ -483,13 +484,13 @@ class _HomePageState extends ConsumerState<HomePage> {
             level: rec['level'] as String,
             icon: rec['icon'] as IconData,
           ),
-        ),
+        )).toList(),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
         backgroundColor: AppColors.background,
@@ -746,29 +747,30 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  /// Fades and slides its child up once, on first build after data loads.
-  class _FadeSlideIn extends StatelessWidget {
-    final Widget child;
+}
 
-    const _FadeSlideIn({required this.child});
+/// Fades and slides its child up once, on first build after data loads.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
 
-    @override
-    Widget build(BuildContext context) {
-      return TweenAnimationBuilder<double>(
-        tween: Tween(begin: 0, end: 1),
-        duration: AppDurations.cinematic,
-        curve: AppCurves.premiumFluid,
-        builder: (context, value, child) {
-          return Opacity(
-            opacity: value,
-            child: Transform.translate(
-              offset: Offset(0, (1 - value) * 16),
-              child: child,
-            ),
-          );
-        },
-        child: child,
-      );
-    }
+  const _FadeSlideIn({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
   }
 }

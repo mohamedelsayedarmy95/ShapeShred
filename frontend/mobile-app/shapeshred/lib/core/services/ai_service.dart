@@ -22,7 +22,7 @@ class DeepSeekService {
         'messages': [{'role': 'user', 'content': prompt}],
       }),
     );
-    return jsonDecode(utf8.decode(response.bodyBytes))['choices'][0]['message']['content'];
+    return jsonDecode(utf8.decode(response.bodyBytes))['choices'][0]['message']['content'] as String;
   }
 }
 

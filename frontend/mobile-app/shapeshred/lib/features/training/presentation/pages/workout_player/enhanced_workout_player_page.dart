@@ -247,12 +247,10 @@ class _ExerciseVisualization3DState extends State<ExerciseVisualization3D>
       );
     }
 
-    final double overallScore = (
-      _latestFormBackup!['depth'] * 0.3 +
-      _latestFormBackup!['speed'] * 0.2 +
-      _latestFormBackup!['alignment'] * 0.3 +
-      _latestFormBackup!['stability'] * 0.2
-    );
+    final double overallScore = (_latestFormBackup!['depth'] as double) * 0.3 +
+        (_latestFormBackup!['speed'] as double) * 0.2 +
+        (_latestFormBackup!['alignment'] as double) * 0.3 +
+        (_latestFormBackup!['stability'] as double) * 0.2;
 
     final Color scoreColor = overallScore > 0.8
         ? AppColors.success
@@ -282,10 +280,12 @@ class _ExerciseVisualization3DState extends State<ExerciseVisualization3D>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildFormMetric('Depth', _latestFormBackup!['depth']),
-                _buildFormMetric('Speed', _latestFormBackup!['speed']),
-                _buildFormMetric('Alignment', _latestFormBackup!['alignment']),
-                _buildFormMetric('Stability', _latestFormBackup!['stability']),
+                _buildFormMetric('Depth', _latestFormBackup!['depth'] as double),
+                _buildFormMetric('Speed', _latestFormBackup!['speed'] as double),
+                _buildFormMetric(
+                    'Alignment', _latestFormBackup!['alignment'] as double),
+                _buildFormMetric(
+                    'Stability', _latestFormBackup!['stability'] as double),
               ],
             ),
             SizedBox(height: 8.h),
@@ -445,25 +445,21 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<WorkoutSessionState> asyncState =
-        ref.watch(workoutSessionProvider.select((value) => value));
+  Widget build(BuildContext context) {
+    final WorkoutSessionState state = ref.watch(workoutSessionProvider);
 
-    // Handle loading state (should not happen in normal flow, but safe)
-    return asyncState.when(
-      data: (state) {
-        if (state.isLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+    if (state.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
-        if (state.isFinished) {
-          return _buildFinishedScreen(context, ref);
-        }
+    if (state.isFinished) {
+      return _buildFinishedScreen(context, state);
+    }
 
-        // Main workout UI
-        return Scaffold(
+    // Main workout UI
+    return Scaffold(
           backgroundColor: AppColors.background,
           body: SafeArea(
             child: NotificationListener<OverscrollIndicatorNotification>(
@@ -485,12 +481,12 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
                     SizedBox(height: AppSpacing.space16.h),
 
                     // Exercise Info
-                    _buildExerciseInfo(state.currentExercise!),
+                    _buildExerciseInfo(state.currentExercise!.exercise),
                     SizedBox(height: AppSpacing.space24.h),
 
                     // 3D Exercise Visualization
                     ExerciseVisualization3D(
-                      exercise: state.currentExercise!,
+                      exercise: state.currentExercise!.exercise,
                       showFormFeedback: _showFormFeedback,
                       onFormFeedback: _onFormFeedback,
                     ),
@@ -553,23 +549,10 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
             ),
           ),
         );
-      },
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
-      error: (e, _) => Scaffold(
-        body: Center(
-          child: Text('Error: $e'),
-        ),
-      ),
-    );
   }
 
   Widget _buildBiometricHeader() {
-    final AsyncValue<WorkoutSessionState> asyncState =
-        ref.watch(workoutSessionProvider.select((value) => value));
-    return asyncState.when(
-      data: (state) => ValueListenableBuilder<double>(
+    return ValueListenableBuilder<double>(
         valueListenable: _biometrics,
         builder: (context, value, child) {
           return Row(
@@ -660,9 +643,6 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
             ],
           );
         },
-      ),
-      loading: () => const SizedBox.shrink(),
-      error: (e, _) => Text('Error: $e'),
     );
   }
 
@@ -673,8 +653,9 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
   }
 
   Widget _buildProgressIndicator(WorkoutSessionState state) {
-    final double progress = (state.exerciseIndex + state.setIndex / state.currentExercise!.setsPerExercise) /
-        state.workout.exercises.length;
+    final double progress = (state.exerciseIndex +
+            state.setIndex / state.currentExercise!.sets) /
+        state.workout!.exercises.length;
 
     return SizedBox(
       height: 8.h,
@@ -794,7 +775,7 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Set ${state.setIndex} of ${state.currentExercise!.setsPerExercise}',
+            'Set ${state.setIndex} of ${state.currentExercise!.sets}',
             style: AppTypography.titleMedium.copyWith(
               fontWeight: FontWeight.w700,
               color: _biometrics.value > 0.7 ? AppColors.error : AppColors.primary,
@@ -844,9 +825,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
               _buildRepButton(
                 icon: Icons.remove,
                 onTap: () {
-                  final notifier = ref.read(workoutSessionProvider.notifier);
                   if (state.repCount > 0) {
-                    notifier.state = state.copyWith(repCount: state.repCount - 1);
+                    ref.read(workoutSessionProvider.notifier).decrementRep();
                     HapticHelper.light();
                   }
                 },
@@ -863,9 +843,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
               _buildRepButton(
                 icon: Icons.add,
                 onTap: () {
-                  final notifier = ref.read(workoutSessionProvider.notifier);
                   if (state.repCount < state.currentExercise!.reps) {
-                    notifier.state = state.copyWith(repCount: state.repCount + 1);
+                    ref.read(workoutSessionProvider.notifier).incrementRep();
                     HapticHelper.light();
                   }
                 },
@@ -1020,10 +999,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
   }
 
   Widget _buildFormTips() {
-    final AsyncValue<WorkoutSessionState> asyncState =
-        ref.watch(workoutSessionProvider.select((value) => value));
-    return asyncState.when(
-      data: (state) => Container(
+    final WorkoutSessionState state = ref.watch(workoutSessionProvider);
+    return Container(
         padding: EdgeInsets.all(AppSpacing.space16.w),
         decoration: BoxDecoration(
           color: AppColors.surfaceVariant,
@@ -1077,7 +1054,9 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
               ],
             ),
             SizedBox(height: AppSpacing.space12.h),
-            ...state.currentExercise!.instructions.take(3).map((tip) => Padding(
+            ...state.currentExercise!.exercise.instructions
+                .take(3)
+                .map((tip) => Padding(
                   padding: EdgeInsets.only(bottom: AppSpacing.space8.h),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1101,17 +1080,11 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
                 )),
           ],
         ),
-      ),
-      loading: () => const SizedBox.shrink(),
-      error: (e, _) => Text('Error: $e'),
-    );
+      );
   }
 
-  Widget _buildFinishedScreen(BuildContext context, WidgetRef ref) {
-    final AsyncValue<WorkoutSessionState> asyncState =
-        ref.watch(workoutSessionProvider.select((value) => value));
-    return asyncState.when(
-      data: (state) => Scaffold(
+  Widget _buildFinishedScreen(BuildContext context, WorkoutSessionState state) {
+    return Scaffold(
         backgroundColor: AppColors.background,
         body: Center(
           child: Padding(
@@ -1210,7 +1183,7 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
                   spacing: 8.w,
                   runSpacing: 8.h,
                   children: [
-                    if (state.workout?.exercises.length ?? 0 >= 5)
+                    if ((state.workout?.exercises.length ?? 0) >= 5)
                       _buildAchievementBadge(
                           'Consistency', Icons.local_fire_department, AppColors.success),
                     if (_biometrics.value > 0.7)
@@ -1228,7 +1201,7 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
                   onPressed: () {
                     HapticHelper.successImpact();
                     // Reset the selected workout provider so we don't reuse the same workout
-                    ref.read(selectedWorkoutProvider.notifier).state = null;
+                    ref.read(selectedWorkoutProvider.notifier).select(null);
                     // Pop to home
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   },
@@ -1238,15 +1211,6 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
             ),
           ),
         ),
-      ),
-      loading: () => const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
-      error: (e, _) => Scaffold(
-        body: Center(
-          child: Text('Error: $e'),
-        ),
-      ),
     );
   }
 
