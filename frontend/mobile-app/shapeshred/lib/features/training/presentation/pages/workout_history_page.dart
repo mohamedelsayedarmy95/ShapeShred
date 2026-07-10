@@ -7,6 +7,7 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
+import 'dart:math' as math;
 
 class WorkoutHistoryPage extends StatefulWidget {
   const WorkoutHistoryPage({super.key});
@@ -24,24 +25,64 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
     if (user == null) return const Scaffold(body: Center(child: Text('Not logged in')));
 
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Workout History',
           style: AppTypography.headlineSmall,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.analytics_outlined, color: AppTextColors.primary),
+            onPressed: () {
+              HapticHelper.lightImpact();
+              // Show analytics dialog or navigate to analytics page
+              showDialog<void>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: AppColors.surface,
+                  title: Text(
+                    'Workout Analytics',
+                    style: AppTypography.titleMedium.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  content: SizedBox(
+                    width: double.maxFinite,
+                    child: _buildAnalyticsOverview(context),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Close',
+                        style: AppTypography.labelMedium.copyWith(
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(
           children: [
             // Filter Chips
             _buildFilterChips(),
+            SizedBox(height: AppSpacing.space16.h),
+
+            // Analytics Overview
+            _buildAnalyticsOverview(context),
             SizedBox(height: AppSpacing.space16.h),
 
             // Workout History List
@@ -98,7 +139,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
             child: GestureDetector(
               onTap: () {
                 setState(() => _selectedFilter = filter);
-                HapticHelper.light();
+                HapticHelper.lightImpact();
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -106,16 +147,16 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                   vertical: AppSpacing.space12.h,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
+                  color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   border: Border.all(
-                    color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+                    color: isSelected ? AppColors.primary : AppColors.outline,
                   ),
                 ),
                 child: Text(
                   filter,
                   style: AppTypography.labelMedium.copyWith(
-                    color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray900,
+                    color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
                   ),
                 ),
               ),
@@ -135,16 +176,16 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
 
     return GestureDetector(
       onTap: () {
-        HapticHelper.light();
+        HapticHelper.lightImpact();
         _showWorkoutDetails(workout);
       },
       child: Container(
         margin: EdgeInsets.only(bottom: AppSpacing.space16.h),
         padding: EdgeInsets.all(AppSpacing.space16.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,13 +206,13 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                     vertical: AppSpacing.space4.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray100,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
                   ),
                   child: Text(
                     category,
                     style: AppTypography.labelSmall.copyWith(
-                      color: AppColorPalette.gray700,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 ),
@@ -183,7 +224,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
             Text(
               '${_formatDate(completedAt)} at ${_formatTime(completedAt)}',
               style: AppTypography.bodySmall.copyWith(
-                color: AppTextColor.secondary,
+                color: AppTextColors.secondary,
               ),
             ),
             SizedBox(height: AppSpacing.space16.h),
@@ -198,7 +239,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                 SizedBox(width: AppSpacing.space16.w),
                 _buildStat(
                   icon: Icons.local_fire_department,
-                  label: '${calories} cal',
+                  label: '$calories cal',
                 ),
                 SizedBox(width: AppSpacing.space16.w),
                 _buildStat(
@@ -219,13 +260,13 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
         Icon(
           icon,
           size: 16.sp,
-          color: AppColorPalette.gray700,
+          color: AppTextColors.secondary,
         ),
         SizedBox(width: AppSpacing.space4.w),
         Text(
           label,
           style: AppTypography.labelSmall.copyWith(
-            color: AppColorPalette.gray700,
+            color: AppTextColors.secondary,
           ),
         ),
       ],
@@ -240,20 +281,20 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
           Icon(
             Icons.history,
             size: 64.sp,
-            color: AppColorPalette.gray300,
+            color: AppTextColors.tertiary,
           ),
           SizedBox(height: AppSpacing.space16.h),
           Text(
             'No workout history yet',
             style: AppTypography.titleMedium.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
           SizedBox(height: AppSpacing.space8.h),
           Text(
             'Start working out to track your progress!',
             style: AppTypography.bodySmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
         ],
@@ -262,7 +303,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
   }
 
   void _showWorkoutDetails(Map<String, dynamic> workout) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -270,9 +311,11 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
         initialChildSize: 0.6,
         minChildSize: 0.4,
         maxChildSize: 0.9,
-        builder: (context, scrollController) => Container(
+        builder: (context, scrollController) {
+          final exercises = workout['exercises'] as List? ?? [];
+          return Container(
           decoration: BoxDecoration(
-            color: AppColorPalette.pureWhite,
+            color: AppColors.surface,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(AppRadius.radiusXL),
             ),
@@ -288,7 +331,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                   height: 4.h,
                   margin: EdgeInsets.only(bottom: AppSpacing.space16.h),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray200,
+                    color: AppColors.outline,
                     borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   ),
                 ),
@@ -334,12 +377,11 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
               ),
               SizedBox(height: AppSpacing.space16.h),
 
-              final exercises = workout['exercises'] as List? ?? [];
               if (exercises.isEmpty)
                 Text(
                   'No exercises recorded',
                   style: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 )
               else
@@ -360,15 +402,15 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                   HapticHelper.light();
                   _deleteWorkout(workout['id'] as String?);
                 },
-                icon: Icon(Icons.delete, color: AppColorPalette.error),
+                icon: Icon(Icons.delete, color: AppColors.error),
                 label: Text(
                   'Delete Entry',
                   style: AppTypography.labelMedium.copyWith(
-                    color: AppColorPalette.error,
+                    color: AppColors.error,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: AppColorPalette.error),
+                  side: BorderSide(color: AppColors.error),
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
@@ -377,7 +419,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
               ),
             ],
           ),
-        ),
+        );
+        },
       ),
     );
   }
@@ -390,7 +433,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space16.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.gray50,
+        color: AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
       ),
       child: Column(
@@ -398,7 +441,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
           Icon(
             icon,
             size: 24.sp,
-            color: AppColorPalette.gray700,
+            color: AppTextColors.secondary,
           ),
           SizedBox(height: AppSpacing.space8.h),
           Text(
@@ -411,7 +454,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
           Text(
             label,
             style: AppTypography.bodySmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
         ],
@@ -424,7 +467,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
       margin: EdgeInsets.only(bottom: AppSpacing.space12.h),
       padding: EdgeInsets.all(AppSpacing.space12.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.gray50,
+        color: AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
       ),
       child: Row(
@@ -443,7 +486,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                 Text(
                   '${exercise['sets'] ?? 0} sets × ${exercise['reps'] ?? 0} reps',
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 ),
               ],
@@ -452,7 +495,7 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
           if (exercise['completed'] == true)
             Icon(
               Icons.check_circle,
-              color: AppColorPalette.success,
+              color: AppColors.success,
               size: 20.sp,
             ),
         ],
@@ -475,17 +518,17 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
           .delete();
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Workout deleted',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -498,10 +541,10 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
             content: Text(
               'Failed to delete workout: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -515,5 +558,230 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
 
   String _formatTime(DateTime date) {
     return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+  }
+
+  Widget _buildAnalyticsOverview(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _getWorkoutAnalyticsData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            height: 100.h,
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.hasError || !snapshot.hasData) {
+          return Container(
+            height: 100.h,
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Card(
+              color: AppColors.surfaceVariant,
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Center(
+                child: Text(
+                  'Unable to load analytics data',
+                  style: TextStyle(
+                    color: AppTextColors.secondary,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
+        final data = snapshot.data!;
+
+        // Determine trend icon and color
+        IconData trendIcon;
+        Color trendColor;
+        String trendText;
+
+        switch (data['trend']) {
+          case 'improving':
+            trendIcon = Icons.trending_up;
+            trendColor = AppColors.success;
+            trendText = 'Improving';
+            break;
+          case 'declining':
+            trendIcon = Icons.trending_down;
+            trendColor = AppColors.error;
+            trendText = 'Declining';
+            break;
+          case 'plateau':
+            trendIcon = Icons.show_chart;
+            trendColor = AppColors.warning;
+            trendText = 'Plateau';
+            break;
+          default:
+            trendIcon = Icons.analytics;
+            trendColor = AppColors.info;
+            trendText = 'Insufficient Data';
+        }
+
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.primary.withValues(alpha: 0.1),
+                AppColors.secondary.withValues(alpha: 0.1),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(
+              color: AppColors.outline.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Your Progress',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 6.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: trendColor.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          trendIcon,
+                          size: 20.sp,
+                          color: trendColor,
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          trendText,
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: trendColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildAnalyticsMetric(
+                    'Workout Score',
+                    '${data['score']}%',
+                    Icons.star,
+                    (data['score'] as int) >= 80
+                        ? AppColors.success
+                        : (data['score'] as int) >= 60
+                            ? AppColors.warning
+                            : AppColors.error,
+                  ),
+                  _buildAnalyticsMetric(
+                    'Consistency',
+                    '${data['consistency']}%',
+                    Icons.calendar_today,
+                    (data['consistency'] as int) >= 80
+                        ? AppColors.success
+                        : (data['consistency'] as int) >= 60
+                            ? AppColors.warning
+                            : AppColors.error,
+                  ),
+                  _buildAnalyticsMetric(
+                    'Strength Trend',
+                    data['strengthTrend'] as String,
+                    Icons.fitness_center,
+                    (data['strengthTrend'] as String) == 'increasing'
+                        ? AppColors.success
+                        : (data['strengthTrend'] as String) == 'decreasing'
+                            ? AppColors.error
+                            : AppColors.warning,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAnalyticsMetric(String label, dynamic value, IconData icon, Color color) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: 24.sp,
+          color: color,
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          value.toString(),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        SizedBox(height: 2.h),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: AppTextColors.secondary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<Map<String, dynamic>> _getWorkoutAnalyticsData() async {
+    // In a real app, this would fetch actual workout data from Firestore
+    // and use the AdvancedAnalyticsService to process it
+    // For demo purposes, we're returning mock data based on some randomness
+
+    await Future.delayed(const Duration(milliseconds: 800)); // Simulate network delay
+
+    final random = math.Random();
+
+    // Simulate some variability in the data
+    final bool isImproving = random.nextBool();
+    final bool isConsistent = random.nextBool();
+    final bool strengthIncreasing = random.nextBool();
+
+    return {
+      'trend': isImproving ? 'improving' : (!isConsistent ? 'declining' : 'plateau'),
+      'score': 60 + random.nextInt(40), // 60-100
+      'consistency': 50 + random.nextInt(50), // 50-100
+      'strengthTrend': strengthIncreasing ? 'increasing' : 'decreasing',
+    };
   }
 }

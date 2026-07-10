@@ -25,7 +25,7 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
     final currentUser = _auth.currentUser;
     if (currentUser == null) {
       return Scaffold(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         body: Center(
           child: Text(
             'Please login first',
@@ -36,19 +36,19 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
     }
 
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
           'Daily Tasks',
           style: AppTypography.headlineSmall.copyWith(
-            color: AppColorPalette.gray900,
+            color: AppTextColors.primary,
           ),
         ),
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -64,7 +64,7 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
               child: Text(
                 'Error loading tasks',
                 style: AppTypography.bodyMedium.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
             );
@@ -73,7 +73,7 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
-                color: AppColorPalette.gray900,
+                color: AppColors.primary,
               ),
             );
           }
@@ -92,13 +92,13 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
                     Icon(
                       Icons.check_circle_outline,
                       size: 64,
-                      color: AppColorPalette.gray300,
+                      color: AppTextColors.tertiary,
                     ),
                     SizedBox(height: 16.h),
                     Text(
                       'No tasks for today!',
                       style: AppTypography.headlineSmall.copyWith(
-                        color: AppColorPalette.gray500,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -106,7 +106,7 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
                       'Your coach will assign tasks to help you stay on track.',
                       textAlign: TextAlign.center,
                       style: AppTypography.bodyMedium.copyWith(
-                        color: AppTextColor.secondary,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                   ],
@@ -136,10 +136,10 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: task.isCompleted ? AppColorPalette.gray50 : AppColorPalette.pureWhite,
+        color: task.isCompleted ? AppColors.surfaceVariant : AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
         border: Border.all(
-          color: task.isCompleted ? AppColorPalette.gray200 : AppColorPalette.gray900,
+          color: task.isCompleted ? AppColors.outline : AppColors.primary,
           width: task.isCompleted ? 1 : 2,
         ),
       ),
@@ -153,19 +153,19 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: task.isCompleted
-                    ? AppColorPalette.gray900
-                    : AppColorPalette.pureWhite,
+                    ? AppColors.primary
+                    : AppColors.surface,
                 border: Border.all(
                   color: task.isCompleted
-                      ? AppColorPalette.gray900
-                      : AppColorPalette.gray400,
+                      ? AppColors.primary
+                      : AppColors.outline,
                   width: 2,
                 ),
               ),
               child: task.isCompleted
                   ? Icon(
                       Icons.check,
-                      color: AppColorPalette.pureWhite,
+                      color: AppColors.onPrimary,
                       size: 16.sp,
                     )
                   : null,
@@ -180,7 +180,7 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
                   task.title,
                   style: AppTypography.titleMedium.copyWith(
                     fontWeight: task.isCompleted ? FontWeight.w400 : FontWeight.w600,
-                    color: task.isCompleted ? AppColorPalette.gray500 : AppColorPalette.gray900,
+                    color: task.isCompleted ? AppTextColors.secondary : AppTextColors.primary,
                     decoration: task.isCompleted ? TextDecoration.lineThrough : null,
                   ),
                 ),
@@ -188,13 +188,13 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
                   Text(
                     task.description,
                     style: AppTypography.bodySmall.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 Text(
                   'Due: ${_formatDate(task.dueDate)}',
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppColorPalette.gray400,
+                    color: AppTextColors.tertiary,
                   ),
                 ),
               ],

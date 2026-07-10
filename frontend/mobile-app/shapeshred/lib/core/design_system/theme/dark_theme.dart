@@ -36,7 +36,6 @@ class AppDarkTheme {
         onSurfaceVariant: AppColors.onSurfaceVariant,
         outline: AppColors.outline,
         shadow: AppColors.shadow,
-        scrimColor: AppColors.shadow.withOpacity(0.5),
       ),
 
       // === TYPOGRAPHY ===
@@ -101,7 +100,7 @@ class AppDarkTheme {
       ),
 
       // Cards
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 2,
         margin: EdgeInsets.zero,
@@ -288,7 +287,7 @@ class AppDarkTheme {
         trackOutlineColor: MaterialStateProperty.all<Color>(
           AppColors.outline,
         ),
-        thumbIcon: MaterialStateProperty.resolveWith<IconSize>(
+        thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.selected)) {
               return const Icon(Icons.check);
@@ -308,14 +307,14 @@ class AppDarkTheme {
         valueIndicatorTextStyle: AppTypography.labelLarge.copyWith(
           color: AppColors.onPrimary,
         ),
-        thumbShape: const RoundSliderThumbShape(enabledRadius: 12.0),
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12.0),
         overlayShape: RoundSliderOverlayShape(overlayRadius: 24.0),
         valueIndicatorShape: const RectangularSliderValueIndicatorShape(),
-        showValueIndicator: ShowValueIndicator.onlyDiscrete,
+        showValueIndicator: ShowValueIndicator.onlyForDiscrete,
       ),
 
       // TabBar
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         labelColor: AppColors.primary,
         unselectedLabelColor: AppColors.onSurfaceVariant,
         labelStyle: AppTypography.labelLarge,
@@ -330,21 +329,19 @@ class AppDarkTheme {
           ),
         ),
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorPadding: EdgeInsets.zero,
         dividerColor: Colors.transparent,
         labelPadding: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
       ),
 
       // Divider
       dividerTheme: DividerThemeData(
         color: AppColors.divider,
-        thickness: AppDividerThickness.regular,
-        space: APSpacing.layoutSm,
+        thickness: AppSpacing.dividerThicknessThin,
+        space: AppSpacing.layoutSm,
       ),
 
-      // Dialog
-      dialogTheme: DialogTheme(
+      // Dialog (also styles AlertDialog and SimpleDialog)
+      dialogTheme: DialogThemeData(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -354,23 +351,6 @@ class AppDarkTheme {
         titleTextStyle: AppTypography.titleLarge,
       ),
 
-      // AlertDialog
-      alertDialogTheme: AlertDialogTheme(
-        backgroundColor: AppColors.surface,
-        titleTextStyle: AppTypography.titleLarge,
-        contentTextStyle: AppTypography.bodyLarge,
-        actionsPadding: EdgeInsets.zero,
-        buttonPadding: EdgeInsets.zero,
-        contentPadding: EdgeInsets.all(APSpacing.contentMd),
-      ),
-
-      // SimpleDialog
-      simpleDialogTheme: SimpleDialogTheme(
-        backgroundColor: AppColors.surface,
-        titleTextStyle: AppTypography.titleLarge,
-        contentTextStyle: AppTypography.bodyLarge,
-      ),
-
       // Tooltip
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -378,27 +358,24 @@ class AppDarkTheme {
           borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
         textStyle: AppTypography.labelMedium,
-        padding: EdgeInsets.all(APSpacing.paddingSm),
-        margin: EdgeInsets.all(APSpacing.marginSm),
-        height: 36,
+        padding: EdgeInsets.all(AppSpacing.componentMd),
+        margin: EdgeInsets.all(AppSpacing.xsmall),
         verticalOffset: 24,
         preferBelow: false,
-        showDuration: APDurations.tooltipShow,
-        waitDuration: APDurations.tooltipHide,
+        showDuration: AppDurations.slow,
+        waitDuration: AppDurations.standard,
       ),
 
       // SnackBar
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.surface,
         contentTextStyle: AppTypography.bodyLarge,
-        actionTextStyle: AppTypography.labelLarge.copyWith(
-          color: AppColors.primary,
-        ),
+        actionTextColor: AppColors.primary,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-        margin: EdgeInsets.all(APSpacing.marginLg),
+        insetPadding: EdgeInsets.all(AppSpacing.layoutLg),
       ),
 
       // Animated theme transitions (custom)
@@ -417,11 +394,11 @@ class AppDarkTheme {
 
   // Custom page transition builder (would use our motion system)
   static PageTransitionsBuilder _CustomPageTransitionBuilder() {
-    return (_, __, ___) => _CustomPageTransition();
+    return _CustomPageTransition();
   }
 
   static PageTransitionsBuilder _CupertinoPageTransitionBuilder() {
-    return (_, __, ___) => _CupertinoPageTransition();
+    return _CupertinoPageTransition();
   }
 }
 
@@ -438,12 +415,12 @@ class _CustomPageTransition extends PageTransitionsBuilder {
     return FadeTransition(
       opacity: CurvedAnimation(
         parent: animation,
-        curve: Curves.standard,
+        curve: AppCurves.standard,
       ),
       child: ScaleTransition(
         scale: CurvedAnimation(
           parent: animation,
-          curve: Curves.standard,
+          curve: AppCurves.standard,
         ),
         child: child,
       ),
@@ -467,7 +444,7 @@ class _CupertinoPageTransition extends PageTransitionsBuilder {
         end: Offset.zero,
       ).animate(CurvedAnimation(
         parent: animation,
-        curve: Curves.standard,
+        curve: AppCurves.standard,
       )),
       child: child,
     );

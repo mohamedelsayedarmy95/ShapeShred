@@ -5,6 +5,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/features/training/domain/models/workout.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_player/exercise_display.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_player/timer_display.dart';
@@ -92,63 +93,94 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
   }
 
   void _showCompletionDialog() {
-    showDialog<void>(
+    showGeneralDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColorPalette.pureWhite,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.radiusXL),
-        ),
-        title: Column(
-          children: [
-            Icon(
-              Icons.celebration,
-              size: 64.sp,
-              color: AppColorPalette.gray900,
-            ),
-            SizedBox(height: AppSpacing.space16.h),
-            Text(
-              'Workout Complete!',
-              style: AppTypography.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-        content: Text(
-          'Great job! You completed ${widget.workout.title}',
-          style: AppTypography.bodyLarge.copyWith(
-            color: AppTextColor.secondary,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColorPalette.gray900,
-                foregroundColor: AppColorPalette.pureWhite,
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                ),
+      barrierColor: Colors.black54,
+      transitionDuration: AppDurations.cinematic,
+      pageBuilder: (context, animation, secondaryAnimation) => const SizedBox.shrink(),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        final curved = CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
+        return Opacity(
+          opacity: animation.value.clamp(0.0, 1.0),
+          child: ScaleTransition(
+            scale: curved,
+            child: AlertDialog(
+              backgroundColor: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.radiusXL),
               ),
-              child: Text(
-                'DONE',
-                style: AppTypography.labelLarge.copyWith(
-                  color: AppColorPalette.pureWhite,
-                  fontWeight: FontWeight.w700,
-                ),
+              title: Column(
+                children: [
+                  Container(
+                    width: 88.w,
+                    height: 88.h,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: AppColors.heroGradient,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.35),
+                          blurRadius: 24,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.celebration,
+                      size: 44.sp,
+                      color: AppColors.onPrimary,
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.space16.h),
+                  Text(
+                    'Workout Complete!',
+                    style: AppTypography.headlineMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
+              content: Text(
+                'Great job! You completed ${widget.workout.title}',
+                style: AppTypography.bodyLarge.copyWith(
+                  color: AppTextColors.secondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.onPrimary,
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                      ),
+                    ),
+                    child: Text(
+                      'DONE',
+                      style: AppTypography.labelLarge.copyWith(
+                        color: AppColors.onPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -161,7 +193,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
     final progress = _currentTime / targetTime;
 
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -176,12 +208,12 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                     child: Container(
                       padding: EdgeInsets.all(10.r),
                       decoration: BoxDecoration(
-                        color: AppColorPalette.gray50,
+                        color: AppColors.surfaceVariant,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.close,
-                        color: AppColorPalette.gray900,
+                        color: AppTextColors.primary,
                         size: 20.sp,
                       ),
                     ),
@@ -206,9 +238,15 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
 
             // Exercise Display
             Expanded(
-              child: ExerciseDisplay(
-                exercise: _currentExercise,
-                isResting: _isResting,
+              child: AnimatedSwitcher(
+                duration: AppDurations.substantial,
+                switchInCurve: AppCurves.premiumFluid,
+                switchOutCurve: AppCurves.premiumFluid,
+                child: ExerciseDisplay(
+                  key: ValueKey('$_currentExerciseIndex-$_isResting'),
+                  exercise: _currentExercise,
+                  isResting: _isResting,
+                ),
               ),
             ),
 
@@ -230,9 +268,9 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                 child: LinearProgressIndicator(
                   value: progress,
                   minHeight: 8.h,
-                  backgroundColor: AppColorPalette.gray200,
+                  backgroundColor: AppColors.outline,
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    _isResting ? AppColorPalette.gray500 : AppColorPalette.gray900,
+                    _isResting ? AppColors.secondary : AppColors.primary,
                   ),
                 ),
               ),
@@ -251,13 +289,13 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                     child: Container(
                       padding: EdgeInsets.all(16.r),
                       decoration: BoxDecoration(
-                        color: AppColorPalette.gray50,
+                        color: AppColors.surfaceVariant,
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppColorPalette.gray200),
+                        border: Border.all(color: AppColors.outline),
                       ),
                       child: Icon(
                         Icons.skip_next,
-                        color: AppColorPalette.gray900,
+                        color: AppTextColors.primary,
                         size: 28.sp,
                       ),
                     ),
@@ -269,13 +307,13 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                     child: Container(
                       padding: EdgeInsets.all(24.r),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+                        gradient: LinearGradient(
+                          colors: AppColors.heroGradient,
                         ),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColorPalette.gray900.withValues(alpha: 0.3),
+                            color: AppColors.primary.withValues(alpha: 0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -283,7 +321,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                       ),
                       child: Icon(
                         _isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
-                        color: AppColorPalette.pureWhite,
+                        color: AppColors.onPrimary,
                         size: 40.sp,
                       ),
                     ),
@@ -293,13 +331,13 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                   Container(
                     padding: EdgeInsets.all(16.r),
                     decoration: BoxDecoration(
-                      color: AppColorPalette.gray50,
+                      color: AppColors.surfaceVariant,
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppColorPalette.gray200),
+                      border: Border.all(color: AppColors.outline),
                     ),
                     child: Icon(
                       Icons.info_outline,
-                      color: AppColorPalette.gray900,
+                      color: AppTextColors.primary,
                       size: 28.sp,
                     ),
                   ),

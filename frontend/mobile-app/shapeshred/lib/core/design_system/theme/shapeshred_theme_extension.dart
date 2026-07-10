@@ -67,34 +67,29 @@ class ShapeShredThemeExtension
       ThemeExtension<ShapeShredThemeExtension>? other, double t) {
     if (other is! ShapeShredThemeExtension) return this;
     return ShapeShredThemeExtension(
-      workoutCardElevation: lerpDouble(
+      workoutCardElevation: _lerpD(
           workoutCardElevation, other.workoutCardElevation, t),
-      modalElevation: lerpDouble(modalElevation, other.modalElevation, t),
-      cardBackground: Color.lerp(cardBackground, other.cardBackground, t),
+      modalElevation: _lerpD(modalElevation, other.modalElevation, t),
+      cardBackground: Color.lerp(cardBackground, other.cardBackground, t)!,
       workoutCardBackground: Color.lerp(
-          workoutCardBackground, other.workoutCardBackground, t),
+          workoutCardBackground, other.workoutCardBackground, t)!,
       premiumCardBackground: Color.lerp(
-          premiumCardBackground, other.premiumCardBackground, t),
-      buttonElevation: lerpDouble(buttonElevation, other.buttonElevation, t),
-      inputFieldElevation: lerpDouble(
+          premiumCardBackground, other.premiumCardBackground, t)!,
+      buttonElevation: _lerpD(buttonElevation, other.buttonElevation, t),
+      inputFieldElevation: _lerpD(
           inputFieldElevation, other.inputFieldElevation, t),
-      dividerHeight: lerpDouble(dividerHeight, other.dividerHeight, t),
-      iconSize: lerpDouble(iconSize, other.iconSize, t),
-      textScaleFactor: lerpDouble(
+      dividerHeight: _lerpD(dividerHeight, other.dividerHeight, t),
+      iconSize: _lerpD(iconSize, other.iconSize, t),
+      textScaleFactor: _lerpD(
           textScaleFactor, other.textScaleFactor, t),
     );
   }
 
-  double? lerpDouble(double? a, double? b, double t) {
-    if (a == null && b == null) return null;
-    if (a == null) return b! * t;
-    if (b == null) return a! * (1 - t);
-    return a + (b - a) * t;
-  }
+  double _lerpD(double a, double b, double t) => a + (b - a) * t;
 
   // Factory methods for light and dark themes
   factory ShapeShredThemeExtension.light() {
-    return const ShapeShredThemeExtension(
+    return ShapeShredThemeExtension(
       workoutCardElevation: 4.0,
       modalElevation: 16.0,
       cardBackground: AppColors.surface,
@@ -109,7 +104,7 @@ class ShapeShredThemeExtension
   }
 
   factory ShapeShredThemeExtension.dark() {
-    return const ShapeShredThemeExtension(
+    return ShapeShredThemeExtension(
       workoutCardElevation: 4.0,
       modalElevation: 16.0,
       cardBackground: AppColors.surface,

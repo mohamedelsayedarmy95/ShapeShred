@@ -64,10 +64,10 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
           content: Text(
             'Please add at least one exercise',
             style: AppTypography.bodyMedium.copyWith(
-              color: AppColorPalette.pureWhite,
+              color: AppColors.onError,
             ),
           ),
-          backgroundColor: AppColorPalette.error,
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -98,16 +98,16 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
           .set(workout.toJson());
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Workout saved successfully!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
@@ -126,10 +126,10 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
             content: Text(
               'Failed to save workout: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -152,7 +152,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
         maxChildSize: 0.95,
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
-            color: AppColorPalette.pureWhite,
+            color: AppColors.surface,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(AppRadius.radiusXL),
             ),
@@ -166,7 +166,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   height: 4.h,
                   margin: EdgeInsets.all(AppSpacing.space16.w),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray200,
+                    color: AppColors.outline,
                     borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   ),
                 ),
@@ -214,9 +214,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
         margin: EdgeInsets.only(bottom: AppSpacing.space12.h),
         padding: EdgeInsets.all(AppSpacing.space16.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Row(
           children: [
@@ -224,13 +224,13 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
               width: 48.w,
               height: 48.h,
               decoration: BoxDecoration(
-                color: AppColorPalette.gray100,
+                color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
               ),
               child: Icon(
                 Icons.fitness_center,
                 size: 24.sp,
-                color: AppColorPalette.gray700,
+                color: AppTextColors.secondary,
               ),
             ),
             SizedBox(width: AppSpacing.space16.w),
@@ -248,7 +248,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   Text(
                     exercise.muscleGroup,
                     style: AppTypography.bodySmall.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 ],
@@ -256,7 +256,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
             ),
             Icon(
               Icons.chevron_right,
-              color: AppColorPalette.gray300,
+              color: AppTextColors.tertiary,
             ),
           ],
         ),
@@ -290,9 +290,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 SizedBox(height: AppSpacing.space8.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: TextField(
                     controller: setsController,
@@ -315,9 +315,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 SizedBox(height: AppSpacing.space8.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: TextField(
                     controller: repsController,
@@ -340,9 +340,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 SizedBox(height: AppSpacing.space8.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: TextField(
                     controller: durationController,
@@ -365,9 +365,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 SizedBox(height: AppSpacing.space8.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: TextField(
                     controller: weightController,
@@ -413,13 +413,13 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColorPalette.gray900,
-                foregroundColor: AppColorPalette.pureWhite,
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.onPrimary,
               ),
               child: Text(
                 'Add',
                 style: AppTypography.labelMedium.copyWith(
-                  color: AppColorPalette.pureWhite,
+                  color: AppColors.onPrimary,
                 ),
               ),
             ),
@@ -439,12 +439,12 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -510,21 +510,21 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppColorPalette.gray900
-                              : AppColorPalette.gray50,
+                              ? AppColors.primary
+                              : AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                           border: Border.all(
                             color: isSelected
-                                ? AppColorPalette.gray900
-                                : AppColorPalette.gray200,
+                                ? AppColors.primary
+                                : AppColors.outline,
                           ),
                         ),
                         child: Text(
                           category,
                           style: AppTypography.labelMedium.copyWith(
                             color: isSelected
-                                ? AppColorPalette.pureWhite
-                                : AppColorPalette.gray900,
+                                ? AppColors.onPrimary
+                                : AppTextColors.primary,
                           ),
                         ),
                       ),
@@ -547,7 +547,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                       Text(
                         '${_exercises.length} exercises',
                         style: AppTypography.bodySmall.copyWith(
-                          color: AppTextColor.secondary,
+                          color: AppTextColors.secondary,
                         ),
                       ),
                   ],
@@ -558,9 +558,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   Container(
                     padding: EdgeInsets.all(AppSpacing.space24.w),
                     decoration: BoxDecoration(
-                      color: AppColorPalette.gray50,
+                      color: AppColors.surfaceVariant,
                       borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                      border: Border.all(color: AppColorPalette.gray200),
+                      border: Border.all(color: AppColors.outline),
                     ),
                     child: Center(
                       child: Column(
@@ -568,20 +568,20 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                           Icon(
                             Icons.fitness_center,
                             size: 48.sp,
-                            color: AppColorPalette.gray300,
+                            color: AppTextColors.tertiary,
                           ),
                           SizedBox(height: AppSpacing.space16.h),
                           Text(
                             'No exercises yet',
                             style: AppTypography.bodyMedium.copyWith(
-                              color: AppTextColor.secondary,
+                              color: AppTextColors.secondary,
                             ),
                           ),
                           SizedBox(height: AppSpacing.space8.h),
                           Text(
                             'Tap the button below to add exercises',
                             style: AppTypography.bodySmall.copyWith(
-                              color: AppTextColor.secondary,
+                              color: AppTextColors.secondary,
                             ),
                           ),
                         ],
@@ -604,15 +604,15 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 // Add Exercise Button
                 OutlinedButton.icon(
                   onPressed: _showExercisePicker,
-                  icon: Icon(Icons.add, color: AppColorPalette.gray900),
+                  icon: Icon(Icons.add, color: AppColors.primary),
                   label: Text(
                     'Add Exercise',
                     style: AppTypography.labelMedium.copyWith(
-                      color: AppColorPalette.gray900,
+                      color: AppColors.primary,
                     ),
                   ),
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: AppColorPalette.gray900),
+                    side: BorderSide(color: AppColors.primary),
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
@@ -626,7 +626,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   Container(
                     padding: EdgeInsets.all(AppSpacing.space16.w),
                     decoration: BoxDecoration(
-                      color: AppColorPalette.gray50,
+                      color: AppColors.surfaceVariant,
                       borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                     ),
                     child: Row(
@@ -668,9 +668,9 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
       margin: EdgeInsets.only(bottom: AppSpacing.space12.h),
       padding: EdgeInsets.all(AppSpacing.space16.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Row(
         children: [
@@ -688,14 +688,14 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                 Text(
                   '${we.sets} sets × ${we.reps} reps${we.weight != null ? ' × ${we.weight}kg' : ''}',
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 ),
               ],
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete_outline, color: AppColorPalette.error),
+            icon: Icon(Icons.delete_outline, color: AppColors.error),
             onPressed: () => _removeExercise(index),
           ),
         ],

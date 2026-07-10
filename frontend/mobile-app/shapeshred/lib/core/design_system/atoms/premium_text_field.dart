@@ -69,17 +69,17 @@ class _PremiumTextFieldState extends State<PremiumTextField>
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _controller = AnimationController(
-      duration: AppDurations.short,
+      duration: AppDurations.quick,
       vsync: this,
     );
     _borderAnimation = Tween<double>(begin: 1.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: AppCurves.premiumEase),
+      CurvedAnimation(parent: _controller, curve: AppCurves.premiumSmooth),
     );
     _borderColorAnimation = ColorTween(
-      begin: AppColorPalette.gray200,
-      end: AppColorPalette.gray900,
+      begin: AppColors.outline,
+      end: AppColors.primary,
     ).animate(
-      CurvedAnimation(parent: _controller, curve: AppCurves.premiumEase),
+      CurvedAnimation(parent: _controller, curve: AppCurves.premiumSmooth),
     );
 
     _focusNode.addListener(_onFocusChange);
@@ -121,7 +121,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
           Text(
             widget.label!,
             style: AppTypography.labelMedium.copyWith(
-              color: hasError ? AppColorPalette.error : AppColorPalette.gray700,
+              color: hasError ? AppColors.error : AppColors.onSurfaceVariant,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -133,13 +133,13 @@ class _PremiumTextFieldState extends State<PremiumTextField>
             return Container(
               decoration: BoxDecoration(
                 color: widget.enabled
-                    ? AppColorPalette.gray50
-                    : AppColorPalette.gray100,
+                    ? AppColors.surfaceVariant
+                    : AppColors.outline.withOpacity(0.08),
                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                 border: Border.all(
                   color: hasError
-                      ? AppColorPalette.error
-                      : (_borderColorAnimation.value ?? AppColorPalette.gray200),
+                      ? AppColors.error
+                      : (_borderColorAnimation.value ?? AppColors.outline),
                   width: hasError ? 2 : _borderAnimation.value,
                 ),
               ),
@@ -156,20 +156,20 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                 onSubmitted: widget.onSubmitted,
                 style: AppTypography.bodyMedium.copyWith(
                   color: widget.enabled
-                      ? AppColorPalette.gray900
-                      : AppColorPalette.gray500,
+                      ? AppColors.onSurface
+                      : AppColors.onSurfaceVariant,
                 ),
                 decoration: InputDecoration(
                   hintText: widget.hint,
                   hintStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppColorPalette.gray400,
+                    color: AppColors.onSurfaceVariant,
                   ),
                   prefixIcon: widget.prefixIcon != null
                       ? Icon(
                           widget.prefixIcon,
                           color: _isFocused
-                              ? AppColorPalette.gray900
-                              : AppColorPalette.gray400,
+                              ? AppColors.primary
+                              : AppColors.onSurfaceVariant,
                           size: 20,
                         )
                       : null,
@@ -178,8 +178,8 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                           icon: Icon(
                             widget.suffixIcon,
                             color: _isFocused
-                                ? AppColorPalette.gray900
-                                : AppColorPalette.gray400,
+                                ? AppColors.primary
+                                : AppColors.onSurfaceVariant,
                             size: 20,
                           ),
                           onPressed: widget.onSuffixIconPressed,
@@ -203,7 +203,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
           Text(
             widget.errorText!,
             style: AppTypography.labelSmall.copyWith(
-              color: AppColorPalette.error,
+              color: AppColors.error,
             ),
           ),
         ],

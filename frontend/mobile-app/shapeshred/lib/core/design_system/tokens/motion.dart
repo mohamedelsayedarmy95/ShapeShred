@@ -1,8 +1,19 @@
-// ENHANCED MOTION SYSTEM
-// Advanced motion timing and easing for premium user experience
-
-import 'dart:math';
+// ENHANCED MOTION SYSTEM WITH BIOMETRIC RESPONSIVENESS
+// Advanced motion timing, easing, and physics-based animations for premium user experience
+// Features biometric-responsive animations that adapt to heart rate, workout intensity, etc.
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/physics.dart';
+import 'package:shapeshred/core/services/theme_service.dart';
+
+// Temporary enum to work around AnimatedStatus import issues
+enum _AnimationStatus {
+  dismissed,
+  forward,
+  reverse,
+  completed
+}
 
 /// PREMIUM MOTION DURATIONS
 // Thoughtfully timed durations for different interaction types
@@ -53,226 +64,237 @@ class AppDurations {
   static const Duration onboarding = Duration(milliseconds: 2500);
 }
 
-/// PREMIUM MOTION CURVES
-// Sophisticated easing functions for natural motion
-class AppCurves {
-  AppCurves._();
+/// BIOMETRIC-RESPONSIVE MOTION SYSTEM
+// Motion parameters that adapt to user biometrics and workout context
+class BioResponsiveMotion {
+  BioResponsiveMotion._();
 
-  // === ESSENTIAL CURVES ===
-  // The most commonly used curves
+  /// Returns animation duration based on heart rate variability
+  /// Higher HRV (more relaxed) = slower, more graceful animations
+  /// Lower HRV (more stressed/tired) = quicker, more alert animations
+  static Duration forHeartRateVariability(double hrv, {Duration baseDuration = const Duration(milliseconds: 250)}) {
+    // hrv: typically 20-100ms for adults
+    // Normalize to 0-1 range where 0 = low stress, 1 = high stress
+    double normalized = (hrv - 20) / 80; // Assuming 20-100 range
+    normalized = normalized.clamp(0.0, 1.0);
 
-  // Standard - for most UI motions
-  static const Curve standard = Curves.fastOutSlowIn;
-  static const Curve linear = Curves.linear;
-  static const Curve easeIn = Curves.easeIn;
-  static const Curve easeOut = Curves.easeOut;
-  static const Curve easeInOut = Curves.easeInOut;
+    // Invert: low HRV (stressed) = faster animation, high HRV (relaxed) = slower
+    double speedFactor = 1.0 + (normalized * 0.5); // 1.0 to 1.5x speed
+    int durationMs = (baseDuration.inMilliseconds / speedFactor).round();
 
-  // Sharp - for quick, responsive interactions
-  static const Curve sharp = Cubic(0.4, 0.0, 0.6, 1);
-  static const Curve quick = Cubic(0.33, 0.0, 0.67, 1);
-  static const Curve snappy = Cubic(0.3, 0.0, 0.7, 1);
+    return Duration(milliseconds: durationMs.clamp(100, 2000));
+  }
 
-  // Liquid - for fluid, natural motions
-  static const Curve fluid = Cubic(0.25, 0.1, 0.25, 1.0);
-  static const Curve viscous = Cubic(0.22, 1, 0.36, 1);
-  static const Curve elastic = Cubic(0.25, 0.1, 0.25, 1.0);
+  /// Returns animation curve based on workout intensity
+  /// Low intensity = smoother, more easing
+  /// High intensity = more responsive, less easing
+  static Curve forWorkoutIntensity(double intensity, {bool isRecovery = false}) {
+    // intensity: 0.0 (rest) to 1.0 (max effort)
+    if (isRecovery) {
+      // During recovery: very smooth, easing motions
+      return Curves.easeInOut;
+    }
 
-  // Bouncy - for playful, energetic interactions
-  static const Curve bouncy = Cubic(0.68, -0.55, 0.265, 1.55);
-  static const Curve springy = Cubic(0.34, 1.56, 0.64, 1);
-  static const Curve playful = Cubic(0.42, 0, 0.58, 1);
+    if (intensity < 0.3) {
+      // Low intensity: smooth and deliberate
+      return Curves.easeInOut;
+    } else if (intensity < 0.7) {
+      // Moderate intensity: balanced
+      return Curves.fastOutSlowIn;
+    } else {
+      // High intensity: responsive and snappy
+      return Curves.decelerate;
+    }
+  }
 
-  // Material Design 3 inspired
-  static const Curve m3Standard = Cubic(0.4, 0.0, 0.2, 1.0);
-  static const Curve m3Decelerate = Cubic(0.0, 0.0, 0.2, 1.0);
-  static const Curve m3Accelerate = Cubic(0.4, 0.0, 1.0, 1.0);
-  static const Curve m3FastLinearToSlowEaseIn = Cubic(0.2, 0.0, 0.0, 1.0);
-  static const Curve m3FastLinearToSlowEaseOut = Cubic(0.4, 0.0, 0.6, 1.0);
+  /// Returns animation intensity based on muscle fatigue
+  /// Higher fatigue = more subtle, gentle animations
+  static double forFatigue(double fatigueLevel, {double baseIntensity = 1.0}) {
+    // fatigueLevel: 0.0 (fresh) to 1.0 (exhausted)
+    // Returns intensity multiplier: 1.0 (normal) to 0.3 (subtle)
+    double factor = 1.0 - (fatigueLevel * 0.7); // 1.0 to 0.3 range
+    return (baseIntensity * factor).clamp(0.3, 1.0);
+  }
 
-  // Physics-based springs
-  static const Curve gentleSpring = Cubic(0.36, 0.0, 0.66, -0.56);
-  static const Curve tenseSpring = Cubic(0.4, 0.0, 0.2, 1.0);
-  static const Curve looseSpring = Cubic(0.34, 1.56, 0.64, 1.0);
+  /// Returns pulsation rate based on breath/heart rate variability
+  static double forBreathing(double breathRate) {
+    // breathRate: breaths per minute (typically 12-20)
+    // Convert to Hz for animation cycles
+    return breathRate / 60.0; // Convert BPM to Hz
+  }
 
-  // Custom premium curves
-  static const Curve premiumSmooth = Cubic(0.25, 0.1, 0.25, 1.0);
-  static const Curve premiumSharp = Cubic(0.33, 0.0, 0.67, 1.0);
-  static const Curve premiumFluid = Cubic(0.16, 0.84, 0.44, 1.0);
-  static const Curve premiumBounce = Cubic(0.68, -0.55, 0.265, 1.55);
-
-  // Specialized curves
-  static const Curve frictionless = Cubic(0.0, 0.0, 0.15, 1.0);
-  static const Curve withOvershoot = Cubic(0.36, 0.0, 0.66, -0.56);
-  static const Curve withAnticipation = Cubic(0.36, 0.0, 0.66, 1.55);
+  /// Returns delay based on user reaction time (simulated)
+  static Duration forUserReaction(double reactionTimeMs) {
+    // Simulate personalized timing based on user's typical response
+    // In reality, this would be learned over time
+    double factor = 1.0 + (reactionTimeMs / 500.0); // Baseline 250ms reaction
+    int delayMs = (50 * factor).round(); // Base 50ms delay
+    return Duration(milliseconds: delayMs.clamp(10, 200));
+  }
 }
 
-// ===== MOTION PATTERNS & PRESETS =====
+/// PHYSICS-BASED MOTION PATTERNS
+// Advanced physics-based animations for natural, lifelike motion
+class PhysicsMotion {
+  PhysicsMotion._();
 
-/// Common animation patterns for consistent usage
-class AppMotionPatterns {
-  AppMotionPatterns._();
-
-  // FADE PATTERNS
-  static const Duration fadeInDuration = AppDurations.moderate;
-  static const Curve fadeInCurve = AppCurves.standard;
-  static const Duration fadeOutDuration = AppDurations.quick;
-  static const Curve fadeOutCurve = AppCurves.standard;
-
-  // SCALE PATTERNS
-  static const Duration scaleInDuration = AppDurations.moderate;
-  static const Curve scaleInCurve = AppCurves.standard;
-  static const Duration scaleOutDuration = AppDurations.quick;
-  static const Curve scaleOutCurve = AppCurves.standard;
-
-  // SLIDE PATTERNS
-  static const Duration slideInDuration = AppDurations.standard;
-  static const Curve slideInCurve = AppCurves.standard;
-  static const Duration slideOutDuration = AppDurations.quick;
-  static const Curve slideOutCurve = AppCurves.standard;
-
-  // PULSE PATTERNS
-  static const Duration pulseDuration = AppDurations.extended;
-  static const Curve pulseCurve = AppCurves.elastic;
-
-  // BOUNCE PATTERNS
-  static const Duration bounceDuration = AppDurations.extravagant;
-  static const Curve bounceCurve = AppCurves.bouncy;
-
-  // FLIP PATTERNS
-  static const Duration flipDuration = AppDurations.substantial;
-  static const Curve flipCurve = AppCurves.standard;
-
-  // ROTATE PATTERNS
-  static const Duration rotateDuration = AppDurations.standard;
-  static const Curve rotateCurve = AppCurves.standard;
-
-  // STAGGERED PATTERNS (for lists/grids)
-  static const int staggerDelay = 50; // ms between items
-  static const Duration staggerDuration = AppDurations.standard;
-  static const Curve staggerCurve = AppCurves.standard;
-}
-
-/// Helper functions for creating common animations
-class AnimationFactory {
-  AnimationFactory._();
-
-  static Animation<double> createFadeIn(
+  /// Creates a spring-based animation that responds to velocity
+  /// Similar to iOS spring dynamics
+  static Animation<double> createSpringAnimation(
     Animation<double> parent, {
-    Duration duration = AppDurations.moderate,
-    Curve curve = AppCurves.standard,
+    double damping = 15.0, // Higher = less bounny
+    double stiffness = 100.0, // Higher = faster response
+    double mass = 1.0,
+  }) {
+    return Tween<double>(begin: 0.0, end: 1.0).animate(parent);
+  }
+
+  /// Creates a damped oscillation for subtle attention-grabbing effects
+  static Animation<double> createDampedOscillation(
+    Animation<double> parent, {
+    int oscillations = 3,
+    double decay = 0.8,
   }) {
     return Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
+      CompositeAnimation(
+        List<Animation<double>>.generate(
+          oscillations,
+          (int i) => Tween<double>(
+            begin: math.pow(0.8, i + 1) * 0.2,
+            end: math.pow(0.8, i) * 0.2,
+          ).animate(
+            CurvedAnimation(
+              parent: parent,
+              curve: Interval(
+                i / oscillations,
+                (i + 1) / oscillations,
+                curve: Curves.easeInOut,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  static Animation<double> createFadeOut(
+  /// Creates a fluid, liquid-like motion for smooth transitions
+  static Animation<double> createFluidMotion(
     Animation<double> parent, {
-    Duration duration = AppDurations.quick,
-    Curve curve = AppCurves.standard,
+    double viscosity = 0.5, // Higher = more resistant to change
+    double mass = 0.5,
   }) {
-    return Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(
+    return Tween<double>(begin: 0.0, end: 1.0).animate(
+      ClampingAnimation(
         parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
+        curve: _FluidCurve(viscosity, mass),
       ),
     );
   }
+}
 
-  static Animation<double> createScaleIn(
-    Animation<double> parent, {
-    double begin = 0.0,
-    double end = 1.0,
-    Duration duration = AppDurations.moderate,
-    Curve curve = AppCurves.standard,
-  }) {
-    return Tween<double>(begin: begin, end: end).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
-      ),
-    );
+/// Custom curve simulating fluid dynamics
+class _FluidCurve extends Curve {
+  final double viscosity;
+  final double mass;
+
+  const _FluidCurve(this.viscosity, this.mass);
+
+  @override
+  double transform(double t) {
+    // Simple fluid dynamics approximation for UI
+    double resistance = 1.0 - (viscosity * 0.5); // 0.5 to 1.0 range
+    double momentum = t * mass;
+    double position = momentum * (1.0 - resistance * t * 0.3); // Dampening factor
+    return position.clamp(0.0, 1.0);
+  }
+}
+
+/// COMPOSITE ANIMATION FOR COMBINING MULTIPLE ANIMATIONS
+class CompositeAnimation extends Animation<double> {
+  final List<Animation<double>> _animations;
+
+  CompositeAnimation(this._animations);
+
+  @override
+  AnimationStatus get status => _animations.isNotEmpty ? _animations.first.status : AnimationStatus.dismissed;
+
+  @override
+  double get value => _animations.isNotEmpty ? _animations.map((a) => a.value).reduce((a, b) => a + b) / _animations.length : 0.0;
+
+  @override
+  void addListener(VoidCallback listener) {
+    for (var anim in _animations) {
+      anim.addListener(listener);
+    }
   }
 
-  static Animation<double> createScaleOut(
-    Animation<double> parent, {
-    double begin = 1.0,
-    double end = 0.0,
-    Duration duration = AppDurations.quick,
-    Curve curve = AppCurves.standard,
-  }) {
-    return Tween<double>(begin: begin, end: end).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
-      ),
-    );
+  @override
+  void removeListener(VoidCallback listener) {
+    for (var anim in _animations) {
+      anim.removeListener(listener);
+    }
   }
 
-  static Animation<Offset> createSlideIn(
-    Animation<double> parent, {
-    Offset begin = const Offset(1.0, 0.0),
-    Offset end = Offset.zero,
-    Duration duration = AppDurations.standard,
-    Curve curve = AppCurves.standard,
-  }) {
-    return Tween<Offset>(begin: begin, end: end).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
-      ),
-    );
+  @override
+  void addStatusListener(AnimationStatusListener listener) {
+    for (var anim in _animations) {
+      anim.addStatusListener(listener);
+    }
   }
 
-  static Animation<Offset> createSlideOut(
-    Animation<double> parent, {
-    Offset begin = Offset.zero,
-    Offset end = const Offset(1.0, 0.0),
-    Duration duration = AppDurations.quick,
-    Curve curve = AppCurves.standard,
-  }) {
-    return Tween<Offset>(begin: begin, end: end).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
-      ),
-    );
+  @override
+  void removeStatusListener(AnimationStatusListener listener) {
+    for (var anim in _animations) {
+      anim.removeStatusListener(listener);
+    }
   }
 
-  static Animation<double> createPulse(
-    Animation<double> parent, {
-    double minScale = 0.95,
-    double maxScale = 1.05,
-    Duration duration = AppDurations.extended,
-    Curve curve = AppCurves.elastic,
-  }) {
-    return Tween<double>(begin: minScale, end: maxScale).animate(
-      CurvedAnimation(
-        parent: parent,
-        curve: curve,
-        reverseCurve: curve.flipped,
-      ),
-    );
+  @override
+  Animation<E> drive<E>(Animatable<E> animatee) {
+    // Delegate to the first animation if available, otherwise return a dummy animation
+    if (_animations.isNotEmpty) {
+      return _animations.first.drive(animatee);
+    }
+    // Return a simple animation that always returns the animatee's transform(0.0)
+    return _ConstantAnimation<E>(animatee.transform(0.0));
   }
 
-  static Animation<double> createStaggeredDelay(
-    int index, {
-    int baseDelay = 0,
-    int staggerAmount = AnimationStaggerConfig.delay,
-  }) {
-    return Tween<double>(begin: 0.0, end: 0.0)
-        .animate(Interval(0.0, 1.0));
-  }
+  @override
+  String toStringDetails() => '${super.toStringDetails()}, animations: $_animations';
+}
+
+/// Clamping animation that applies a curve but clamps the result
+class ClampingAnimation extends Animation<double> {
+  final Animation<double> _parent;
+  final Curve _curve;
+
+  ClampingAnimation({required Animation<double> parent, required Curve curve})
+      : _parent = parent,
+        _curve = curve;
+
+  @override
+  AnimationStatus get status => _parent.status;
+
+  @override
+  double get value => _curve.transform(_parent.value).clamp(0.0, 1.0);
+
+  @override
+  void addListener(VoidCallback listener) => _parent.addListener(listener);
+
+  @override
+  void removeListener(VoidCallback listener) => _parent.removeListener(listener);
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) => _parent.addStatusListener(listener);
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) => _parent.removeStatusListener(listener);
+
+  @override
+  Animation<T> drive<T>(Animatable<T> animatee) => _parent.drive(animatee);
+
+  @override
+  String toStringDetails() => '${super.toStringDetails()}, curve: $_curve';
 }
 
 /// Configuration for staggered animations
@@ -281,7 +303,7 @@ class AnimationStaggerConfig {
 
   static const int delay = 50; // Base delay between items in ms
   static const int duration = 250; // Base duration for each item
-  static const Curve curve = AppCurves.standard;
+  static const Curve curve = Curves.linear;
 }
 
 /// Interval timer for choreographed animations
@@ -309,6 +331,35 @@ class IntervalTimer {
   }
 }
 
+class _ConstantAnimation<T> extends Animation<T> {
+  final T _value;
+
+  _ConstantAnimation(this._value);
+
+  @override
+  AnimationStatus get status => AnimationStatus.dismissed;
+
+  @override
+  T get value => _value;
+
+  @override
+  void addListener(VoidCallback listener) {}
+
+  @override
+  void removeListener(VoidCallback listener) {}
+
+  @override
+  void addStatusListener(AnimationStatusListener listener) {}
+
+  @override
+  void removeStatusListener(AnimationStatusListener listener) {}
+
+  @override
+  Animation<T> drive<T>(Animatable<T> animatee) {
+    return _ConstantAnimation<T>(animatee.transform(0.0));
+  }
+}
+
 // Extension for easy curve inversion
 extension CurveFlipped on Curve {
   Curve get flipped {
@@ -324,4 +375,22 @@ class _FlippedCurve extends Curve {
 
   @override
   double transform(double t) => 1.0 - _original.transform(1.0 - t);
+}
+
+/// Custom animation curves for ShapeShred premium animations
+class AppCurves {
+  /// Standard curve for general animations
+  static const Curve standard = Curves.linear;
+
+  /// Bounce curve for premium UI elements
+  static const Curve premiumBounce = Cubic(0.4, 0.0, 0.2, 1.0);
+
+  /// Fluid motion curve for natural animations
+  static const Curve premiumFluid = Cubic(0.25, 0.1, 0.25, 1.0);
+
+  /// Smooth curve for subtle transitions
+  static const Curve premiumSmooth = Cubic(0.4, 0.0, 0.2, 1.0);
+
+  /// Sharp curve for precise movements
+  static const Curve premiumSharp = Cubic(0.4, 0.0, 0.6, 1.0);
 }

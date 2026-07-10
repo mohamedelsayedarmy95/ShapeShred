@@ -33,7 +33,7 @@ class WorkoutHeroCard extends StatelessWidget {
             child: Icon(
               workout.icon,
               size: 300.sp,
-              color: AppColorPalette.pureWhite.withValues(alpha: 0.05),
+              color: AppTextColors.inverse.withValues(alpha: 0.05),
             ),
           ),
           // Content
@@ -54,13 +54,13 @@ class WorkoutHeroCard extends StatelessWidget {
                     vertical: 6.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.pureWhite.withValues(alpha: 0.2),
+                    color: AppTextColors.inverse.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   ),
                   child: Text(
                     workout.category.toUpperCase(),
                     style: TextStyle(
-                      color: AppColorPalette.pureWhite,
+                      color: AppTextColors.inverse,
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.2,

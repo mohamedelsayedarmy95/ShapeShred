@@ -24,9 +24,9 @@ class BodyMetricsCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +38,7 @@ class BodyMetricsCard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.monitor_heart_outlined,
-                    color: AppColorPalette.gray900,
+                    color: AppTextColors.primary,
                     size: 22.sp,
                   ),
                   SizedBox(width: AppSpacing.space8.w),
@@ -52,7 +52,7 @@ class BodyMetricsCard extends StatelessWidget {
                 onTap: () {},
                 child: Icon(
                   Icons.edit_outlined,
-                  color: AppColorPalette.gray500,
+                  color: AppTextColors.secondary,
                   size: 18.sp,
                 ),
               ),
@@ -132,7 +132,7 @@ class _MetricItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space12.w),
       decoration: BoxDecoration(
-        color: highlight ? AppColorPalette.gray900 : AppColorPalette.gray50,
+        color: highlight ? AppColors.primary : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
       ),
       child: Column(
@@ -141,7 +141,7 @@ class _MetricItem extends StatelessWidget {
           Text(
             label,
             style: AppTypography.labelSmall.copyWith(
-              color: highlight ? AppColorPalette.gray300 : AppTextColor.secondary,
+              color: highlight ? AppColors.onPrimary.withValues(alpha: 0.7) : AppTextColors.secondary,
             ),
           ),
           SizedBox(height: AppSpacing.space4.h),
@@ -151,7 +151,7 @@ class _MetricItem extends StatelessWidget {
               Text(
                 value,
                 style: AppTypography.titleMedium.copyWith(
-                  color: highlight ? AppColorPalette.pureWhite : AppColorPalette.gray900,
+                  color: highlight ? AppColors.onPrimary : AppTextColors.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -161,7 +161,7 @@ class _MetricItem extends StatelessWidget {
                 child: Text(
                   unit,
                   style: AppTypography.labelSmall.copyWith(
-                    color: highlight ? AppColorPalette.gray400 : AppTextColor.tertiary,
+                    color: highlight ? AppColors.onPrimary.withValues(alpha: 0.6) : AppTextColors.tertiary,
                   ),
                 ),
               ),

@@ -64,9 +64,9 @@ class _SkeletonLoaderState extends State<SkeletonLoader>
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
-                widget.baseColor ?? AppColorPalette.gray200,
-                widget.highlightColor ?? AppColorPalette.gray100,
-                widget.baseColor ?? AppColorPalette.gray200,
+                widget.baseColor ?? AppColors.outline,
+                widget.highlightColor ?? AppColors.surfaceVariant,
+                widget.baseColor ?? AppColors.outline,
               ],
               stops: [
                 _animation.value - 1,
@@ -99,9 +99,9 @@ class SkeletonCard extends StatelessWidget {
       height: height ?? 120.h,
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,9 +163,9 @@ class SkeletonStatsRow extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(AppSpacing.cardPadding.w),
               decoration: BoxDecoration(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.surface,
                 borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                border: Border.all(color: AppColorPalette.gray200),
+                border: Border.all(color: AppColors.outline),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

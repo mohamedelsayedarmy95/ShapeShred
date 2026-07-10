@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
@@ -19,19 +19,19 @@ class PasswordStrengthIndicator extends StatelessWidget {
 
   PasswordStrength _calculateStrength() {
     if (password.isEmpty) return PasswordStrength.empty;
-    
+
     int score = 0;
-    
+
     // Length check
     if (password.length >= 8) score++;
     if (password.length >= 12) score++;
-    
+
     // Complexity checks
     if (password.contains(RegExp(r'[A-Z]'))) score++;
     if (password.contains(RegExp(r'[a-z]'))) score++;
     if (password.contains(RegExp(r'[0-9]'))) score++;
     if (password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) score++;
-    
+
     if (score <= 2) return PasswordStrength.weak;
     if (score <= 4) return PasswordStrength.medium;
     return PasswordStrength.strong;
@@ -40,7 +40,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strength = _calculateStrength();
-    
+
     if (strength == PasswordStrength.empty) {
       return const SizedBox.shrink();
     }
@@ -67,7 +67,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
         Text(
           _getStrengthHint(strength),
           style: AppTypography.labelSmall.copyWith(
-            color: AppTextColor.tertiary,
+            color: AppTextColors.tertiary,
           ),
         ),
       ],
@@ -79,7 +79,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadius.radiusTiny),
       child: LinearProgressIndicator(
         value: _getStrengthValue(strength),
-        backgroundColor: AppColorPalette.gray200,
+        backgroundColor: AppColors.outline,
         valueColor: AlwaysStoppedAnimation<Color>(
           _getStrengthColor(strength),
         ),
@@ -104,13 +104,13 @@ class PasswordStrengthIndicator extends StatelessWidget {
   Color _getStrengthColor(PasswordStrength strength) {
     switch (strength) {
       case PasswordStrength.weak:
-        return AppColorPalette.error;
+        return AppColors.error;
       case PasswordStrength.medium:
-        return AppColorPalette.warning;
+        return AppColors.warning;
       case PasswordStrength.strong:
-        return AppColorPalette.success;
+        return AppColors.success;
       case PasswordStrength.empty:
-        return AppColorPalette.gray200;
+        return AppColors.outline;
     }
   }
 
@@ -147,5 +147,4 @@ enum PasswordStrength {
   medium,
   strong,
 }
-
 

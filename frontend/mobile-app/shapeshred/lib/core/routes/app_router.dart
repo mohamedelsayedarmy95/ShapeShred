@@ -6,6 +6,8 @@ import 'package:shapeshred/features/training/presentation/pages/training_page.da
 import 'package:shapeshred/features/nutrition/presentation/pages/nutrition_page.dart';
 import 'package:shapeshred/features/profile/presentation/pages/profile_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/onboarding_page.dart';
+import 'package:shapeshred/features/auth/presentation/pages/login_page.dart';
+import 'package:shapeshred/features/auth/presentation/pages/signup_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -22,6 +24,20 @@ class AppRouter {
         path: '/onboarding',
         name: 'onboarding',
         builder: (context, state) => const OnboardingPage(),
+      ),
+
+      // Login Route
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
+      ),
+
+      // Signup Route
+      GoRoute(
+        path: '/signup',
+        name: 'signup',
+        builder: (context, state) => const SignupPage(),
       ),
 
       // Main App Routes

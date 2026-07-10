@@ -44,13 +44,13 @@ class EmptyState extends StatelessWidget {
                 width: 120.w,
                 height: 120.h,
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray50,
+                  color: AppColors.surfaceVariant,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
                   size: 48.sp,
-                  color: AppColorPalette.gray400,
+                  color: AppTextColors.tertiary,
                 ),
               ),
             SizedBox(height: AppSpacing.space24.h),
@@ -67,7 +67,7 @@ class EmptyState extends StatelessWidget {
             Text(
               message,
               style: AppTypography.bodyMedium.copyWith(
-                color: AppTextColor.secondary,
+                color: AppTextColors.secondary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -78,8 +78,8 @@ class EmptyState extends StatelessWidget {
               ElevatedButton(
                 onPressed: onActionPressed,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColorPalette.gray900,
-                  foregroundColor: AppColorPalette.pureWhite,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.onPrimary,
                   padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.space24.w,
                     vertical: AppSpacing.space16.h,
@@ -91,7 +91,7 @@ class EmptyState extends StatelessWidget {
                 child: Text(
                   actionLabel!,
                   style: AppTypography.labelLarge.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                   ),
                 ),
               ),

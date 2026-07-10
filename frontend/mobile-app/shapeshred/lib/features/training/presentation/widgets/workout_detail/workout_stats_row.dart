@@ -24,9 +24,9 @@ class WorkoutStatsRow extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.gray50,
+        color: AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Row(
         children: [
@@ -40,7 +40,7 @@ class WorkoutStatsRow extends StatelessWidget {
           Container(
             width: 1,
             height: 40.h,
-            color: AppColorPalette.gray200,
+            color: AppColors.outline,
           ),
           Expanded(
             child: _StatItem(
@@ -52,7 +52,7 @@ class WorkoutStatsRow extends StatelessWidget {
           Container(
             width: 1,
             height: 40.h,
-            color: AppColorPalette.gray200,
+            color: AppColors.outline,
           ),
           Expanded(
             child: _StatItem(
@@ -84,7 +84,7 @@ class _StatItem extends StatelessWidget {
       children: [
         Icon(
           icon,
-          color: AppColorPalette.gray700,
+          color: AppTextColors.secondary,
           size: 24.sp,
         ),
         SizedBox(height: AppSpacing.space8.h),
@@ -98,7 +98,7 @@ class _StatItem extends StatelessWidget {
         Text(
           label,
           style: AppTypography.labelSmall.copyWith(
-            color: AppTextColor.secondary,
+            color: AppTextColors.secondary,
           ),
         ),
       ],

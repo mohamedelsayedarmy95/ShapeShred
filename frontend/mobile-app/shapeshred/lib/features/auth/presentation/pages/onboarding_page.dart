@@ -8,6 +8,7 @@ import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/features/training/presentation/pages/home_page.dart';
+import 'package:shapeshred/features/auth/presentation/pages/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -148,17 +149,28 @@ class _OnboardingPageState extends State<OnboardingPage> {
     }
 
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
+      // Check if user is logged in; if not, send to login screen
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // User is logged in, proceed to home
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else {
+        // User is not logged in, send to login screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -171,7 +183,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: Text(
                     'Skip',
                     style: AppTypography.labelLarge.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 ),
@@ -205,15 +217,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
             });
           },
           itemBuilder: (context, index) {
-            return OnboardingSlide(slide: _slides[index]);
+            return _FadeSlideIn(
+              key: ValueKey(index),
+              child: OnboardingSlide(slide: _slides[index]),
+            );
           },
         );
       case 1:
-        return _buildGoalSelection();
+        return _FadeSlideIn(key: const ValueKey('goal'), child: _buildGoalSelection());
       case 2:
-        return _buildFitnessLevelSelection();
+        return _FadeSlideIn(key: const ValueKey('level'), child: _buildFitnessLevelSelection());
       case 3:
-        return _buildCompletion();
+        return _FadeSlideIn(key: const ValueKey('completion'), child: _buildCompletion());
       default:
         return const SizedBox.shrink();
     }
@@ -225,7 +240,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.fitness_center, size: 80.sp, color: AppColorPalette.gray900),
+          Icon(Icons.fitness_center, size: 80.sp, color: AppColors.primary),
           SizedBox(height: AppSpacing.space32.h),
           Text(
             'What is your main goal?',
@@ -236,7 +251,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Text(
             'Choose one to get started',
             style: AppTypography.bodyLarge.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -244,7 +259,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Wrap(
             spacing: AppSpacing.space12.w,
             runSpacing: AppSpacing.space12.h,
-            children: _goalOptions.map((option) => _buildGoalOption(option)).toList(),
+            children: List.generate(
+              _goalOptions.length,
+              (index) => _StaggeredEntry(
+                index: index,
+                child: _buildGoalOption(_goalOptions[index]),
+              ),
+            ),
           ),
         ],
       ),
@@ -262,24 +283,24 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: 70.w,
             height: 70.h,
             decoration: BoxDecoration(
-              color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
+              color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(AppRadius.radiusPill),
               border: Border.all(
-                color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+                color: isSelected ? AppColors.primary : AppColors.outline,
                 width: isSelected ? 2 : 1,
               ),
             ),
             child: Icon(
               option.icon,
               size: 28.sp,
-              color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray900,
+              color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
             ),
           ),
           SizedBox(height: AppSpacing.space8.h),
           Text(
             option.title,
             style: AppTypography.labelMedium.copyWith(
-              color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray700,
+              color: isSelected ? AppColors.primary : AppTextColors.secondary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),
@@ -287,7 +308,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Text(
             option.subtitle,
             style: AppTypography.bodySmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -302,7 +323,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.emoji_people, size: 80.sp, color: AppColorPalette.gray900),
+          Icon(Icons.emoji_people, size: 80.sp, color: AppColors.primary),
           SizedBox(height: AppSpacing.space32.h),
           Text(
             'What is your current fitness level?',
@@ -313,7 +334,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Text(
             'This helps us tailor your workouts',
             style: AppTypography.bodyLarge.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -321,7 +342,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Wrap(
             spacing: AppSpacing.space12.w,
             runSpacing: AppSpacing.space12.h,
-            children: _fitnessLevelOptions.map((option) => _buildFitnessLevelOption(option)).toList(),
+            children: List.generate(
+              _fitnessLevelOptions.length,
+              (index) => _StaggeredEntry(
+                index: index,
+                child: _buildFitnessLevelOption(_fitnessLevelOptions[index]),
+              ),
+            ),
           ),
         ],
       ),
@@ -339,24 +366,24 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: 70.w,
             height: 70.h,
             decoration: BoxDecoration(
-              color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
+              color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(AppRadius.radiusPill),
               border: Border.all(
-                color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+                color: isSelected ? AppColors.primary : AppColors.outline,
                 width: isSelected ? 2 : 1,
               ),
             ),
             child: Icon(
               option.icon,
               size: 28.sp,
-              color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray900,
+              color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
             ),
           ),
           SizedBox(height: AppSpacing.space8.h),
           Text(
             option.title,
             style: AppTypography.labelMedium.copyWith(
-              color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray700,
+              color: isSelected ? AppColors.primary : AppTextColors.secondary,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
             ),
           ),
@@ -364,7 +391,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Text(
             option.subtitle,
             style: AppTypography.bodySmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -379,7 +406,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check_circle, size: 80.sp, color: AppColorPalette.success),
+          Container(
+            width: 96.w,
+            height: 96.h,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: AppColors.heroGradient,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                  blurRadius: 28,
+                  offset: const Offset(0, 12),
+                ),
+              ],
+            ),
+            child: Icon(Icons.check, size: 48.sp, color: AppColors.onPrimary),
+          ),
           SizedBox(height: AppSpacing.space24.h),
           Text(
             'Almost there!',
@@ -390,7 +436,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           Text(
             'Let\'s finish setting up your profile',
             style: AppTypography.bodyLarge.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -423,13 +469,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 18.h),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+                gradient: LinearGradient(
+                  colors: AppColors.heroGradient,
                 ),
                 borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColorPalette.gray900.withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -441,7 +487,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   Text(
                     'GET STARTED',
                     style: AppTypography.labelLarge.copyWith(
-                      color: AppColorPalette.pureWhite,
+                      color: AppColors.onPrimary,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
                     ),
@@ -449,7 +495,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   SizedBox(width: AppSpacing.space8.w),
                   Icon(
                     Icons.arrow_forward,
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     size: 20.sp,
                   ),
                 ],
@@ -466,7 +512,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       padding: EdgeInsets.only(bottom: AppSpacing.space12.h),
       child: Row(
         children: [
-          Icon(icon, size: 20.sp, color: AppColorPalette.gray600),
+          Icon(icon, size: 20.sp, color: AppTextColors.secondary),
           SizedBox(width: AppSpacing.space8.w),
           Expanded(
             child: Column(
@@ -475,14 +521,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 Text(
                   title,
                   style: AppTypography.labelMedium.copyWith(
-                    color: AppColorPalette.gray900,
+                    color: AppTextColors.primary,
                   ),
                 ),
                 SizedBox(height: AppSpacing.space4.h),
                 Text(
                   subtitle,
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 ),
               ],
@@ -516,8 +562,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           controller: _pageController,
           count: _slides.length,
           effect: ExpandingDotsEffect(
-            activeDotColor: AppColorPalette.absoluteBlack,
-            dotColor: AppColorPalette.gray300,
+            activeDotColor: AppColors.primary,
+            dotColor: AppColors.outline,
             dotHeight: 8.h,
             dotWidth: 8.w,
             expansionFactor: 3,
@@ -533,13 +579,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 18.h),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+              gradient: LinearGradient(
+                colors: AppColors.heroGradient,
               ),
               borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
               boxShadow: [
                 BoxShadow(
-                  color: AppColorPalette.gray900.withValues(alpha: 0.3),
+                  color: AppColors.primary.withValues(alpha: 0.3),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -550,10 +596,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
               children: [
                 Text(
                   _currentSlideIndex == _slides.length - 1
-                      -> 'CONTINUE'
+                      ? 'CONTINUE'
                       : 'NEXT',
                   style: AppTypography.labelLarge.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1.2,
                   ),
@@ -561,7 +607,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 SizedBox(width: AppSpacing.space8.w),
                 Icon(
                   Icons.arrow_forward,
-                  color: AppColorPalette.pureWhite,
+                  color: AppColors.onPrimary,
                   size: 20.sp,
                 ),
               ],
@@ -586,7 +632,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               child: Icon(
                 Icons.arrow_back,
                 size: 24.sp,
-                color: AppColorPalette.gray600,
+                color: AppTextColors.secondary,
               ),
             ),
           ),
@@ -610,7 +656,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               child: Icon(
                 Icons.arrow_back,
                 size: 24.sp,
-                color: AppColorPalette.gray600,
+                color: AppTextColors.secondary,
               ),
             ),
           ),
@@ -666,15 +712,15 @@ class OnboardingSlide extends StatelessWidget {
             width: 200.w,
             height: 200.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColorPalette.gray900, AppColorPalette.gray700],
+              gradient: LinearGradient(
+                colors: AppColors.heroGradient,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: AppColorPalette.gray900.withValues(alpha: 0.2),
+                  color: AppColors.primary.withValues(alpha: 0.2),
                   blurRadius: 40,
                   offset: const Offset(0, 20),
                 ),
@@ -682,7 +728,7 @@ class OnboardingSlide extends StatelessWidget {
             ),
             child: Icon(
               slide.icon,
-              color: AppColorPalette.pureWhite,
+              color: AppColors.onPrimary,
               size: 80.sp,
             ),
           ),
@@ -695,13 +741,13 @@ class OnboardingSlide extends StatelessWidget {
               vertical: 8.h,
             ),
             decoration: BoxDecoration(
-              color: AppColorPalette.gray100,
+              color: AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             ),
             child: Text(
               slide.highlight.toUpperCase(),
               style: AppTypography.labelSmall.copyWith(
-                color: AppColorPalette.gray700,
+                color: AppTextColors.secondary,
                 letterSpacing: 1.5,
                 fontWeight: FontWeight.w700,
               ),
@@ -721,7 +767,7 @@ class OnboardingSlide extends StatelessWidget {
           Text(
             slide.subtitle,
             style: AppTypography.bodyLarge.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
               height: 1.6,
             ),
             textAlign: TextAlign.center,
@@ -746,4 +792,58 @@ class FitnessLevelOption {
   final String subtitle;
 
   const FitnessLevelOption(this.title, this.icon, this.subtitle);
+}
+
+/// Fades and slides its child up once, on first build.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
+
+  const _FadeSlideIn({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+/// Fades and slides its child up with an index-based stagger delay.
+class _StaggeredEntry extends StatelessWidget {
+  final int index;
+  final Widget child;
+
+  const _StaggeredEntry({required this.index, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.standard +
+          Duration(milliseconds: index * AnimationStaggerConfig.delay),
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
 }

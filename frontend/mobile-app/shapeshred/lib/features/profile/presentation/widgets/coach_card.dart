@@ -26,9 +26,9 @@ class CoachCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(AppSpacing.space16.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Row(
           children: [
@@ -42,14 +42,14 @@ class CoachCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: const LinearGradient(
-                      colors: [AppColorPalette.gray700, AppColorPalette.gray900],
+                      colors: AppColors.heroGradient,
                     ),
                   ),
                   child: Center(
                     child: Text(
                       coachName.isNotEmpty ? coachName[0].toUpperCase() : 'C',
                       style: AppTypography.titleLarge.copyWith(
-                        color: AppColorPalette.pureWhite,
+                        color: AppColors.onPrimary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -63,10 +63,10 @@ class CoachCard extends StatelessWidget {
                       width: 14.w,
                       height: 14.h,
                       decoration: BoxDecoration(
-                        color: AppColorPalette.success,
+                        color: AppColors.success,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AppColorPalette.pureWhite,
+                          color: AppColors.surface,
                           width: 2,
                         ),
                       ),
@@ -97,7 +97,7 @@ class CoachCard extends StatelessWidget {
                   Text(
                     specialty,
                     style: AppTypography.bodySmall.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space4.h),
@@ -105,7 +105,7 @@ class CoachCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.star,
-                        color: AppColorPalette.gray900,
+                        color: AppTextColors.primary,
                         size: 14.sp,
                       ),
                       SizedBox(width: 4.w),
@@ -123,16 +123,16 @@ class CoachCard extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: isOnline
-                              ? AppColorPalette.success.withValues(alpha: 0.1)
-                              : AppColorPalette.gray200,
+                              ? AppColors.success.withValues(alpha: 0.1)
+                              : AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                         ),
                         child: Text(
                           isOnline ? 'Online' : 'Offline',
                           style: AppTypography.labelSmall.copyWith(
                             color: isOnline
-                                ? AppColorPalette.success
-                                : AppTextColor.secondary,
+                                ? AppColors.success
+                                : AppTextColors.secondary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -147,13 +147,13 @@ class CoachCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(10.r),
               decoration: BoxDecoration(
-                color: AppColorPalette.gray50,
+                color: AppColors.surfaceVariant,
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColorPalette.gray200),
+                border: Border.all(color: AppColors.outline),
               ),
               child: Icon(
                 Icons.chat_bubble_outline,
-                color: AppColorPalette.gray900,
+                color: AppTextColors.primary,
                 size: 20.sp,
               ),
             ),

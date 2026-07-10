@@ -44,7 +44,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
 
     if (doc.exists && mounted) {
       setState(() {
-        _currentPhotoUrl = doc.data()?['photoUrl'];
+        _currentPhotoUrl = doc.data()?['photoUrl'] as String?;
       });
     }
   }
@@ -74,10 +74,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
             content: Text(
               'Failed to pick image: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -115,7 +115,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
       });
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         setState(() {
           _currentPhotoUrl = downloadUrl;
           _selectedImage = null;
@@ -126,10 +126,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
             content: Text(
               'Profile photo updated successfully!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
@@ -143,10 +143,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
             content: Text(
               'Failed to upload photo: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -175,7 +175,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
       });
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         setState(() {
           _currentPhotoUrl = null;
           _selectedImage = null;
@@ -186,10 +186,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
             content: Text(
               'Profile photo removed',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
@@ -203,10 +203,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
             content: Text(
               'Failed to remove photo: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -221,12 +221,12 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -247,10 +247,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                 width: 200.w,
                 height: 200.h,
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray50,
+                  color: AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.radiusCircle),
                   border: Border.all(
-                    color: AppColorPalette.gray200,
+                    color: AppColors.outline,
                     width: 2,
                   ),
                 ),
@@ -270,7 +270,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Center(
                                 child: CircularProgressIndicator(
-                                  color: AppColorPalette.gray900,
+                                  color: AppColors.primary,
                                 ),
                               ),
                               errorWidget: (context, url, error) => _buildPlaceholder(),
@@ -320,7 +320,8 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                     _buildActionOption(
                       icon: Icons.close,
                       label: 'Cancel',
-                      color: AppColorPalette.error,
+                      color: AppColors.error,
+                      onColor: AppColors.onError,
                       onTap: () {
                         setState(() => _selectedImage = null);
                         HapticHelper.light();
@@ -330,7 +331,8 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                     _buildActionOption(
                       icon: Icons.check,
                       label: 'Upload',
-                      color: AppColorPalette.success,
+                      color: AppColors.success,
+                      onColor: AppColors.onTertiary,
                       onTap: _uploadPhoto,
                       isLoading: _isUploading,
                     ),
@@ -346,7 +348,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                   onPressed: _removePhoto,
                   isLoading: _isLoading,
                   fullWidth: true,
-                  variant: PremiumButtonVariant.outline,
+                  isDestructive: true,
                 ),
 
               SizedBox(height: AppSpacing.space16.h),
@@ -355,7 +357,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
               Container(
                 padding: EdgeInsets.all(AppSpacing.space16.w),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray50,
+                  color: AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                 ),
                 child: Column(
@@ -365,7 +367,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                       children: [
                         Icon(
                           Icons.lightbulb_outline,
-                          color: AppColorPalette.gray700,
+                          color: AppTextColors.secondary,
                           size: 20.sp,
                         ),
                         SizedBox(width: AppSpacing.space8.w),
@@ -400,13 +402,13 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
           Icon(
             Icons.person,
             size: 80.sp,
-            color: AppColorPalette.gray300,
+            color: AppTextColors.tertiary,
           ),
           SizedBox(height: AppSpacing.space8.h),
           Text(
             'No photo',
             style: AppTypography.bodyMedium.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
         ],
@@ -427,16 +429,16 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
           vertical: AppSpacing.space16.h,
         ),
         decoration: BoxDecoration(
-          color: AppColorPalette.gray50,
+          color: AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Column(
           children: [
             Icon(
               icon,
               size: 32.sp,
-              color: AppColorPalette.gray900,
+              color: AppTextColors.primary,
             ),
             SizedBox(height: AppSpacing.space8.h),
             Text(
@@ -454,8 +456,10 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
     required String label,
     required Color color,
     required VoidCallback onTap,
+    Color? onColor,
     bool isLoading = false,
   }) {
+    final foreground = onColor ?? AppColors.onPrimary;
     return GestureDetector(
       onTap: isLoading ? null : onTap,
       child: Container(
@@ -464,7 +468,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
           vertical: AppSpacing.space16.h,
         ),
         decoration: BoxDecoration(
-          color: isLoading ? AppColorPalette.gray100 : color,
+          color: isLoading ? AppColors.surfaceVariant : color,
           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
         ),
         child: isLoading
@@ -473,7 +477,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                 height: 24.h,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColorPalette.pureWhite),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
               )
             : Column(
@@ -481,13 +485,13 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                   Icon(
                     icon,
                     size: 32.sp,
-                    color: AppColorPalette.pureWhite,
+                    color: foreground,
                   ),
                   SizedBox(height: AppSpacing.space8.h),
                   Text(
                     label,
                     style: AppTypography.labelMedium.copyWith(
-                      color: AppColorPalette.pureWhite,
+                      color: foreground,
                     ),
                   ),
                 ],
@@ -504,13 +508,13 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
           Icon(
             Icons.check_circle_outline,
             size: 16.sp,
-            color: AppColorPalette.gray700,
+            color: AppTextColors.secondary,
           ),
           SizedBox(width: AppSpacing.space8.w),
           Text(
             tip,
             style: AppTypography.bodySmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
@@ -43,11 +44,12 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
       final privacy = doc.data()?['privacy'] as Map<String, dynamic>?;
       if (privacy != null) {
         setState(() {
-          _profileVisible = privacy['profileVisible'] ?? true;
-          _statsVisible = privacy['statsVisible'] ?? true;
-          _allowFriendRequests = privacy['allowFriendRequests'] ?? true;
-          _showActivity = privacy['showActivity'] ?? true;
-          _dataCollection = privacy['dataCollection'] ?? true;
+          _profileVisible = privacy['profileVisible'] as bool? ?? true;
+          _statsVisible = privacy['statsVisible'] as bool? ?? true;
+          _allowFriendRequests =
+              privacy['allowFriendRequests'] as bool? ?? true;
+          _showActivity = privacy['showActivity'] as bool? ?? true;
+          _dataCollection = privacy['dataCollection'] as bool? ?? true;
         });
       }
       setState(() => _isLoading = false);
@@ -76,16 +78,16 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
       });
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Privacy settings saved!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
@@ -99,10 +101,10 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             content: Text(
               'Failed to save settings: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -117,12 +119,12 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -276,9 +278,9 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
         SizedBox(height: AppSpacing.space16.h),
         Container(
           decoration: BoxDecoration(
-            color: AppColorPalette.pureWhite,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-            border: Border.all(color: AppColorPalette.gray200),
+            border: Border.all(color: AppColors.outline),
           ),
           child: Column(
             children: children,
@@ -315,7 +317,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
                 Text(
                   subtitle,
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 ),
               ],
@@ -325,7 +327,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColorPalette.gray900,
+            activeColor: AppColors.primary,
           ),
         ],
       ),
@@ -350,7 +352,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
           children: [
             Icon(
               icon,
-              color: isDestructive ? AppColorPalette.error : AppColorPalette.gray700,
+              color: isDestructive ? AppColors.error : AppTextColors.secondary,
               size: 24.sp,
             ),
             SizedBox(width: AppSpacing.space16.w),
@@ -362,14 +364,14 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
                     title,
                     style: AppTypography.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: isDestructive ? AppColorPalette.error : AppColorPalette.gray900,
+                      color: isDestructive ? AppColors.error : AppTextColors.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space4.h),
                   Text(
                     subtitle,
                     style: AppTypography.bodySmall.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 ],
@@ -377,7 +379,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             ),
             Icon(
               Icons.chevron_right,
-              color: AppColorPalette.gray300,
+              color: AppTextColors.tertiary,
               size: 24.sp,
             ),
           ],
@@ -406,7 +408,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             Text(
               'This action cannot be undone. All your data including:',
               style: AppTypography.bodySmall.copyWith(
-                color: AppTextColor.secondary,
+                color: AppTextColors.secondary,
               ),
             ),
             SizedBox(height: AppSpacing.space8.h),
@@ -415,12 +417,12 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
                       padding: EdgeInsets.only(left: AppSpacing.space8.w, bottom: AppSpacing.space4.h),
                       child: Row(
                         children: [
-                          Icon(Icons.circle, size: 4.sp, color: AppColorPalette.gray700),
+                          Icon(Icons.circle, size: 4.sp, color: AppTextColors.secondary),
                           SizedBox(width: AppSpacing.space8.w),
                           Text(
                             item,
                             style: AppTypography.bodySmall.copyWith(
-                              color: AppTextColor.secondary,
+                              color: AppTextColors.secondary,
                             ),
                           ),
                         ],
@@ -430,7 +432,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             Text(
               'will be permanently deleted.',
               style: AppTypography.bodySmall.copyWith(
-                color: AppTextColor.secondary,
+                color: AppTextColors.secondary,
               ),
             ),
           ],
@@ -444,7 +446,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             child: Text(
               'Cancel',
               style: AppTypography.labelMedium.copyWith(
-                color: AppColorPalette.gray700,
+                color: AppTextColors.secondary,
               ),
             ),
           ),
@@ -455,13 +457,13 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
               _deleteAccount();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColorPalette.error,
-              foregroundColor: AppColorPalette.pureWhite,
+              backgroundColor: AppColors.error,
+              foregroundColor: AppColors.onError,
             ),
             child: Text(
               'Delete',
               style: AppTypography.labelMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
           ),
@@ -485,22 +487,22 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
       await user.delete();
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Account deleted successfully',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
           ),
         );
-        
+
         // Navigate to login
-        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+        context.go('/login');
       }
     } catch (e) {
       HapticHelper.error();
@@ -510,10 +512,10 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             content: Text(
               'Failed to delete account: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );

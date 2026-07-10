@@ -44,6 +44,8 @@ dependencies:
   flutter_bloc: ^8.1.6
   get_it: ^7.7.0
   injectable: ^2.5.0
+  flutter_riverpod: ^3.3.2
+  riverpod_annotation: ^4.0.3
 
   # UI & UX
   flutter_native_splash: ^2.4.0
@@ -56,9 +58,10 @@ dependencies:
 
   # Utilities
   cupertino_icons: ^1.0.8
-  flutter_dotenv: ^5.2.1
+  flutter_dotenv: ^6.0.1
   logger: ^2.7.0
   image_picker: ^1.2.3
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -80,7 +83,8 @@ flutter:
   generate: true
   
   assets:
-    - assets/images/
+    - .env
+  - assets/images/
     - assets/icons/
 
 
@@ -96,6 +100,7 @@ flutter_native_splash:
   image: assets/icons/app_icon.png
   android: true
   ios: false
+
 
 
 

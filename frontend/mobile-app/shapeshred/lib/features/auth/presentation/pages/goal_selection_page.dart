@@ -5,6 +5,8 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/features/auth/presentation/pages/body_metrics_page.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
+import 'package:shapeshred/core/services/preferences_service.dart';
 
 class GoalSelectionPage extends StatefulWidget {
   const GoalSelectionPage({super.key});
@@ -46,9 +48,10 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
+        child: _FadeSlideIn(
+          child: Padding(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +65,7 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
               Text(
                 'We\'ll personalize your experience',
                 style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
               SizedBox(height: AppSpacing.space32.h),
@@ -76,7 +79,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                     final Map<String, dynamic> goal = _goals[index];
                     final isSelected = _selectedGoal == goal['id'];
                     
-                    return GestureDetector(
+                    return _StaggeredEntry(
+                      index: index,
+                      child: GestureDetector(
                       onTap: () {
                         setState(() {
                           _selectedGoal = goal['id'] as String?;
@@ -85,14 +90,14 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                       child: Container(
                         padding: EdgeInsets.all(AppSpacing.space20.w),
                         decoration: BoxDecoration(
-                          color: isSelected 
-                              ? AppColorPalette.gray900 
-                              : AppColorPalette.gray50,
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                           border: Border.all(
-                            color: isSelected 
-                                ? AppColorPalette.gray900 
-                                : AppColorPalette.gray200,
+                            color: isSelected
+                                ? AppColors.primary
+                                : AppColors.outline,
                             width: isSelected ? 2 : 1,
                           ),
                         ),
@@ -102,16 +107,16 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                               width: 56.w,
                               height: 56.h,
                               decoration: BoxDecoration(
-                                color: isSelected 
-                                    ? AppColorPalette.gray800 
-                                    : AppColorPalette.pureWhite,
+                                color: isSelected
+                                    ? AppColors.onPrimary.withValues(alpha: 0.2)
+                                    : AppColors.surface,
                                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                               ),
                               child: Icon(
                                 goal['icon'] as IconData,
-                                color: isSelected 
-                                    ? AppColorPalette.pureWhite 
-                                    : AppColorPalette.gray900,
+                                color: isSelected
+                                    ? AppColors.onPrimary
+                                    : AppTextColors.primary,
                                 size: 28.sp,
                               ),
                             ),
@@ -123,9 +128,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                                   Text(
                                     goal['title'] as String,
                                     style: AppTypography.titleMedium.copyWith(
-                                      color: isSelected 
-                                          ? AppColorPalette.pureWhite 
-                                          : AppColorPalette.gray900,
+                                      color: isSelected
+                                          ? AppColors.onPrimary
+                                          : AppTextColors.primary,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -133,9 +138,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                                   Text(
                                     goal['subtitle'] as String,
                                     style: AppTypography.bodySmall.copyWith(
-                                      color: isSelected 
-                                          ? AppColorPalette.gray300 
-                                          : AppTextColor.secondary,
+                                      color: isSelected
+                                          ? AppColors.onPrimary.withValues(alpha: 0.75)
+                                          : AppTextColors.secondary,
                                     ),
                                   ),
                                 ],
@@ -144,11 +149,12 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                             if (isSelected)
                               Icon(
                                 Icons.check_circle,
-                                color: AppColorPalette.pureWhite,
+                                color: AppColors.onPrimary,
                                 size: 24.sp,
                               ),
                           ],
                         ),
+                      ),
                       ),
                     );
                   },
@@ -158,7 +164,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
               // Continue Button
               GestureDetector(
                 onTap: _selectedGoal != null
-                    ? () {
+                    ? () async {
+                        await PreferencesService.setUserGoal(_selectedGoal!);
+                        if (!context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -171,9 +179,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(vertical: 18.h),
                   decoration: BoxDecoration(
-                    color: _selectedGoal != null 
-                        ? AppColorPalette.gray900 
-                        : AppColorPalette.gray200,
+                    color: _selectedGoal != null
+                        ? AppColors.primary
+                        : AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   ),
                   child: Row(
@@ -182,9 +190,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                       Text(
                         'CONTINUE',
                         style: AppTypography.labelLarge.copyWith(
-                          color: _selectedGoal != null 
-                              ? AppColorPalette.pureWhite 
-                              : AppColorPalette.gray400,
+                          color: _selectedGoal != null
+                              ? AppColors.onPrimary
+                              : AppTextColors.tertiary,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.2,
                         ),
@@ -192,9 +200,9 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
                       SizedBox(width: AppSpacing.space8.w),
                       Icon(
                         Icons.arrow_forward,
-                        color: _selectedGoal != null 
-                            ? AppColorPalette.pureWhite 
-                            : AppColorPalette.gray400,
+                        color: _selectedGoal != null
+                            ? AppColors.onPrimary
+                            : AppTextColors.tertiary,
                         size: 20.sp,
                       ),
                     ],
@@ -205,7 +213,62 @@ class _GoalSelectionPageState extends State<GoalSelectionPage> {
             ],
           ),
         ),
+        ),
       ),
+    );
+  }
+}
+
+/// Fades and slides its child up once, on first build.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
+
+  const _FadeSlideIn({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+/// Fades and slides its child up with an index-based stagger delay.
+class _StaggeredEntry extends StatelessWidget {
+  final int index;
+  final Widget child;
+
+  const _StaggeredEntry({required this.index, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.standard +
+          Duration(milliseconds: index * AnimationStaggerConfig.delay),
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value.clamp(0.0, 1.0),
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 12),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

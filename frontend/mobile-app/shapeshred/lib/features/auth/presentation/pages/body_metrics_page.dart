@@ -6,6 +6,7 @@ import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/auth/presentation/pages/fitness_level_page.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 
 class BodyMetricsPage extends StatefulWidget {
   const BodyMetricsPage({super.key});
@@ -82,10 +83,11 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+          child: _FadeSlideIn(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -97,7 +99,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
               Text(
                 'Help us calculate your personalized plan',
                 style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
               SizedBox(height: AppSpacing.space32.h),
@@ -194,8 +196,8 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
                 child: ElevatedButton(
                   onPressed: _handleContinue,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColorPalette.gray900,
-                    foregroundColor: AppColorPalette.pureWhite,
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.onPrimary,
                     padding: EdgeInsets.symmetric(vertical: 18.h),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
@@ -205,7 +207,7 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
                   child: Text(
                     'CONTINUE',
                     style: AppTypography.labelLarge.copyWith(
-                      color: AppColorPalette.pureWhite,
+                      color: AppColors.onPrimary,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
                     ),
@@ -215,8 +217,35 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
               SizedBox(height: AppSpacing.space16.h),
             ],
           ),
+          ),
         ),
       ),
+    );
+  }
+}
+
+/// Fades and slides its child up once, on first build.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
+
+  const _FadeSlideIn({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }
@@ -242,10 +271,10 @@ class _GenderButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 20.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
+          color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           border: Border.all(
-            color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+            color: isSelected ? AppColors.primary : AppColors.outline,
             width: 2,
           ),
         ),
@@ -254,13 +283,13 @@ class _GenderButton extends StatelessWidget {
             Icon(
               icon,
               size: 40.sp,
-              color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray700,
+              color: isSelected ? AppColors.onPrimary : AppTextColors.secondary,
             ),
             SizedBox(height: AppSpacing.space8.h),
             Text(
               label,
               style: AppTypography.labelLarge.copyWith(
-                color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray700,
+                color: isSelected ? AppColors.onPrimary : AppTextColors.secondary,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -302,34 +331,34 @@ class _MetricInput extends StatelessWidget {
         TextField(
           controller: controller,
           keyboardType: keyboardType,
-          style: AppTypography.bodyLarge.copyWith(color: AppColorPalette.gray900),
+          style: AppTypography.bodyLarge.copyWith(color: AppTextColors.primary),
           decoration: InputDecoration(
-            prefixIcon: Icon(icon, color: AppColorPalette.gray500),
+            prefixIcon: Icon(icon, color: AppTextColors.secondary),
             suffixIcon: Container(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               alignment: Alignment.center,
               child: Text(
                 unit,
                 style: AppTypography.bodyMedium.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
             filled: true,
-            fillColor: AppColorPalette.gray50,
+            fillColor: AppColors.surfaceVariant,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-              borderSide: BorderSide(color: AppColorPalette.gray200),
+              borderSide: BorderSide(color: AppColors.outline),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-              borderSide: BorderSide(color: AppColorPalette.gray200),
+              borderSide: BorderSide(color: AppColors.outline),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
               borderSide: BorderSide(
-                color: AppColorPalette.gray900,
+                color: AppColors.primary,
                 width: 2,
               ),
             ),

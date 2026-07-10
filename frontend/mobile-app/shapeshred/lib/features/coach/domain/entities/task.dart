@@ -26,10 +26,12 @@
 
   factory Task.fromMap(String id, Map<String, dynamic> map) => Task(
     id: id,
-    title: map['title'] ?? '',
-    description: map['description'] ?? '',
-    dueDate: map['dueDate'] != null ? DateTime.parse(map['dueDate']) : DateTime.now(),
-    isCompleted: map['isCompleted'] ?? false,
-    assignedBy: map['assignedBy'] ?? '',
+    title: map['title'] as String? ?? '',
+    description: map['description'] as String? ?? '',
+    dueDate: map['dueDate'] != null
+        ? DateTime.parse(map['dueDate'] as String)
+        : DateTime.now(),
+    isCompleted: map['isCompleted'] as bool? ?? false,
+    assignedBy: map['assignedBy'] as String? ?? '',
   );
 }

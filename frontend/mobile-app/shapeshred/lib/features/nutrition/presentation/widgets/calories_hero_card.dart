@@ -4,6 +4,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/atoms/animated_progress_bar.dart';
 
 class CaloriesHeroCard extends StatelessWidget {
   final int consumed;
@@ -23,15 +24,15 @@ class CaloriesHeroCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space24.w),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColorPalette.gray900, AppColorPalette.gray700],
+        gradient: LinearGradient(
+          colors: AppColors.heroGradient,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppRadius.radiusXL),
         boxShadow: [
           BoxShadow(
-            color: AppColorPalette.gray900.withValues(alpha: 0.2),
+            color: AppColors.primary.withValues(alpha: 0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -48,13 +49,13 @@ class CaloriesHeroCard extends StatelessWidget {
                   vertical: 6.h,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray600,
+                  color: AppColors.onPrimary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 ),
                 child: Text(
                   ' DAILY CALORIES',
                   style: AppTypography.labelSmall.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     letterSpacing: 1.2,
                   ),
                 ),
@@ -62,7 +63,7 @@ class CaloriesHeroCard extends StatelessWidget {
               const Spacer(),
               Icon(
                 Icons.local_fire_department,
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onPrimary,
                 size: 24.sp,
               ),
             ],
@@ -76,7 +77,7 @@ class CaloriesHeroCard extends StatelessWidget {
               Text(
                 '$consumed',
                 style: AppTypography.displayMedium.copyWith(
-                  color: AppColorPalette.pureWhite,
+                  color: AppColors.onPrimary,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -86,7 +87,7 @@ class CaloriesHeroCard extends StatelessWidget {
                 child: Text(
                   '/ $goal kcal',
                   style: AppTypography.bodyLarge.copyWith(
-                    color: AppColorPalette.gray300,
+                    color: AppColors.onPrimary.withValues(alpha: 0.7),
                   ),
                 ),
               ),
@@ -96,22 +97,17 @@ class CaloriesHeroCard extends StatelessWidget {
           Text(
             '$remaining kcal remaining',
             style: AppTypography.bodyMedium.copyWith(
-              color: AppColorPalette.gray400,
+              color: AppColors.onPrimary.withValues(alpha: 0.6),
             ),
           ),
           SizedBox(height: AppSpacing.space20.h),
 
           // Progress Bar
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.radiusPill),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 8.h,
-              backgroundColor: AppColorPalette.gray700,
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                AppColorPalette.pureWhite,
-              ),
-            ),
+          AnimatedProgressBar(
+            value: progress,
+            minHeight: 8.h,
+            backgroundColor: AppColors.onPrimary.withValues(alpha: 0.2),
+            color: AppColors.onPrimary,
           ),
         ],
       ),

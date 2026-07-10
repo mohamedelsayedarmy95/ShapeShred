@@ -20,9 +20,9 @@ class WaterTracker extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +31,7 @@ class WaterTracker extends StatelessWidget {
             children: [
               Icon(
                 Icons.water_drop,
-                color: AppColorPalette.gray700,
+                color: AppColors.info,
                 size: 24.sp,
               ),
               SizedBox(width: AppSpacing.space8.w),
@@ -43,7 +43,7 @@ class WaterTracker extends StatelessWidget {
               Text(
                 '$current / $goal glasses',
                 style: AppTypography.labelLarge.copyWith(
-                  color: AppColorPalette.gray700,
+                  color: AppTextColors.secondary,
                 ),
               ),
             ],
@@ -60,19 +60,19 @@ class WaterTracker extends StatelessWidget {
                   child: Container(
                     height: 40.h,
                     decoration: BoxDecoration(
-                      color: index < current 
-                          ? AppColorPalette.gray900 
-                          : AppColorPalette.gray100,
+                      color: index < current
+                          ? AppColors.info
+                          : AppColors.surfaceVariant,
                       borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
                       border: Border.all(
-                        color: AppColorPalette.gray300,
+                        color: AppColors.outline,
                         width: 1,
                       ),
                     ),
                     child: index < current
                         ? Icon(
                             Icons.water_drop,
-                            color: AppColorPalette.pureWhite,
+                            color: AppColors.onSecondary,
                             size: 16.sp,
                           )
                         : null,

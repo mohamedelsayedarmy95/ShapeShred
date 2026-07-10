@@ -41,10 +41,10 @@ class _MainLayoutState extends State<MainLayout> {
       body: widget.child,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           border: Border(
             top: BorderSide(
-              color: AppColorPalette.gray200,
+              color: AppColors.outline,
               width: 1,
             ),
           ),
@@ -53,9 +53,9 @@ class _MainLayoutState extends State<MainLayout> {
           currentIndex: widget.currentIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColorPalette.pureWhite,
-          selectedItemColor: AppColorPalette.absoluteBlack,
-          unselectedItemColor: AppColorPalette.gray400,
+          backgroundColor: AppColors.surface,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppTextColors.tertiary,
           selectedLabelStyle: AppTypography.labelSmall.copyWith(
             fontWeight: FontWeight.w600,
           ),

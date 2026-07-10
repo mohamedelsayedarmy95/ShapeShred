@@ -62,12 +62,12 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -224,16 +224,16 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
             vertical: AppSpacing.space8.h,
           ),
           decoration: BoxDecoration(
-            color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray50,
+            color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
             borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             border: Border.all(
-              color: isSelected ? AppColorPalette.gray900 : AppColorPalette.gray200,
+              color: isSelected ? AppColors.primary : AppColors.outline,
             ),
           ),
           child: Text(
             label,
             style: AppTypography.labelMedium.copyWith(
-              color: isSelected ? AppColorPalette.pureWhite : AppColorPalette.gray900,
+              color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
             ),
           ),
         ),
@@ -251,9 +251,9 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
         margin: EdgeInsets.only(bottom: AppSpacing.space16.h),
         padding: EdgeInsets.all(AppSpacing.space16.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Row(
           children: [
@@ -262,13 +262,13 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
               width: 60.w,
               height: 60.h,
               decoration: BoxDecoration(
-                color: AppColorPalette.gray100,
+                color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
               ),
               child: Icon(
                 _getExerciseIcon(exercise.muscleGroup),
                 size: 32.sp,
-                color: AppColorPalette.gray700,
+                color: AppTextColors.secondary,
               ),
             ),
             SizedBox(width: AppSpacing.space16.w),
@@ -288,7 +288,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                   Text(
                     exercise.muscleGroup,
                     style: AppTypography.bodySmall.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space8.h),
@@ -312,13 +312,13 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                 vertical: AppSpacing.space8.h,
               ),
               decoration: BoxDecoration(
-                color: AppColorPalette.gray50,
+                color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
               ),
               child: Text(
                 '${exercise.duration}s',
                 style: AppTypography.labelSmall.copyWith(
-                  color: AppColorPalette.gray700,
+                  color: AppTextColors.secondary,
                 ),
               ),
             ),
@@ -335,13 +335,13 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
         vertical: AppSpacing.space4.h,
       ),
       decoration: BoxDecoration(
-        color: AppColorPalette.gray100,
+        color: AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
       ),
       child: Text(
         text,
         style: AppTypography.labelSmall.copyWith(
-          color: AppColorPalette.gray700,
+          color: AppTextColors.secondary,
         ),
       ),
     );
@@ -355,20 +355,20 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
           Icon(
             Icons.search_off,
             size: 64.sp,
-            color: AppColorPalette.gray300,
+            color: AppTextColors.tertiary,
           ),
           SizedBox(height: AppSpacing.space16.h),
           Text(
             'No exercises found',
             style: AppTypography.titleMedium.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
           SizedBox(height: AppSpacing.space8.h),
           Text(
             'Try adjusting your filters',
             style: AppTypography.bodySmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
         ],
@@ -387,7 +387,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
         maxChildSize: 0.95,
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
-            color: AppColorPalette.pureWhite,
+            color: AppColors.surface,
             borderRadius: BorderRadius.vertical(
               top: Radius.circular(AppRadius.radiusXL),
             ),
@@ -403,7 +403,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                   height: 4.h,
                   margin: EdgeInsets.only(bottom: AppSpacing.space16.h),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray200,
+                    color: AppColors.outline,
                     borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   ),
                 ),
@@ -441,7 +441,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
               Text(
                 exercise.description,
                 style: AppTypography.bodyMedium.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
               SizedBox(height: AppSpacing.space24.h),
@@ -465,7 +465,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                         height: 24.h,
                         margin: EdgeInsets.only(right: AppSpacing.space12.w),
                         decoration: BoxDecoration(
-                          color: AppColorPalette.gray100,
+                          color: AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
                         ),
                         child: Center(
@@ -499,17 +499,17 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                       content: Text(
                         '${exercise.name} added to workout',
                         style: AppTypography.bodyMedium.copyWith(
-                          color: AppColorPalette.pureWhite,
+                          color: AppColors.onTertiary,
                         ),
                       ),
-                      backgroundColor: AppColorPalette.success,
+                      backgroundColor: AppColors.success,
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColorPalette.gray900,
-                  foregroundColor: AppColorPalette.pureWhite,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.onPrimary,
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
@@ -518,7 +518,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                 child: Text(
                   'Add to Workout',
                   style: AppTypography.labelLarge.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

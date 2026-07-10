@@ -38,25 +38,25 @@ class CategoryFilter extends StatelessWidget {
                 vertical: AppSpacing.space12.h,
               ),
               decoration: BoxDecoration(
-                color: isSelected 
-                    ? AppColorPalette.absoluteBlack 
-                    : AppColorPalette.gray50,
+                color: isSelected
+                    ? AppColors.primary
+                    : AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 border: Border.all(
-                  color: isSelected 
-                      ? AppColorPalette.absoluteBlack 
-                      : AppColorPalette.gray200,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.outline,
                 ),
               ),
               child: Center(
                 child: Text(
                   category,
                   style: AppTypography.labelLarge.copyWith(
-                    color: isSelected 
-                        ? AppColorPalette.pureWhite 
-                        : AppColorPalette.gray700,
-                    fontWeight: isSelected 
-                        ? FontWeight.w600 
+                    color: isSelected
+                        ? AppColors.onPrimary
+                        : AppTextColors.secondary,
+                    fontWeight: isSelected
+                        ? FontWeight.w600
                         : FontWeight.w400,
                   ),
                 ),

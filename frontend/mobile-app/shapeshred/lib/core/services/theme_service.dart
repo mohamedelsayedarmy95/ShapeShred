@@ -8,31 +8,33 @@ class ThemeService {
 
   static const String _themeKey = 'app_theme_mode';
 
-  static ThemeMode _currentThemeMode = ThemeMode.light;
+  /// Notifies listeners (e.g. the root MaterialApp) whenever the theme
+  /// mode changes, so the whole app rebuilds with the new palette.
+  static final ValueNotifier<ThemeMode> modeNotifier =
+      ValueNotifier<ThemeMode>(ThemeMode.dark);
 
   /// Initialize theme service
   static Future<void> initialize() async {
     final savedTheme = await SecureStorageService.read(_themeKey);
     if (savedTheme != null) {
-      _currentThemeMode = savedTheme == 'dark' ? ThemeMode.dark : ThemeMode.light;
+      modeNotifier.value = savedTheme == 'light' ? ThemeMode.light : ThemeMode.dark;
     }
   }
 
   /// Get current theme mode
-  static ThemeMode get themeMode => _currentThemeMode;
+  static ThemeMode get themeMode => modeNotifier.value;
 
   /// Check if dark mode is active
-  static bool get isDarkMode => _currentThemeMode == ThemeMode.dark;
+  static bool get isDarkMode => modeNotifier.value == ThemeMode.dark;
 
   /// Switch theme
   static Future<void> switchTheme() async {
-    _currentThemeMode = isDarkMode ? ThemeMode.light : ThemeMode.dark;
-    await SecureStorageService.write(_themeKey, isDarkMode ? 'dark' : 'light');
+    await setTheme(isDarkMode ? ThemeMode.light : ThemeMode.dark);
   }
 
   /// Set specific theme
   static Future<void> setTheme(ThemeMode mode) async {
-    _currentThemeMode = mode;
+    modeNotifier.value = mode;
     await SecureStorageService.write(_themeKey, mode == ThemeMode.dark ? 'dark' : 'light');
   }
 }

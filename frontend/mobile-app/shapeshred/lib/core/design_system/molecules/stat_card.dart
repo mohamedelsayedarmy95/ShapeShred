@@ -26,9 +26,9 @@ class StatCard extends StatelessWidget {
           horizontal: AppSpacing.space8.w,
         ),
         decoration: BoxDecoration(
-          color: AppColorPalette.gray50,
+          color: AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -45,7 +45,7 @@ class StatCard extends StatelessWidget {
             Text(
               label,
               style: AppTypography.labelSmall.copyWith(
-                color: AppTextColor.secondary,
+                color: AppTextColors.secondary,
               ),
               textAlign: TextAlign.center,
             ),

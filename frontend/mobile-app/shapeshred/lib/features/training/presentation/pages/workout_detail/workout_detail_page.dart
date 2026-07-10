@@ -21,7 +21,7 @@ class WorkoutDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
@@ -30,17 +30,17 @@ class WorkoutDetailPage extends StatelessWidget {
             expandedHeight: 280.h,
             floating: false,
             pinned: true,
-            backgroundColor: AppColorPalette.pureWhite,
+            backgroundColor: AppColors.background,
             leading: GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
                 margin: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.pureWhite,
+                  color: AppColors.surface,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColorPalette.absoluteBlack.withValues(alpha: 0.1),
+                      color: AppColors.shadow.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -48,7 +48,7 @@ class WorkoutDetailPage extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.arrow_back_ios_new,
-                  color: AppColorPalette.gray900,
+                  color: AppTextColors.primary,
                   size: 18.sp,
                 ),
               ),
@@ -57,11 +57,11 @@ class WorkoutDetailPage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.pureWhite,
+                  color: AppColors.surface,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColorPalette.absoluteBlack.withValues(alpha: 0.1),
+                      color: AppColors.shadow.withValues(alpha: 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 2),
                     ),
@@ -70,7 +70,7 @@ class WorkoutDetailPage extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(
                     Icons.favorite_border,
-                    color: AppColorPalette.gray900,
+                    color: AppTextColors.primary,
                     size: 20.sp,
                   ),
                   onPressed: () {},
@@ -98,7 +98,7 @@ class WorkoutDetailPage extends StatelessWidget {
                   Text(
                     workout.description,
                     style: AppTypography.bodyLarge.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space24.h),
@@ -123,7 +123,7 @@ class WorkoutDetailPage extends StatelessWidget {
                       Text(
                         '${workout.exercises.length} exercises',
                         style: AppTypography.labelLarge.copyWith(
-                          color: AppTextColor.secondary,
+                          color: AppTextColors.secondary,
                         ),
                       ),
                     ],
@@ -142,9 +142,9 @@ class WorkoutDetailPage extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(AppSpacing.screenPadding.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.background,
           border: Border(
-            top: BorderSide(color: AppColorPalette.gray200),
+            top: BorderSide(color: AppColors.outline),
           ),
         ),
         child: SafeArea(
@@ -160,13 +160,15 @@ class WorkoutDetailPage extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 16.h),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+                gradient: LinearGradient(
+                  colors: AppColors.heroGradient,
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
                 borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColorPalette.gray900.withValues(alpha: 0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
@@ -177,14 +179,14 @@ class WorkoutDetailPage extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.play_arrow_rounded,
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     size: 28.sp,
                   ),
                   SizedBox(width: AppSpacing.space8.w),
                   Text(
                     'START WORKOUT',
                     style: AppTypography.labelLarge.copyWith(
-                      color: AppColorPalette.pureWhite,
+                      color: AppColors.onPrimary,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
                     ),

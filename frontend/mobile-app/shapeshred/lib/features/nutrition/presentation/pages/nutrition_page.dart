@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/calories_hero_card.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/macro_breakdown.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/meal_list_item.dart';
@@ -57,12 +59,12 @@ class _NutritionPageState extends State<NutritionPage> {
             .doc(user.uid)
             .get();
 
-        if (exists && doc.data() != null) {
+        if (doc.exists && doc.data() != null) {
           final data = doc.data()!;
           setState(() {
             _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-            _userGoal = data['goal'] ?? '';
-            _userFitnessLevel = data['fitnessLevel'] ?? '';
+            _userGoal = data['goal'] as String? ?? '';
+            _userFitnessLevel = data['fitnessLevel'] as String? ?? '';
           });
         } else {
           // Fallback to SharedPreferences for goal and fitness level
@@ -131,17 +133,35 @@ class _NutritionPageState extends State<NutritionPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(
-            color: AppColorPalette.primary,
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SkeletonLoader(width: 160.w, height: 30.h),
+                SizedBox(height: AppSpacing.space8.h),
+                SkeletonLoader(width: 220.w, height: 16.h),
+                SizedBox(height: AppSpacing.space24.h),
+                SkeletonCard(height: 200.h),
+                SizedBox(height: AppSpacing.space24.h),
+                const SkeletonStatsRow(),
+                SizedBox(height: AppSpacing.space32.h),
+                SkeletonLoader(width: 140.w, height: 22.h),
+                SizedBox(height: AppSpacing.space16.h),
+                const SkeletonList(itemCount: 3),
+              ],
+            ),
           ),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,14 +178,14 @@ class _NutritionPageState extends State<NutritionPage> {
                   Text(
                     'Hello, $_userName!',
                     style: AppTypography.headlineLarge.copyWith(
-                      color: AppColorPalette.gray900,
+                      color: AppTextColors.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space4.h),
                   Text(
                     _motivationalMessage,
                     style: AppTypography.bodyLarge.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 ],
@@ -176,7 +196,7 @@ class _NutritionPageState extends State<NutritionPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
               child: Divider(
-                color: AppColorPalette.gray200,
+                color: AppColors.outline,
                 height: 1,
               ),
             ),
@@ -187,7 +207,8 @@ class _NutritionPageState extends State<NutritionPage> {
                 padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.screenPadding.w,
                 ),
-                child: Column(
+                child: _FadeSlideIn(
+                  child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Calories Hero Card
@@ -257,6 +278,7 @@ class _NutritionPageState extends State<NutritionPage> {
                     ),
                     SizedBox(height: AppSpacing.space32.h),
                   ],
+                  ),
                 ),
               ),
             ),
@@ -265,15 +287,41 @@ class _NutritionPageState extends State<NutritionPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
-        backgroundColor: AppColorPalette.absoluteBlack,
-        icon: const Icon(Icons.add, color: AppColorPalette.pureWhite),
+        backgroundColor: AppColors.primary,
+        icon: Icon(Icons.add, color: AppColors.onPrimary),
         label: Text(
           'Add Meal',
           style: AppTypography.labelLarge.copyWith(
-            color: AppColorPalette.pureWhite,
+            color: AppColors.onPrimary,
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Fades and slides its child up once, on first build after data loads.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
+
+  const _FadeSlideIn({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

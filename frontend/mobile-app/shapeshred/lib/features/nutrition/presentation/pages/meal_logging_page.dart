@@ -39,12 +39,12 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -85,21 +85,21 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                       ),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? AppColorPalette.gray900
-                            : AppColorPalette.gray50,
+                            ? AppColors.primary
+                            : AppColors.surfaceVariant,
                         borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                         border: Border.all(
                           color: isSelected
-                              ? AppColorPalette.gray900
-                              : AppColorPalette.gray200,
+                              ? AppColors.primary
+                              : AppColors.outline,
                         ),
                       ),
                       child: Text(
                         type,
                         style: AppTypography.labelMedium.copyWith(
                           color: isSelected
-                              ? AppColorPalette.pureWhite
-                              : AppColorPalette.gray900,
+                              ? AppColors.onPrimary
+                              : AppTextColors.primary,
                         ),
                       ),
                     ),
@@ -125,15 +125,15 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                     ),
                   );
                 },
-                icon: Icon(Icons.add, color: AppColorPalette.gray900),
+                icon: Icon(Icons.add, color: AppColors.primary),
                 label: Text(
                   'Add Food',
                   style: AppTypography.labelMedium.copyWith(
-                    color: AppColorPalette.gray900,
+                    color: AppColors.primary,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: AppColorPalette.gray900),
+                  side: BorderSide(color: AppColors.primary),
                   padding: EdgeInsets.symmetric(vertical: 16.h),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
@@ -147,9 +147,9 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                 Container(
                   padding: EdgeInsets.all(AppSpacing.space24.w),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: Center(
                     child: Column(
@@ -157,20 +157,20 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                         Icon(
                           Icons.restaurant_menu,
                           size: 48.sp,
-                          color: AppColorPalette.gray300,
+                          color: AppTextColors.tertiary,
                         ),
                         SizedBox(height: AppSpacing.space16.h),
                         Text(
                           'No foods added yet',
                           style: AppTypography.bodyMedium.copyWith(
-                            color: AppTextColor.secondary,
+                            color: AppTextColors.secondary,
                           ),
                         ),
                         SizedBox(height: AppSpacing.space8.h),
                         Text(
                           'Tap the button above to add foods',
                           style: AppTypography.bodySmall.copyWith(
-                            color: AppTextColor.secondary,
+                            color: AppTextColors.secondary,
                           ),
                         ),
                       ],
@@ -190,15 +190,15 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                 Container(
                   padding: EdgeInsets.all(AppSpacing.space16.w),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                   ),
                   child: Column(
                     children: [
-                      _buildSummaryRow('Calories', '$_totalCalories', AppColorPalette.gray900),
-                      _buildSummaryRow('Protein', '${_totalProtein.toStringAsFixed(1)}g', AppColorPalette.success),
-                      _buildSummaryRow('Carbs', '${_totalCarbs.toStringAsFixed(1)}g', AppColorPalette.warning),
-                      _buildSummaryRow('Fat', '${_totalFat.toStringAsFixed(1)}g', AppColorPalette.error),
+                      _buildSummaryRow('Calories', '$_totalCalories', AppTextColors.primary),
+                      _buildSummaryRow('Protein', '${_totalProtein.toStringAsFixed(1)}g', AppColors.success),
+                      _buildSummaryRow('Carbs', '${_totalCarbs.toStringAsFixed(1)}g', AppColors.warning),
+                      _buildSummaryRow('Fat', '${_totalFat.toStringAsFixed(1)}g', AppColors.error),
                     ],
                   ),
                 ),
@@ -224,9 +224,9 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
       margin: EdgeInsets.only(bottom: AppSpacing.space12.h),
       padding: EdgeInsets.all(AppSpacing.space16.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Row(
         children: [
@@ -244,14 +244,14 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                 Text(
                   '${item.quantity}g • ${item.calories} cal',
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 ),
               ],
             ),
           ),
           IconButton(
-            icon: Icon(Icons.delete_outline, color: AppColorPalette.error),
+            icon: Icon(Icons.delete_outline, color: AppColors.error),
             onPressed: () {
               HapticHelper.light();
               setState(() => _mealItems.removeAt(index));
@@ -310,16 +310,16 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
           .set(meal.toJson());
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Meal saved successfully!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
@@ -338,10 +338,10 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
             content: Text(
               'Failed to save meal: ${e.toString()}',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );

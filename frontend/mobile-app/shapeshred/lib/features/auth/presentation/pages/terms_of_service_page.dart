@@ -10,14 +10,14 @@ class TermsOfServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new,
-            color: AppColorPalette.gray900,
+            color: AppTextColors.primary,
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -34,7 +34,7 @@ class TermsOfServicePage extends StatelessWidget {
             Text(
               'Last updated: ${DateTime.now().toString().split(' ')[0]}',
               style: AppTypography.bodySmall.copyWith(
-                color: AppTextColor.secondary,
+                color: AppTextColors.secondary,
               ),
             ),
             SizedBox(height: AppSpacing.space24.h),
@@ -118,7 +118,7 @@ These terms and conditions are governed by and construed in accordance with the 
           Text(
             content,
             style: AppTypography.bodyMedium.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
               height: 1.6,
             ),
           ),

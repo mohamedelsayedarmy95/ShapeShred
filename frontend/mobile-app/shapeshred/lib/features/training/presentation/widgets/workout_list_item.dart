@@ -28,9 +28,9 @@ class WorkoutListItem extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(AppSpacing.cardPadding.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Row(
           children: [
@@ -68,7 +68,7 @@ class WorkoutListItem extends StatelessWidget {
                       Icon(
                         Icons.timer_outlined,
                         size: 14.sp,
-                        color: AppColorPalette.gray500,
+                        color: AppTextColors.secondary,
                       ),
                       SizedBox(width: AppSpacing.space4.w),
                       Text(
@@ -79,7 +79,7 @@ class WorkoutListItem extends StatelessWidget {
                       Icon(
                         Icons.fitness_center,
                         size: 14.sp,
-                        color: AppColorPalette.gray500,
+                        color: AppTextColors.secondary,
                       ),
                       SizedBox(width: AppSpacing.space4.w),
                       Text(
@@ -95,13 +95,13 @@ class WorkoutListItem extends StatelessWidget {
                       vertical: AppSpacing.space2.h,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColorPalette.gray100,
+                      color: AppColors.surfaceVariant,
                       borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
                     ),
                     child: Text(
                       workout['level'] as String,
                       style: AppTypography.labelSmall.copyWith(
-                        color: AppColorPalette.gray700,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                   ),
@@ -113,7 +113,7 @@ class WorkoutListItem extends StatelessWidget {
             Icon(
               Icons.arrow_forward_ios,
               size: 16.sp,
-              color: AppColorPalette.gray400,
+              color: AppTextColors.tertiary,
             ),
           ],
         ),

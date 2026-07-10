@@ -30,7 +30,7 @@ class AchievementSection extends StatelessWidget {
               child: Text(
                 'View All',
                 style: AppTypography.labelLarge.copyWith(
-                  color: AppColorPalette.gray700,
+                  color: AppTextColors.secondary,
                 ),
               ),
             ),
@@ -75,10 +75,10 @@ class _AchievementBadge extends StatelessWidget {
       width: 90.w,
       padding: EdgeInsets.all(AppSpacing.space12.w),
       decoration: BoxDecoration(
-        color: unlocked ? AppColorPalette.gray50 : AppColorPalette.gray100,
+        color: unlocked ? AppColors.surfaceVariant : AppColors.surfaceVariant.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(
-          color: unlocked ? AppColorPalette.gray200 : AppColorPalette.gray300,
+          color: unlocked ? AppColors.outline : AppColors.outline.withValues(alpha: 0.5),
         ),
       ),
       child: Column(
@@ -88,7 +88,7 @@ class _AchievementBadge extends StatelessWidget {
             width: 48.w,
             height: 48.h,
             decoration: BoxDecoration(
-              color: unlocked ? AppColorPalette.pureWhite : AppColorPalette.gray200,
+              color: unlocked ? AppColors.surface : AppColors.outline,
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -96,7 +96,7 @@ class _AchievementBadge extends StatelessWidget {
                 icon,
                 style: TextStyle(
                   fontSize: 24.sp,
-                  color: unlocked ? null : AppColorPalette.gray500,
+                  color: unlocked ? null : AppTextColors.tertiary,
                 ),
               ),
             ),
@@ -105,7 +105,7 @@ class _AchievementBadge extends StatelessWidget {
           Text(
             title,
             style: AppTypography.labelSmall.copyWith(
-              color: unlocked ? AppTextColor.primary : AppTextColor.tertiary,
+              color: unlocked ? AppTextColors.primary : AppTextColors.tertiary,
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,

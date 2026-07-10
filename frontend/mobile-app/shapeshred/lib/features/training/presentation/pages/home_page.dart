@@ -1,32 +1,40 @@
+import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
-import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
+import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/core/design_system/molecules/stat_card.dart';
 import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
+import 'package:shapeshred/core/design_system/molecules/weekly_activity_chart.dart';
 import 'package:shapeshred/features/training/presentation/pages/workout_player/enhanced_workout_player_page.dart';
 import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
+import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/providers/firebase_providers.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   String _userName = 'User';
   String _userEmail = '';
   String _userGoal = '';
   String _userFitnessLevel = '';
   bool _isLoading = true;
-  Map<String, dynamic>? _todaysWorkout;
+  CustomWorkout? _todaysWorkout;
   Map<String, dynamic>? _stats;
   List<Map<String, dynamic>> _recommendations = [];
 
@@ -39,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadUserData() async {
     setState(() => _isLoading = true);
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      final user = ref.read(firebaseAuthProvider);
       if (user != null) {
         // Try to get data from Firestore first
         final doc = await FirebaseFirestore.instance
@@ -52,8 +60,8 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
             _userEmail = user.email ?? '';
-            _userGoal = data['goal'] ?? '';
-            _userFitnessLevel = data['fitnessLevel'] ?? '';
+            _userGoal = data['goal'] as String? ?? '';
+            _userFitnessLevel = data['fitnessLevel'] as String? ?? '';
           });
         } else {
           // Fallback to SharedPreferences for goal and fitness level only
@@ -76,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       debugPrint('Error loading user data: $e');
       // Fallback to defaults
-      final user = FirebaseAuth.instance.currentUser;
+      final user = ref.read(firebaseAuthProvider);
       _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
       _userEmail = user?.email ?? '';
       _userGoal = '';
@@ -220,7 +228,7 @@ class _HomePageState extends State<HomePage> {
       duration = '25 min';
       level = 'Intermediate';
       category = 'HIIT';
-      icon = Icons.firebrick;
+      icon = Icons.local_fire_department;
     } else if (goal == 'Build Muscle') {
       exercises = strengthExercises.map((e) => WorkoutExercise(
         exercise: e,
@@ -298,6 +306,7 @@ class _HomePageState extends State<HomePage> {
       'caloriesBurned': 450,
       'workoutsCompleted': 12,
       'activeDays': 8,
+      'weeklyActivity': [0.3, 0.65, 0.45, 0.9, 0.55, 0.2, 0.75],
     };
   }
 
@@ -336,7 +345,7 @@ class _HomePageState extends State<HomePage> {
         'title': 'Fat Burn Cardio',
         'duration': '30 min',
         'level': 'Intermediate',
-        'icon': Icons.firebrick,
+        'icon': Icons.local_fire_department,
       };
       recommendations[3] = {
         'title': 'Max Burn HIIT',
@@ -377,8 +386,11 @@ class _HomePageState extends State<HomePage> {
     // Adjust based on fitness level
     if (fitnessLevel == 'Beginner') {
       for (var rec in recommendations) {
-        int duration = int.parse(rec['duration'].replaceAll(' min', '')) * 0.8;
-        rec['duration'] = '${duration.round()} min';
+        final int duration = (int.parse(
+                    (rec['duration'] as String).replaceAll(' min', '')) *
+                0.8)
+            .round();
+        rec['duration'] = '$duration min';
         if (rec['level'] == 'Advanced') {
           rec['level'] = 'Intermediate';
         } else if (rec['level'] == 'Intermediate') {
@@ -387,7 +399,9 @@ class _HomePageState extends State<HomePage> {
       }
     } else if (fitnessLevel == 'Advanced') {
       for (var rec in recommendations) {
-        int duration = int.parse(rec['duration'].replaceAll(' min', '')) + 10;
+        final int duration = int.parse(
+                (rec['duration'] as String).replaceAll(' min', '')) +
+            10;
         rec['duration'] = '$duration min';
         if (rec['level'] == 'Beginner') {
           rec['level'] = 'Intermediate';
@@ -411,217 +425,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(
-            color: AppColorPalette.primary,
-          ),
-        ),
-      );
-    }
-
-    return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.screenPadding.w,
-            vertical: AppSpacing.space16.h,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              _buildHeader(),
-              SizedBox(height: AppSpacing.space32.h),
-
-              // Hero Card - Today's Workout
-              _buildHeroCard(),
-              SizedBox(height: AppSpacing.space32.h),
-
-              // Stats Row
-              _buildStatsRow(),
-              SizedBox(height: AppSpacing.space40.h),
-
-              // Section Title
-              Text(
-                'Recommended for You',
-                style: AppTypography.headlineSmall,
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-
-              // Recommendations Carousel
-              _buildRecommendationsCarousel(),
-              SizedBox(height: AppSpacing.space32.h),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    final String greeting = _getGreeting();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              greeting,
-              style: AppTypography.bodyLarge.copyWith(
-                color: AppTextColor.secondary,
-              ),
-            ),
-            SizedBox(height: AppSpacing.space4.h),
-            Text(
-              _userName,
-              style: AppTypography.headlineMedium,
-            ),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.all(10.r),
-          decoration: BoxDecoration(
-            color: AppColorPalette.gray50,
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColorPalette.gray200),
-          ),
-          child: Icon(
-            Icons.notifications_none_outlined,
-            color: AppColorPalette.gray900,
-            size: 24.sp,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHeroCard() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(AppSpacing.space24.w),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColorPalette.gray900, AppColorPalette.gray800],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(AppRadius.radiusXL),
-        boxShadow: [
-          BoxShadow(
-            color: AppColorPalette.gray900.withValues(alpha: 0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 12.w,
-              vertical: 6.h,
-            ),
-            decoration: BoxDecoration(
-              color: AppColorPalette.gray700,
-              borderRadius: BorderRadius.circular(AppRadius.radiusPill),
-            ),
-            child: Text(
-              '🔥 TODAY\'S WORKOUT',
-              style: AppTypography.labelSmall.copyWith(
-                color: AppColorPalette.pureWhite,
-                letterSpacing: 1.2,
-              ),
-            ),
-          ),
-          SizedBox(height: AppSpacing.space20.h),
-          Text(
-            _todaysWorkout?.name ?? 'Workout',
-            style: AppTypography.headlineMedium.copyWith(
-              color: AppColorPalette.pureWhite,
-            ),
-          ),
-          SizedBox(height: AppSpacing.space4.h),
-          Row(
-            children: [
-              Icon(
-                Icons.timer_outlined,
-                color: AppColorPalette.gray400,
-                size: 16.sp,
-              ),
-              SizedBox(width: 4.w),
-              Text(
-                _todaysWorkout?.estimatedDuration.toString() ?? '20',
-                style: AppTypography.bodyMedium.copyWith(
-                  color: AppColorPalette.gray400,
-                ),
-              ),
-              SizedBox(width: 4.w),
-              Text(
-                'min',
-                style: AppTypography.bodyMedium.copyWith(
-                  color: AppColorPalette.gray400,
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Icon(
-                Icons.fitness_center,
-                color: AppColorPalette.gray400,
-                size: 16.sp,
-              ),
-              SizedBox(width: 4.w),
-              Text(
-                _todaysWorkout?.exercises.length.toString() ?? '0',
-                style: AppTypography.bodyMedium.copyWith(
-                  color: AppColorPalette.gray400,
-                ),
-              ),
-              SizedBox(width: 4.w),
-              Text(
-                'exercises',
-                style: AppTypography.bodyMedium.copyWith(
-                  color: AppColorPalette.gray400,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppSpacing.space24.h),
-          GestureDetector(
-            onTap: _startWorkout,
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 12.h),
-              decoration: BoxDecoration(
-                color: AppColorPalette.pureWhite,
-                borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-              ),
-              child: Center(
-                child: Text(
-                  'START WORKOUT',
-                  style: AppTypography.labelLarge.copyWith(
-                    color: AppColorPalette.gray900,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _startWorkout() {
     if (_todaysWorkout != null) {
+      // Set the selected workout in the provider
+      ref.read(selectedWorkoutProvider.notifier).state = _todaysWorkout;
+      // Navigate to the player page
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EnhancedWorkoutPlayerPage(workout: _todaysWorkout!),
+          builder: (context) => const EnhancedWorkoutPlayerPage(),
         ),
       );
     }
@@ -663,18 +475,300 @@ class _HomePageState extends State<HomePage> {
       child: ListView(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
-        children: _recommendations.map((rec) {
-          return Padding(
-            padding: EdgeInsets.only(right: AppSpacing.space12.w),
-            child: WorkoutCard(
-              title: rec['title'] as String,
-              duration: rec['duration'] as String,
-              level: rec['level'] as String,
-              icon: rec['icon'] as IconData,
-            ),
-          );
-        }).toList(),
+        children: _recommendations.map((rec) => Padding(
+          padding: EdgeInsets.only(right: AppSpacing.space12.w),
+          child: WorkoutCard(
+            title: rec['title'] as String,
+            duration: rec['duration'] as String,
+            level: rec['level'] as String,
+            icon: rec['icon'] as IconData,
+          ),
+        ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.screenPadding.w,
+              vertical: AppSpacing.space16.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SkeletonLoader(width: 140.w, height: 32.h),
+                    SkeletonLoader(
+                      width: 44.w,
+                      height: 44.h,
+                      borderRadius: BorderRadius.circular(22.r),
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppSpacing.space32.h),
+                SkeletonCard(height: 220.h),
+                SizedBox(height: AppSpacing.space32.h),
+                const SkeletonStatsRow(),
+                SizedBox(height: AppSpacing.space40.h),
+                SkeletonLoader(width: 180.w, height: 22.h),
+                SizedBox(height: AppSpacing.space16.h),
+                SkeletonCard(height: 200.h),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.screenPadding.w,
+            vertical: AppSpacing.space16.h,
+          ),
+          child: _FadeSlideIn(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                _buildHeader(),
+                SizedBox(height: AppSpacing.space32.h),
+
+                // Hero Card - Today's Workout
+                _buildHeroCard(),
+                SizedBox(height: AppSpacing.space32.h),
+
+                // Stats Row
+                _buildStatsRow(),
+                SizedBox(height: AppSpacing.space32.h),
+
+                // This Week Activity Chart
+                Text(
+                  'This Week',
+                  style: AppTypography.headlineSmall,
+                ),
+                SizedBox(height: AppSpacing.space16.h),
+                _buildWeeklyActivityChart(),
+                SizedBox(height: AppSpacing.space40.h),
+
+                // Section Title
+                Text(
+                  'Recommended for You',
+                  style: AppTypography.headlineSmall,
+                ),
+                SizedBox(height: AppSpacing.space16.h),
+
+                // Recommendations Carousel
+                _buildRecommendationsCarousel(),
+                SizedBox(height: AppSpacing.space32.h),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWeeklyActivityChart() {
+    final List<double> weekly = (_stats?['weeklyActivity'] as List<dynamic>?)
+            ?.map((e) => (e as num).toDouble())
+            .toList() ??
+        const [0, 0, 0, 0, 0, 0, 0];
+    final todayIndex = (DateTime.now().weekday - 1).clamp(0, 6);
+    return WeeklyActivityChart(
+      values: weekly,
+      labels: const ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+      todayIndex: todayIndex,
+    );
+  }
+
+  Widget _buildHeader() {
+    final String greeting = _getGreeting();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              greeting,
+              style: AppTypography.bodyLarge.copyWith(
+                color: AppTextColors.secondary,
+              ),
+            ),
+            SizedBox(height: AppSpacing.space4.h),
+            Text(
+              _userName,
+              style: AppTypography.headlineMedium,
+            ),
+          ],
+        ),
+        Container(
+          padding: EdgeInsets.all(10.r),
+          decoration: BoxDecoration(
+            color: AppColors.surfaceVariant,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.outline),
+          ),
+          child: Icon(
+            Icons.notifications_none_outlined,
+            color: AppTextColors.primary,
+            size: 24.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeroCard() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(AppSpacing.space24.w),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: AppColors.heroGradient,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(AppRadius.radiusXL),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 6.h,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(AppRadius.radiusPill),
+            ),
+            child: Text(
+              '🔥 TODAY\'S WORKOUT',
+              style: AppTypography.labelSmall.copyWith(
+                color: AppColors.onPrimary,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
+          SizedBox(height: AppSpacing.space20.h),
+          Text(
+            _todaysWorkout?.name ?? 'Workout',
+            style: AppTypography.headlineMedium.copyWith(
+              color: AppColors.onPrimary,
+            ),
+          ),
+          SizedBox(height: AppSpacing.space4.h),
+          Row(
+            children: [
+              Icon(
+                Icons.timer_outlined,
+                color: AppColors.onPrimary.withValues(alpha: 0.8),
+                size: 16.sp,
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                _todaysWorkout?.estimatedDuration.toString() ?? '20',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.onPrimary.withValues(alpha: 0.8),
+                ),
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                'min',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.onPrimary.withValues(alpha: 0.8),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Icon(
+                Icons.fitness_center,
+                color: AppColors.onPrimary.withValues(alpha: 0.8),
+                size: 16.sp,
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                _todaysWorkout?.exercises.length.toString() ?? '0',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.onPrimary.withValues(alpha: 0.8),
+                ),
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                'exercises',
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.onPrimary.withValues(alpha: 0.8),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppSpacing.space24.h),
+          GestureDetector(
+            onTap: _startWorkout,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 12.h),
+              decoration: BoxDecoration(
+                color: AppColors.onPrimary,
+                borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+              ),
+              child: Center(
+                child: Text(
+                  'START WORKOUT',
+                  style: AppTypography.labelLarge.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Fades and slides its child up once, on first build after data loads.
+  class _FadeSlideIn extends StatelessWidget {
+    final Widget child;
+
+    const _FadeSlideIn({required this.child});
+
+    @override
+    Widget build(BuildContext context) {
+      return TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: AppDurations.cinematic,
+        curve: AppCurves.premiumFluid,
+        builder: (context, value, child) {
+          return Opacity(
+            opacity: value,
+            child: Transform.translate(
+              offset: Offset(0, (1 - value) * 16),
+              child: child,
+            ),
+          );
+        },
+        child: child,
+      );
+    }
   }
 }

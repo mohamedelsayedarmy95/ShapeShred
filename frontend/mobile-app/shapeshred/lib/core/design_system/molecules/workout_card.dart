@@ -26,9 +26,9 @@ class WorkoutCard extends StatelessWidget {
       margin: EdgeInsets.only(right: 16.w),
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,13 +37,13 @@ class WorkoutCard extends StatelessWidget {
             height: 80.h,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: AppColorPalette.gray100,
+              color: AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
             ),
             child: Icon(
               icon,
               size: 32.sp,
-              color: AppColorPalette.gray500,
+              color: AppTextColors.secondary,
             ),
           ),
           SizedBox(height: AppSpacing.space12.h),

@@ -9,6 +9,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/features/auth/presentation/pages/onboarding_page.dart';
 
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
       if (!mounted) return;
-      context.go('/home');
+      context.go('/');
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -66,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
       final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
       await FirebaseAuth.instance.signInWithCredential(credential);
       if (!mounted) return;
-      context.go('/home');
+      context.go('/');
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       if (!mounted) return;
-      context.go('/home');
+      context.go('/');
     } catch (e) {
       _showError(e.toString());
     } finally {
@@ -101,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: AppColorPalette.gray900,
+        backgroundColor: AppColors.error,
       ),
     );
   }
@@ -109,78 +110,105 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Welcome Back',
-                style: AppTypography.headlineLarge,
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Sign in to continue your fitness journey.',
-                style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColor.secondary,
-                ),
-              ),
-              SizedBox(height: 48.h),
-              _buildSocialButton(
-                icon: Icons.g_translate,
-                label: 'Continue with Google',
-                backgroundColor: AppColorPalette.pureWhite,
-                textColor: AppColorPalette.gray900,
-                onTap: _signInWithGoogle,
-              ),
-              SizedBox(height: 12.h),
-              _buildSocialButton(
-                icon: Icons.facebook,
-                label: 'Continue with Facebook',
-                backgroundColor: AppColorPalette.gray900,
-                textColor: AppColorPalette.pureWhite,
-                onTap: _signInWithFacebook,
-              ),
-              SizedBox(height: 12.h),
-              _buildSocialButton(
-                icon: Icons.apple,
-                label: 'Continue with Apple',
-                backgroundColor: AppColorPalette.gray900,
-                textColor: AppColorPalette.pureWhite,
-                onTap: _signInWithApple,
-              ),
-              SizedBox(height: 24.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account?",
-                    style: AppTypography.bodyMedium.copyWith(
-                      color: AppTextColor.secondary,
+          child: _FadeSlideIn(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 88.w,
+                  height: 88.h,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: AppColors.heroGradient,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.3),
+                        blurRadius: 24,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    onPressed: () => context.go('/signup'),
-                    child: Text(
-                      'Sign Up',
-                      style: AppTypography.labelLarge.copyWith(
-                        color: AppColorPalette.gray900,
-                        fontWeight: FontWeight.w600,
+                  child: Icon(
+                    Icons.bolt,
+                    color: AppColors.onPrimary,
+                    size: 44.sp,
+                  ),
+                ),
+                SizedBox(height: 24.h),
+                Text(
+                  'Welcome Back',
+                  style: AppTypography.headlineLarge,
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  'Sign in to continue your fitness journey.',
+                  style: AppTypography.bodyLarge.copyWith(
+                    color: AppTextColors.secondary,
+                  ),
+                ),
+                SizedBox(height: 48.h),
+                _buildSocialButton(
+                  icon: Icons.g_translate,
+                  label: 'Continue with Google',
+                  backgroundColor: AppColors.surface,
+                  textColor: AppTextColors.primary,
+                  onTap: _signInWithGoogle,
+                ),
+                SizedBox(height: 12.h),
+                _buildSocialButton(
+                  icon: Icons.facebook,
+                  label: 'Continue with Facebook',
+                  backgroundColor: AppColors.primary,
+                  textColor: AppColors.onPrimary,
+                  onTap: _signInWithFacebook,
+                ),
+                SizedBox(height: 12.h),
+                _buildSocialButton(
+                  icon: Icons.apple,
+                  label: 'Continue with Apple',
+                  backgroundColor: AppColors.primary,
+                  textColor: AppColors.onPrimary,
+                  onTap: _signInWithApple,
+                ),
+                SizedBox(height: 24.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account?",
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppTextColors.secondary,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              if (_isLoading)
-                Padding(
-                  padding: EdgeInsets.only(top: 16.h),
-                  child: const CircularProgressIndicator(
-                    color: AppColorPalette.gray900,
-                  ),
+                    TextButton(
+                      onPressed: () => context.go('/signup'),
+                      child: Text(
+                        'Sign Up',
+                        style: AppTypography.labelLarge.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-            ],
+                if (_isLoading)
+                  Padding(
+                    padding: EdgeInsets.only(top: 16.h),
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -210,12 +238,38 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: backgroundColor,
           foregroundColor: textColor,
           padding: EdgeInsets.symmetric(vertical: 16.h),
-          side: BorderSide(color: AppColorPalette.gray200, width: 1),
+          side: BorderSide(color: AppColors.outline, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Fades and slides its child up once, on first build.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
+
+  const _FadeSlideIn({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

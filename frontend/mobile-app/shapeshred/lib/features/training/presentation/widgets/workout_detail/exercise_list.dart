@@ -47,9 +47,9 @@ class _ExerciseItem extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(AppSpacing.cardPadding.w),
           decoration: BoxDecoration(
-            color: AppColorPalette.pureWhite,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-            border: Border.all(color: AppColorPalette.gray200),
+            border: Border.all(color: AppColors.outline),
           ),
           child: Row(
             children: [
@@ -58,14 +58,14 @@ class _ExerciseItem extends StatelessWidget {
                 width: 40.w,
                 height: 40.h,
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray900,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                 ),
                 child: Center(
                   child: Text(
                     '$index',
                     style: AppTypography.titleMedium.copyWith(
-                      color: AppColorPalette.pureWhite,
+                      color: AppColors.onPrimary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -90,7 +90,7 @@ class _ExerciseItem extends StatelessWidget {
                         Icon(
                           Icons.timer_outlined,
                           size: 14.sp,
-                          color: AppColorPalette.gray500,
+                          color: AppTextColors.secondary,
                         ),
                         SizedBox(width: AppSpacing.space4.w),
                         Text(
@@ -101,7 +101,7 @@ class _ExerciseItem extends StatelessWidget {
                         Icon(
                           Icons.pause_circle_outline,
                           size: 14.sp,
-                          color: AppColorPalette.gray500,
+                          color: AppTextColors.secondary,
                         ),
                         SizedBox(width: AppSpacing.space4.w),
                         Text(
@@ -118,12 +118,12 @@ class _ExerciseItem extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(8.r),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray50,
+                  color: AppColors.surfaceVariant,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.play_arrow_rounded,
-                  color: AppColorPalette.gray900,
+                  color: AppColors.primary,
                   size: 20.sp,
                 ),
               ),

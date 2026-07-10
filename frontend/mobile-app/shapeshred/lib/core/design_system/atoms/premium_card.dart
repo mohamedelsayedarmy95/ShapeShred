@@ -26,10 +26,10 @@ class PremiumCard extends StatelessWidget {
       child: Container(
         padding: padding ?? EdgeInsets.all(AppSpacing.cardPadding.w),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
           border: hasBorder
-              ? Border.all(color: AppColorPalette.gray200, width: 1)
+              ? Border.all(color: AppColors.outline, width: 1)
               : null,
           boxShadow: AppShadows.subtle,
         ),

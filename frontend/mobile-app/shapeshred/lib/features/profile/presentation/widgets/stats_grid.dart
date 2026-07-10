@@ -93,25 +93,25 @@ class _StatItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
-        color: highlight ? AppColorPalette.gray900 : AppColorPalette.gray50,
+        color: highlight ? AppColors.primary : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: highlight
             ? null
-            : Border.all(color: AppColorPalette.gray200),
+            : Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             icon,
-            color: highlight ? AppColorPalette.pureWhite : AppColorPalette.gray700,
+            color: highlight ? AppColors.onPrimary : AppTextColors.secondary,
             size: 24.sp,
           ),
           SizedBox(height: AppSpacing.space12.h),
           Text(
             value,
             style: AppTypography.headlineSmall.copyWith(
-              color: highlight ? AppColorPalette.pureWhite : AppColorPalette.gray900,
+              color: highlight ? AppColors.onPrimary : AppTextColors.primary,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -119,7 +119,7 @@ class _StatItem extends StatelessWidget {
           Text(
             label,
             style: AppTypography.labelSmall.copyWith(
-              color: highlight ? AppColorPalette.gray300 : AppTextColor.secondary,
+              color: highlight ? AppColors.onPrimary.withValues(alpha: 0.7) : AppTextColors.secondary,
             ),
           ),
         ],

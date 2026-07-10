@@ -5,7 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
+import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/features/training/presentation/widgets/category_filter.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_list_item.dart';
 
@@ -40,7 +43,7 @@ class _TrainingPageState extends State<TrainingPage> {
       'level': 'High Intensity',
       'category': 'HIIT',
       'icon': Icons.flash_on,
-      'color': AppColorPalette.gray900,
+      'color': AppColors.chartColors[0],
     },
     {
       'title': 'Full Body Strength',
@@ -49,7 +52,7 @@ class _TrainingPageState extends State<TrainingPage> {
       'level': 'Intermediate',
       'category': 'Strength',
       'icon': Icons.fitness_center,
-      'color': AppColorPalette.gray700,
+      'color': AppColors.chartColors[1],
     },
     {
       'title': 'Morning Yoga Flow',
@@ -58,7 +61,7 @@ class _TrainingPageState extends State<TrainingPage> {
       'level': 'Beginner',
       'category': 'Yoga',
       'icon': Icons.self_improvement,
-      'color': AppColorPalette.gray600,
+      'color': AppColors.chartColors[2],
     },
     {
       'title': 'Core Crusher',
@@ -67,7 +70,7 @@ class _TrainingPageState extends State<TrainingPage> {
       'level': 'Advanced',
       'category': 'HIIT',
       'icon': Icons.bolt,
-      'color': AppColorPalette.gray800,
+      'color': AppColors.chartColors[4],
     },
     {
       'title': 'Upper Body Power',
@@ -76,7 +79,7 @@ class _TrainingPageState extends State<TrainingPage> {
       'level': 'Intermediate',
       'category': 'Strength',
       'icon': Icons.fitness_center,
-      'color': AppColorPalette.gray700,
+      'color': AppColors.chartColors[1],
     },
     {
       'title': 'Pilates Core',
@@ -85,7 +88,7 @@ class _TrainingPageState extends State<TrainingPage> {
       'level': 'All Levels',
       'category': 'Pilates',
       'icon': Icons.accessibility_new,
-      'color': AppColorPalette.gray600,
+      'color': AppColors.chartColors[2],
     },
   ];
 
@@ -110,8 +113,8 @@ class _TrainingPageState extends State<TrainingPage> {
           final data = doc.data()!;
           setState(() {
             _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-            _userGoal = data['goal'] ?? '';
-            _userFitnessLevel = data['fitnessLevel'] ?? '';
+            _userGoal = data['goal'] as String? ?? '';
+            _userFitnessLevel = data['fitnessLevel'] as String? ?? '';
           });
         } else {
           // Fallback to SharedPreferences for goal and fitness level
@@ -159,17 +162,45 @@ class _TrainingPageState extends State<TrainingPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(
-            color: AppColorPalette.primary,
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSpacing.screenPadding.w,
+              vertical: AppSpacing.space16.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SkeletonLoader(width: 200.w, height: 30.h),
+                SizedBox(height: AppSpacing.space8.h),
+                SkeletonLoader(width: 240.w, height: 16.h),
+                SizedBox(height: AppSpacing.space20.h),
+                Row(
+                  children: List.generate(
+                    4,
+                    (index) => Padding(
+                      padding: EdgeInsets.only(right: AppSpacing.space8.w),
+                      child: SkeletonLoader(
+                        width: 72.w,
+                        height: 36.h,
+                        borderRadius: BorderRadius.circular(AppRadius.radiusPill),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: AppSpacing.space20.h),
+                const Expanded(child: SkeletonList()),
+              ],
+            ),
           ),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,14 +217,14 @@ class _TrainingPageState extends State<TrainingPage> {
                   Text(
                     'Hello, $_userName!',
                     style: AppTypography.headlineLarge.copyWith(
-                      color: AppColorPalette.gray900,
+                      color: AppTextColors.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space4.h),
                   Text(
                     'Let\'s find your perfect workout',
                     style: AppTypography.bodyLarge.copyWith(
-                      color: AppTextColor.secondary,
+                      color: AppTextColors.secondary,
                     ),
                   ),
                 ],
@@ -223,13 +254,45 @@ class _TrainingPageState extends State<TrainingPage> {
                 separatorBuilder: (context, index) => SizedBox(height: AppSpacing.space12.h),
                 itemBuilder: (context, index) {
                   final workout = _filteredWorkouts[index];
-                  return WorkoutListItem(workout: workout);
+                  return _StaggeredEntry(
+                    key: ValueKey('$_selectedCategory-${workout['title']}'),
+                    index: index,
+                    child: WorkoutListItem(workout: workout),
+                  );
                 },
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Fades and slides a list item in, staggered by [index] relative to its siblings.
+class _StaggeredEntry extends StatelessWidget {
+  final int index;
+  final Widget child;
+
+  const _StaggeredEntry({super.key, required this.index, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.standard +
+          Duration(milliseconds: index * AnimationStaggerConfig.delay),
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value.clamp(0.0, 1.0),
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 12),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

@@ -8,7 +8,7 @@ class CoachPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -18,7 +18,7 @@ class CoachPage extends StatelessWidget {
               Icon(
                 Icons.chat_outlined,
                 size: 80,
-                color: AppColorPalette.gray900,
+                color: AppTextColors.primary,
               ),
               const SizedBox(height: 24),
               Text(
@@ -30,7 +30,7 @@ class CoachPage extends StatelessWidget {
                 'Here you will connect with your coach.',
                 textAlign: TextAlign.center,
                 style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
             ],

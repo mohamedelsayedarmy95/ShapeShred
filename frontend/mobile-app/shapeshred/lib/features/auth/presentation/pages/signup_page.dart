@@ -8,7 +8,7 @@ import 'package:shapeshred/core/design_system/atoms/password_strength_indicator.
 import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
 import 'package:shapeshred/core/services/auth_service.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
-import 'body_metrics_page.dart';
+import 'goal_selection_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -68,16 +68,16 @@ class _SignupPageState extends State<SignupPage> {
       );
 
       if (userCredential != null && mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Account created successfully!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
@@ -88,7 +88,7 @@ class _SignupPageState extends State<SignupPage> {
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute<void>(builder: (context) => const BodyMetricsPage()),
+            MaterialPageRoute<void>(builder: (context) => const GoalSelectionPage()),
           );
         }
       }
@@ -109,7 +109,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
@@ -125,7 +125,7 @@ class _SignupPageState extends State<SignupPage> {
               Text(
                 'Start your fitness journey today',
                 style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
               SizedBox(height: AppSpacing.space32.h),
@@ -163,26 +163,26 @@ class _SignupPageState extends State<SignupPage> {
                 decoration: InputDecoration(
                   labelText: 'Email',
                   labelStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                   prefixIcon: Icon(
                     Icons.email_outlined,
-                    color: AppColorPalette.gray500,
+                    color: AppTextColors.secondary,
                   ),
                   filled: true,
-                  fillColor: AppColorPalette.gray50,
+                  fillColor: AppColors.surfaceVariant,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
+                    borderSide: BorderSide(color: AppColors.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
+                    borderSide: BorderSide(color: AppColors.outline),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(
-                      color: AppColorPalette.gray900,
+                      color: AppColors.primary,
                       width: 2,
                     ),
                   ),
@@ -199,16 +199,16 @@ class _SignupPageState extends State<SignupPage> {
                 decoration: InputDecoration(
                   labelText: 'Password',
                   labelStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                   prefixIcon: Icon(
                     Icons.lock_outline,
-                    color: AppColorPalette.gray500,
+                    color: AppTextColors.secondary,
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                      color: AppColorPalette.gray500,
+                      color: AppTextColors.secondary,
                     ),
                     onPressed: () {
                       setState(() {
@@ -218,19 +218,19 @@ class _SignupPageState extends State<SignupPage> {
                     },
                   ),
                   filled: true,
-                  fillColor: AppColorPalette.gray50,
+                  fillColor: AppColors.surfaceVariant,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
+                    borderSide: BorderSide(color: AppColors.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
+                    borderSide: BorderSide(color: AppColors.outline),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(
-                      color: AppColorPalette.gray900,
+                      color: AppColors.primary,
                       width: 2,
                     ),
                   ),
@@ -252,16 +252,16 @@ class _SignupPageState extends State<SignupPage> {
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
                   labelStyle: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                   prefixIcon: Icon(
                     Icons.lock_outline,
-                    color: AppColorPalette.gray500,
+                    color: AppTextColors.secondary,
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                      color: AppColorPalette.gray500,
+                      color: AppTextColors.secondary,
                     ),
                     onPressed: () {
                       setState(() {
@@ -271,19 +271,19 @@ class _SignupPageState extends State<SignupPage> {
                     },
                   ),
                   filled: true,
-                  fillColor: AppColorPalette.gray50,
+                  fillColor: AppColors.surfaceVariant,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
+                    borderSide: BorderSide(color: AppColors.outline),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    borderSide: BorderSide(color: AppColorPalette.gray200),
+                    borderSide: BorderSide(color: AppColors.outline),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                     borderSide: BorderSide(
-                      color: AppColorPalette.gray900,
+                      color: AppColors.primary,
                       width: 2,
                     ),
                   ),
@@ -303,17 +303,17 @@ class _SignupPageState extends State<SignupPage> {
               // Divider
               Row(
                 children: [
-                  Expanded(child: Divider(color: AppColorPalette.gray200)),
+                  Expanded(child: Divider(color: AppColors.outline)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: Text(
                       'OR',
                       style: AppTypography.labelSmall.copyWith(
-                        color: AppTextColor.secondary,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                   ),
-                  Expanded(child: Divider(color: AppColorPalette.gray200)),
+                  Expanded(child: Divider(color: AppColors.outline)),
                 ],
               ),
               SizedBox(height: AppSpacing.space20.h),
@@ -334,7 +334,7 @@ class _SignupPageState extends State<SignupPage> {
                     if (userCredential != null && mounted) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute<void>(builder: (context) => const BodyMetricsPage()),
+                        MaterialPageRoute<void>(builder: (context) => const GoalSelectionPage()),
                       );
                     }
                   } catch (e) {
@@ -360,7 +360,7 @@ class _SignupPageState extends State<SignupPage> {
                     Text(
                       'Already have an account?',
                       style: AppTypography.bodyMedium.copyWith(
-                        color: AppTextColor.secondary,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                     TextButton(
@@ -368,7 +368,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Text(
                         'Sign in',
                         style: AppTypography.labelLarge.copyWith(
-                          color: AppColorPalette.gray900,
+                          color: AppColors.primary,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -402,7 +402,7 @@ class _SocialButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16.h),
         decoration: BoxDecoration(
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         ),
         child: Row(

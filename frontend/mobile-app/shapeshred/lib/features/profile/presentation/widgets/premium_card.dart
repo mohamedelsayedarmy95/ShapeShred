@@ -30,14 +30,14 @@ class PremiumCard extends StatelessWidget {
         padding: EdgeInsets.all(AppSpacing.space20.w),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [AppColorPalette.absoluteBlack, AppColorPalette.gray800],
+            colors: AppColors.heroGradient,
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(AppRadius.radiusXL),
           boxShadow: [
             BoxShadow(
-              color: AppColorPalette.absoluteBlack.withValues(alpha: 0.3),
+              color: AppColors.primary.withValues(alpha: 0.3),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -53,14 +53,14 @@ class PremiumCard extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.workspace_premium,
-                        color: AppColorPalette.pureWhite,
+                        color: AppColors.onPrimary,
                         size: 24.sp,
                       ),
                       SizedBox(width: AppSpacing.space8.w),
                       Text(
                         'GO PREMIUM',
                         style: AppTypography.labelLarge.copyWith(
-                          color: AppColorPalette.pureWhite,
+                          color: AppColors.onPrimary,
                           letterSpacing: 1.2,
                           fontWeight: FontWeight.w800,
                         ),
@@ -71,7 +71,7 @@ class PremiumCard extends StatelessWidget {
                   Text(
                     'Unlock AI coaching, advanced analytics, and personalized plans',
                     style: AppTypography.bodySmall.copyWith(
-                      color: AppColorPalette.gray300,
+                      color: AppColors.onPrimary.withValues(alpha: 0.8),
                     ),
                   ),
                 ],
@@ -84,13 +84,13 @@ class PremiumCard extends StatelessWidget {
                 vertical: 10.h,
               ),
               decoration: BoxDecoration(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onPrimary,
                 borderRadius: BorderRadius.circular(AppRadius.radiusPill),
               ),
               child: Text(
                 'Upgrade',
                 style: AppTypography.labelLarge.copyWith(
-                  color: AppColorPalette.absoluteBlack,
+                  color: AppColors.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -106,7 +106,7 @@ class PremiumCard extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [AppColorPalette.gray900, AppColorPalette.gray700],
+          colors: AppColors.heroGradient,
         ),
         borderRadius: BorderRadius.circular(AppRadius.radiusXL),
       ),
@@ -114,7 +114,7 @@ class PremiumCard extends StatelessWidget {
         children: [
           Icon(
             Icons.workspace_premium,
-            color: AppColorPalette.pureWhite,
+            color: AppColors.onPrimary,
             size: 32.sp,
           ),
           SizedBox(width: AppSpacing.space16.w),
@@ -125,14 +125,14 @@ class PremiumCard extends StatelessWidget {
                 Text(
                   'Premium Active',
                   style: AppTypography.titleMedium.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
                   'Renews on Dec 15, 2026',
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppColorPalette.gray300,
+                    color: AppColors.onPrimary.withValues(alpha: 0.8),
                   ),
                 ),
               ],

@@ -4,6 +4,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/atoms/animated_progress_bar.dart';
 
 class MacroBreakdown extends StatelessWidget {
   final int protein;
@@ -33,7 +34,7 @@ class MacroBreakdown extends StatelessWidget {
             current: protein,
             goal: proteinGoal,
             unit: 'g',
-            color: AppColorPalette.gray900,
+            color: AppColors.success,
           ),
         ),
         SizedBox(width: AppSpacing.space12.w),
@@ -43,7 +44,7 @@ class MacroBreakdown extends StatelessWidget {
             current: carbs,
             goal: carbsGoal,
             unit: 'g',
-            color: AppColorPalette.gray700,
+            color: AppColors.warning,
           ),
         ),
         SizedBox(width: AppSpacing.space12.w),
@@ -53,7 +54,7 @@ class MacroBreakdown extends StatelessWidget {
             current: fat,
             goal: fatGoal,
             unit: 'g',
-            color: AppColorPalette.gray500,
+            color: AppColors.error,
           ),
         ),
       ],
@@ -82,9 +83,9 @@ class _MacroItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.gray50,
+        color: AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,7 +93,7 @@ class _MacroItem extends StatelessWidget {
           Text(
             label,
             style: AppTypography.labelSmall.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
             ),
           ),
           SizedBox(height: AppSpacing.space8.h),
@@ -106,18 +107,15 @@ class _MacroItem extends StatelessWidget {
           Text(
             'of $goal$unit',
             style: AppTypography.labelSmall.copyWith(
-              color: AppTextColor.tertiary,
+              color: AppTextColors.tertiary,
             ),
           ),
           SizedBox(height: AppSpacing.space12.h),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.radiusPill),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 4.h,
-              backgroundColor: AppColorPalette.gray200,
-              valueColor: AlwaysStoppedAnimation<Color>(color),
-            ),
+          AnimatedProgressBar(
+            value: progress,
+            minHeight: 4.h,
+            backgroundColor: AppColors.outline,
+            color: color,
           ),
         ],
       ),

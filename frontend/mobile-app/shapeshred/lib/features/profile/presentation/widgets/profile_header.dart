@@ -26,14 +26,14 @@ class ProfileHeader extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [AppColorPalette.gray900, AppColorPalette.gray800],
+          colors: AppColors.heroGradient,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(AppRadius.radiusXL),
         boxShadow: [
           BoxShadow(
-            color: AppColorPalette.gray900.withValues(alpha: 0.2),
+            color: AppColors.primary.withValues(alpha: 0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -48,10 +48,10 @@ class ProfileHeader extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onPrimary,
                 width: 3,
               ),
-              color: AppColorPalette.gray700,
+              color: AppColors.onPrimary.withValues(alpha: 0.2),
             ),
             child: avatarUrl != null
                 ? ClipOval(
@@ -59,22 +59,22 @@ class ProfileHeader extends StatelessWidget {
                       imageUrl: avatarUrl!,
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        color: AppColorPalette.gray700,
+                        color: AppColors.onPrimary.withValues(alpha: 0.2),
                         child: Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColorPalette.pureWhite,
+                              AppColors.onPrimary,
                             ),
                           ),
                         ),
                       ),
                       errorWidget: (context, url, error) => Container(
-                        color: AppColorPalette.gray700,
+                        color: AppColors.onPrimary.withValues(alpha: 0.2),
                         child: Center(
                           child: Icon(
                             Icons.person,
-                            color: AppColorPalette.pureWhite,
+                            color: AppColors.onPrimary,
                             size: 32.sp,
                           ),
                         ),
@@ -85,7 +85,7 @@ class ProfileHeader extends StatelessWidget {
                     child: Text(
                       name.isNotEmpty ? name[0].toUpperCase() : 'A',
                       style: AppTypography.headlineMedium.copyWith(
-                        color: AppColorPalette.pureWhite,
+                        color: AppColors.onPrimary,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -101,7 +101,7 @@ class ProfileHeader extends StatelessWidget {
                 Text(
                   name,
                   style: AppTypography.titleLarge.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -112,7 +112,7 @@ class ProfileHeader extends StatelessWidget {
                     vertical: 4.h,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray700,
+                    color: AppColors.onPrimary.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   ),
                   child: Row(
@@ -120,14 +120,14 @@ class ProfileHeader extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.verified,
-                        color: AppColorPalette.pureWhite,
+                        color: AppColors.onPrimary,
                         size: 14.sp,
                       ),
                       SizedBox(width: 4.w),
                       Text(
                         level,
                         style: AppTypography.labelSmall.copyWith(
-                          color: AppColorPalette.pureWhite,
+                          color: AppColors.onPrimary,
                         ),
                       ),
                     ],
@@ -137,7 +137,7 @@ class ProfileHeader extends StatelessWidget {
                 Text(
                   memberSince,
                   style: AppTypography.bodySmall.copyWith(
-                    color: AppColorPalette.gray400,
+                    color: AppColors.onPrimary.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -150,12 +150,12 @@ class ProfileHeader extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(10.r),
               decoration: BoxDecoration(
-                color: AppColorPalette.gray700,
+                color: AppColors.onPrimary.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.edit_outlined,
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onPrimary,
                 size: 18.sp,
               ),
             ),

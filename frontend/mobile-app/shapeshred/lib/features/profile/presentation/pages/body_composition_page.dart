@@ -68,21 +68,21 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
           .add(measurements);
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Measurements saved successfully!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
         );
-        
+
         _formKey.currentState!.reset();
       }
     } catch (e) {
@@ -93,10 +93,10 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
             content: Text(
               e.toString().replaceAll('Exception: ', ''),
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -111,12 +111,12 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -138,15 +138,15 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
                 Container(
                   padding: EdgeInsets.all(AppSpacing.space16.w),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: Row(
                     children: [
                       Icon(
                         Icons.info_outline,
-                        color: AppColorPalette.gray700,
+                        color: AppTextColors.secondary,
                         size: 20.sp,
                       ),
                       SizedBox(width: AppSpacing.space8.w),
@@ -154,7 +154,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
                         child: Text(
                           'Track your body measurements to monitor your progress over time.',
                           style: AppTypography.bodySmall.copyWith(
-                            color: AppTextColor.secondary,
+                            color: AppTextColors.secondary,
                           ),
                         ),
                       ),
@@ -250,7 +250,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
             Icon(
               icon,
               size: 20.sp,
-              color: AppColorPalette.gray700,
+              color: AppTextColors.secondary,
             ),
             SizedBox(width: AppSpacing.space8.w),
             Text(
@@ -264,9 +264,9 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
         SizedBox(height: AppSpacing.space8.h),
         Container(
           decoration: BoxDecoration(
-            color: AppColorPalette.gray50,
+            color: AppColors.surfaceVariant,
             borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-            border: Border.all(color: AppColorPalette.gray200),
+            border: Border.all(color: AppColors.outline),
           ),
           child: TextField(
             controller: controller,
@@ -274,7 +274,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.gray400,
+                color: AppTextColors.tertiary,
               ),
               suffixText: 'cm',
               border: InputBorder.none,
@@ -321,7 +321,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
               return Container(
                 padding: EdgeInsets.all(AppSpacing.space24.w),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray50,
+                  color: AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                 ),
                 child: Center(
@@ -330,20 +330,20 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
                       Icon(
                         Icons.history,
                         size: 48.sp,
-                        color: AppColorPalette.gray300,
+                        color: AppTextColors.tertiary,
                       ),
                       SizedBox(height: AppSpacing.space16.h),
                       Text(
                         'No measurements yet',
                         style: AppTypography.bodyMedium.copyWith(
-                          color: AppTextColor.secondary,
+                          color: AppTextColors.secondary,
                         ),
                       ),
                       SizedBox(height: AppSpacing.space8.h),
                       Text(
                         'Start tracking your progress today!',
                         style: AppTypography.bodySmall.copyWith(
-                          color: AppTextColor.secondary,
+                          color: AppTextColors.secondary,
                         ),
                       ),
                     ],
@@ -366,9 +366,9 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
                   margin: EdgeInsets.only(bottom: AppSpacing.space12.h),
                   padding: EdgeInsets.all(AppSpacing.space16.w),
                   decoration: BoxDecoration(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                    border: Border.all(color: AppColorPalette.gray200),
+                    border: Border.all(color: AppColors.outline),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,7 +385,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
                           Text(
                             '${date.hour}:${date.minute.toString().padLeft(2, '0')}',
                             style: AppTypography.labelSmall.copyWith(
-                              color: AppTextColor.secondary,
+                              color: AppTextColors.secondary,
                             ),
                           ),
                         ],
@@ -426,14 +426,14 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
           '${value?.toStringAsFixed(1) ?? '-'} cm',
           style: AppTypography.labelMedium.copyWith(
             fontWeight: FontWeight.w600,
-            color: AppColorPalette.gray900,
+            color: AppTextColors.primary,
           ),
         ),
         SizedBox(height: AppSpacing.space4.h),
         Text(
           label,
           style: AppTypography.labelSmall.copyWith(
-            color: AppTextColor.secondary,
+            color: AppTextColors.secondary,
           ),
         ),
       ],

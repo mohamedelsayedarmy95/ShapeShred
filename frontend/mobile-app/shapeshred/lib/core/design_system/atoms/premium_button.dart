@@ -44,14 +44,14 @@ class _PremiumButtonState extends State<PremiumButton>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: AppDurations.short,
+      duration: AppDurations.quick,
       vsync: this,
     );
     _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(
-      CurvedAnimation(parent: _controller, curve: AppCurves.premiumEase),
+      CurvedAnimation(parent: _controller, curve: AppCurves.premiumSmooth),
     );
     _opacityAnimation = Tween<double>(begin: 1.0, end: 0.8).animate(
-      CurvedAnimation(parent: _controller, curve: AppCurves.premiumEase),
+      CurvedAnimation(parent: _controller, curve: AppCurves.premiumSmooth),
     );
   }
 
@@ -84,15 +84,15 @@ class _PremiumButtonState extends State<PremiumButton>
   }
 
   Color get _backgroundColor {
-    if (widget.isDestructive) return AppColorPalette.error;
-    if (widget.isSecondary) return AppColorPalette.gray100;
-    return AppColorPalette.gray900;
+    if (widget.isDestructive) return AppColors.error;
+    if (widget.isSecondary) return AppColors.surfaceVariant;
+    return AppColors.primary;
   }
 
   Color get _foregroundColor {
-    if (widget.isDestructive) return AppColorPalette.pureWhite;
-    if (widget.isSecondary) return AppColorPalette.gray900;
-    return AppColorPalette.pureWhite;
+    if (widget.isDestructive) return AppColors.onError;
+    if (widget.isSecondary) return AppColors.onSurface;
+    return AppColors.onPrimary;
   }
 
   @override
@@ -114,23 +114,23 @@ class _PremiumButtonState extends State<PremiumButton>
               : null,
           child: AnimatedScale(
             scale: _scaleAnimation.value,
-            duration: AppDurations.short,
-            curve: AppCurves.premiumEase,
+            duration: AppDurations.quick,
+            curve: AppCurves.premiumSmooth,
             child: AnimatedOpacity(
               opacity: _opacityAnimation.value,
-              duration: AppDurations.short,
-              curve: AppCurves.premiumEase,
+              duration: AppDurations.quick,
+              curve: AppCurves.premiumSmooth,
               child: Container(
                 width: widget.fullWidth ? double.infinity : null,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: isEnabled ? _backgroundColor : AppColorPalette.gray200,
+                  color: isEnabled ? _backgroundColor : AppColors.outline.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                  boxShadow: isEnabled
-                      ? [
-                          AppShadows.buttonShadow[0],
-                        ]
-                      : null,
+                  boxShadow: isEnabled && !widget.isSecondary
+                      ? AppShadows.glow(_backgroundColor)
+                      : isEnabled
+                          ? [AppShadows.buttonShadow[0]]
+                          : null,
                 ),
                 child: Center(
                   child: widget.isLoading

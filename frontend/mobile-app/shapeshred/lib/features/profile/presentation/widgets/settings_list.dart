@@ -33,9 +33,9 @@ class SettingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         children: [
@@ -45,7 +45,7 @@ class SettingsList extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 56.w),
                 child: Divider(
-                  color: AppColorPalette.gray100,
+                  color: AppColors.divider,
                   height: 1,
                 ),
               ),
@@ -77,12 +77,12 @@ class _SettingsTile extends StatelessWidget {
               width: 40.w,
               height: 40.h,
               decoration: BoxDecoration(
-                color: AppColorPalette.gray50,
+                color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
               ),
               child: Icon(
                 item.icon,
-                color: AppColorPalette.gray900,
+                color: AppTextColors.primary,
                 size: 20.sp,
               ),
             ),
@@ -102,7 +102,7 @@ class _SettingsTile extends StatelessWidget {
                     Text(
                       item.subtitle!,
                       style: AppTypography.bodySmall.copyWith(
-                        color: AppTextColor.secondary,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                   ],
@@ -112,7 +112,7 @@ class _SettingsTile extends StatelessWidget {
             if (item.hasTrailing)
               Icon(
                 Icons.chevron_right,
-                color: AppColorPalette.gray400,
+                color: AppTextColors.tertiary,
                 size: 20.sp,
               ),
           ],

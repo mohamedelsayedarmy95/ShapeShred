@@ -21,9 +21,9 @@ class ActivityGraph extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space20.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColorPalette.gray200),
+        border: Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +35,7 @@ class ActivityGraph extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.show_chart,
-                    color: AppColorPalette.gray900,
+                    color: AppTextColors.primary,
                     size: 22.sp,
                   ),
                   SizedBox(width: AppSpacing.space8.w),
@@ -51,13 +51,13 @@ class ActivityGraph extends StatelessWidget {
                   vertical: 4.h,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColorPalette.gray900,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 ),
                 child: Text(
                   'This Week',
                   style: AppTypography.labelSmall.copyWith(
-                    color: AppColorPalette.pureWhite,
+                    color: AppColors.onPrimary,
                   ),
                 ),
               ),
@@ -82,8 +82,8 @@ class ActivityGraph extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               color: index == 5
-                                  ? AppColorPalette.gray900
-                                  : AppColorPalette.gray200,
+                                  ? AppColors.primary
+                                  : AppColors.surfaceVariant,
                               borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
                             ),
                           ).let((bar) => FractionallySizedBox(
@@ -96,8 +96,8 @@ class ActivityGraph extends StatelessWidget {
                           days[index],
                           style: AppTypography.labelSmall.copyWith(
                             color: index == 5
-                                ? AppColorPalette.gray900
-                                : AppTextColor.secondary,
+                                ? AppColors.primary
+                                : AppTextColors.secondary,
                             fontWeight: index == 5 ? FontWeight.w700 : FontWeight.w400,
                           ),
                         ),
@@ -110,7 +110,7 @@ class ActivityGraph extends StatelessWidget {
           ),
 
           SizedBox(height: AppSpacing.space16.h),
-          Divider(color: AppColorPalette.gray200, height: 1),
+          Divider(color: AppColors.divider, height: 1),
           SizedBox(height: AppSpacing.space12.h),
 
           // Summary
@@ -154,7 +154,7 @@ class _SummaryItem extends StatelessWidget {
         Text(
           label,
           style: AppTypography.labelSmall.copyWith(
-            color: AppTextColor.secondary,
+            color: AppTextColors.secondary,
           ),
         ),
         SizedBox(height: AppSpacing.space2.h),

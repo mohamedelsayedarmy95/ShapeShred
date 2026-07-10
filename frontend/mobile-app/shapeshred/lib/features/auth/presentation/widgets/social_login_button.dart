@@ -25,23 +25,23 @@ class SocialLoginButton extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 16.h),
         decoration: BoxDecoration(
-          color: AppColorPalette.pureWhite,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border: Border.all(color: AppColorPalette.gray200),
+          border: Border.all(color: AppColors.outline),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: AppColorPalette.gray900,
+              color: AppTextColors.primary,
               size: 24.sp,
             ),
             SizedBox(width: AppSpacing.space12.w),
             Text(
               label,
               style: AppTypography.labelLarge.copyWith(
-                color: AppColorPalette.gray900,
+                color: AppTextColors.primary,
                 fontWeight: FontWeight.w600,
               ),
             ),

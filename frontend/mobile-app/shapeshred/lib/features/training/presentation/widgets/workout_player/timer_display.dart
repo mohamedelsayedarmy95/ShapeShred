@@ -31,14 +31,14 @@ class TimerDisplay extends StatelessWidget {
           style: AppTypography.displayLarge.copyWith(
             fontSize: 72,
             fontWeight: FontWeight.w800,
-            color: isResting ? AppColorPalette.gray500 : AppColorPalette.gray900,
+            color: isResting ? AppColors.secondary : AppColors.primary,
           ),
         ),
         SizedBox(height: AppSpacing.space8.h),
         Text(
           'of ${_formatTime(targetTime)}',
           style: AppTypography.bodyLarge.copyWith(
-            color: AppTextColor.secondary,
+            color: AppTextColors.secondary,
           ),
         ),
       ],

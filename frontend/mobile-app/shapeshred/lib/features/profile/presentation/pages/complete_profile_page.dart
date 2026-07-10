@@ -77,21 +77,21 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
       }, SetOptions(merge: true));
 
       if (mounted) {
-        HapticHelper.success();
+        HapticHelper.successImpact();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Profile saved successfully!',
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onTertiary,
               ),
             ),
-            backgroundColor: AppColorPalette.success,
+            backgroundColor: AppColors.success,
             behavior: SnackBarBehavior.floating,
             duration: const Duration(seconds: 2),
           ),
         );
-        
+
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
           Navigator.popUntil(context, (route) => route.isFirst);
@@ -105,10 +105,10 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
             content: Text(
               e.toString().replaceAll('Exception: ', ''),
               style: AppTypography.bodyMedium.copyWith(
-                color: AppColorPalette.pureWhite,
+                color: AppColors.onError,
               ),
             ),
-            backgroundColor: AppColorPalette.error,
+            backgroundColor: AppColors.error,
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -123,12 +123,12 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColorPalette.pureWhite,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColorPalette.gray900),
+          icon: Icon(Icons.arrow_back, color: AppTextColors.primary),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -149,14 +149,14 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                 // Progress Indicator
                 LinearProgressIndicator(
                   value: 0.33,
-                  backgroundColor: AppColorPalette.gray200,
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColorPalette.gray900),
+                  backgroundColor: AppColors.outline,
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
                 SizedBox(height: AppSpacing.space8.h),
                 Text(
                   'Step 1 of 3',
                   style: AppTypography.labelSmall.copyWith(
-                    color: AppTextColor.secondary,
+                    color: AppTextColors.secondary,
                   ),
                 ),
                 SizedBox(height: AppSpacing.space32.h),
@@ -209,7 +209,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                 SizedBox(height: AppSpacing.space8.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                   ),
                   child: Column(
@@ -227,7 +227,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                           });
                           HapticHelper.light();
                         },
-                        activeColor: AppColorPalette.gray900,
+                        activeColor: AppColors.primary,
                       );
                     }).toList(),
                   ),
@@ -299,21 +299,21 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppColorPalette.gray900
-                              : AppColorPalette.gray50,
+                              ? AppColors.primary
+                              : AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                           border: Border.all(
                             color: isSelected
-                                ? AppColorPalette.gray900
-                                : AppColorPalette.gray200,
+                                ? AppColors.primary
+                                : AppColors.outline,
                           ),
                         ),
                         child: Text(
                           goal,
                           style: AppTypography.labelMedium.copyWith(
                             color: isSelected
-                                ? AppColorPalette.pureWhite
-                                : AppColorPalette.gray900,
+                                ? AppColors.onPrimary
+                                : AppTextColors.primary,
                           ),
                         ),
                       ),
@@ -332,7 +332,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                 SizedBox(height: AppSpacing.space8.h),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray50,
+                    color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                   ),
                   child: Column(
@@ -345,7 +345,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                         subtitle: Text(
                           _getActivityLevelDescription(level),
                           style: AppTypography.bodySmall.copyWith(
-                            color: AppTextColor.secondary,
+                            color: AppTextColors.secondary,
                           ),
                         ),
                         value: level,
@@ -356,7 +356,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                           });
                           HapticHelper.light();
                         },
-                        activeColor: AppColorPalette.gray900,
+                        activeColor: AppColors.primary,
                       );
                     }).toList(),
                   ),

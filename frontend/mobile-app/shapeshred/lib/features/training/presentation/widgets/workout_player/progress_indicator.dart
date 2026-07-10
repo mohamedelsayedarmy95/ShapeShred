@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 
 class WorkoutProgressIndicator extends StatelessWidget {
   final int currentExercise;
@@ -22,13 +23,15 @@ class WorkoutProgressIndicator extends StatelessWidget {
         children: List.generate(
           totalExercises,
           (index) => Expanded(
-            child: Container(
+            child: AnimatedContainer(
+              duration: AppDurations.substantial,
+              curve: AppCurves.premiumFluid,
               height: 4.h,
               margin: EdgeInsets.symmetric(horizontal: 2.w),
               decoration: BoxDecoration(
                 color: index < currentExercise
-                    ? AppColorPalette.gray900
-                    : AppColorPalette.gray200,
+                    ? AppColors.primary
+                    : AppColors.outline,
                 borderRadius: BorderRadius.circular(AppRadius.radiusPill),
               ),
             ),

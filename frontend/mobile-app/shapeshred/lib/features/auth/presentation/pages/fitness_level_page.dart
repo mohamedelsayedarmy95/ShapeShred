@@ -6,6 +6,7 @@ import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/auth/presentation/pages/login_page.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 
 class FitnessLevelPage extends StatefulWidget {
   const FitnessLevelPage({super.key});
@@ -51,9 +52,10 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColorPalette.pureWhite,
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Padding(
+        child: _FadeSlideIn(
+          child: Padding(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +68,7 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
               Text(
                 'We\'ll adjust the intensity accordingly',
                 style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColor.secondary,
+                  color: AppTextColors.secondary,
                 ),
               ),
               SizedBox(height: AppSpacing.space32.h),
@@ -79,7 +81,9 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                     final Map<String, dynamic> level = _levels[index];
                     final isSelected = _selectedLevel == level['id'];
 
-                    return GestureDetector(
+                    return _StaggeredEntry(
+                      index: index,
+                      child: GestureDetector(
                       onTap: () {
                         setState(() {
                           _selectedLevel = level['id'] as String?;
@@ -89,13 +93,13 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                         padding: EdgeInsets.all(AppSpacing.space20.w),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppColorPalette.gray900
-                              : AppColorPalette.gray50,
+                              ? AppColors.primary
+                              : AppColors.surfaceVariant,
                           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                           border: Border.all(
                             color: isSelected
-                                ? AppColorPalette.gray900
-                                : AppColorPalette.gray200,
+                                ? AppColors.primary
+                                : AppColors.outline,
                             width: isSelected ? 2 : 1,
                           ),
                         ),
@@ -106,15 +110,15 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                               height: 56.h,
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? AppColorPalette.gray800
-                                    : AppColorPalette.pureWhite,
+                                    ? AppColors.onPrimary.withValues(alpha: 0.2)
+                                    : AppColors.surface,
                                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                               ),
                               child: Icon(
                                 level['icon'] as IconData,
                                 color: isSelected
-                                    ? AppColorPalette.pureWhite
-                                    : AppColorPalette.gray900,
+                                    ? AppColors.onPrimary
+                                    : AppTextColors.primary,
                                 size: 28.sp,
                               ),
                             ),
@@ -127,8 +131,8 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                                     level['title'] as String,
                                     style: AppTypography.titleMedium.copyWith(
                                       color: isSelected
-                                          ? AppColorPalette.pureWhite
-                                          : AppColorPalette.gray900,
+                                          ? AppColors.onPrimary
+                                          : AppTextColors.primary,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -137,8 +141,8 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                                     level['description'] as String,
                                     style: AppTypography.bodySmall.copyWith(
                                       color: isSelected
-                                          ? AppColorPalette.gray300
-                                          : AppTextColor.secondary,
+                                          ? AppColors.onPrimary.withValues(alpha: 0.75)
+                                          : AppTextColors.secondary,
                                     ),
                                   ),
                                 ],
@@ -147,11 +151,12 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                             if (isSelected)
                               Icon(
                                 Icons.check_circle,
-                                color: AppColorPalette.pureWhite,
+                                color: AppColors.onPrimary,
                                 size: 24.sp,
                               ),
                           ],
                         ),
+                      ),
                       ),
                     );
                   },
@@ -177,8 +182,8 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                   padding: EdgeInsets.symmetric(vertical: 18.h),
                   decoration: BoxDecoration(
                     color: _selectedLevel != null
-                        ? AppColorPalette.gray900
-                        : AppColorPalette.gray200,
+                        ? AppColors.primary
+                        : AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   ),
                   child: Row(
@@ -188,8 +193,8 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                         'CONTINUE',
                         style: AppTypography.labelLarge.copyWith(
                           color: _selectedLevel != null
-                              ? AppColorPalette.pureWhite
-                              : AppColorPalette.gray400,
+                              ? AppColors.onPrimary
+                              : AppTextColors.tertiary,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.2,
                         ),
@@ -198,8 +203,8 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                       Icon(
                         Icons.arrow_forward,
                         color: _selectedLevel != null
-                            ? AppColorPalette.pureWhite
-                            : AppColorPalette.gray400,
+                            ? AppColors.onPrimary
+                            : AppTextColors.tertiary,
                         size: 20.sp,
                       ),
                     ],
@@ -208,8 +213,63 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
               ),
             ],
           ),
+          ),
         ),
       ),
+    );
+  }
+}
+
+/// Fades and slides its child up once, on first build.
+class _FadeSlideIn extends StatelessWidget {
+  final Widget child;
+
+  const _FadeSlideIn({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.cinematic,
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 16),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+/// Fades and slides its child up with an index-based stagger delay.
+class _StaggeredEntry extends StatelessWidget {
+  final int index;
+  final Widget child;
+
+  const _StaggeredEntry({required this.index, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: AppDurations.standard +
+          Duration(milliseconds: index * AnimationStaggerConfig.delay),
+      curve: AppCurves.premiumFluid,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value.clamp(0.0, 1.0),
+          child: Transform.translate(
+            offset: Offset(0, (1 - value) * 12),
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 }

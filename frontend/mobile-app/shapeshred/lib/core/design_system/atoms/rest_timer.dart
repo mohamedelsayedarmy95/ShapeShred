@@ -78,7 +78,7 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
       } else {
         _timer?.cancel();
         _isRunning = false;
-        HapticHelper.success();
+        HapticHelper.successImpact();
         widget.onTimerComplete?.call();
       }
     });
@@ -123,11 +123,11 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space24.w),
       decoration: BoxDecoration(
-        color: AppColorPalette.pureWhite,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.radiusXL),
         boxShadow: [
           BoxShadow(
-            color: AppColorPalette.gray900.withValues(alpha: 0.1),
+            color: AppColors.shadow.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -148,7 +148,7 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
                   width: 200.w,
                   height: 200.h,
                   decoration: BoxDecoration(
-                    color: AppColorPalette.gray100,
+                    color: AppColors.surfaceVariant,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -162,13 +162,13 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
                       child: CircularProgressIndicator(
                         value: _animation.value,
                         strokeWidth: 8,
-                        backgroundColor: AppColorPalette.gray100,
+                        backgroundColor: AppColors.surfaceVariant,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           _remainingSeconds <= 5
-                              ? AppColorPalette.error
+                              ? AppColors.error
                               : _remainingSeconds <= 10
-                                  ? AppColorPalette.warning
-                                  : AppColorPalette.gray900,
+                                  ? AppColors.warning
+                                  : AppColors.primary,
                         ),
                       ),
                     );
@@ -183,17 +183,17 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
                       style: AppTypography.displayLarge.copyWith(
                         fontWeight: FontWeight.w700,
                         color: _remainingSeconds <= 5
-                            ? AppColorPalette.error
+                            ? AppColors.error
                             : _remainingSeconds <= 10
-                                ? AppColorPalette.warning
-                                : AppColorPalette.gray900,
+                                ? AppColors.warning
+                                : AppTextColors.primary,
                       ),
                     ),
                     SizedBox(height: AppSpacing.space8.h),
                     Text(
                       _isRunning ? 'Resting' : 'Paused',
                       style: AppTypography.labelMedium.copyWith(
-                        color: AppTextColor.secondary,
+                        color: AppTextColors.secondary,
                       ),
                     ),
                   ],
@@ -260,21 +260,21 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
           vertical: AppSpacing.space12.h,
         ),
         decoration: BoxDecoration(
-          color: isSecondary ? AppColorPalette.gray50 : AppColorPalette.gray900,
+          color: isSecondary ? AppColors.surfaceVariant : AppColors.primary,
           borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
         ),
         child: Column(
           children: [
             Icon(
               icon,
-              color: isSecondary ? AppColorPalette.gray900 : AppColorPalette.pureWhite,
+              color: isSecondary ? AppTextColors.primary : AppColors.onPrimary,
               size: 24.sp,
             ),
             SizedBox(height: AppSpacing.space4.h),
             Text(
               label,
               style: AppTypography.labelSmall.copyWith(
-                color: isSecondary ? AppColorPalette.gray900 : AppColorPalette.pureWhite,
+                color: isSecondary ? AppTextColors.primary : AppColors.onPrimary,
               ),
             ),
           ],

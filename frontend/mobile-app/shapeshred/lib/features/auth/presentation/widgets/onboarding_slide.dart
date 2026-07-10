@@ -40,14 +40,14 @@ class OnboardingSlide extends StatelessWidget {
             height: 200.h,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [AppColorPalette.gray900, AppColorPalette.gray700],
+                colors: AppColors.heroGradient,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: AppColorPalette.gray900.withValues(alpha: 0.2),
+                  color: AppColors.primary.withValues(alpha: 0.2),
                   blurRadius: 40,
                   offset: const Offset(0, 20),
                 ),
@@ -55,7 +55,7 @@ class OnboardingSlide extends StatelessWidget {
             ),
             child: Icon(
               slide.icon,
-              color: AppColorPalette.pureWhite,
+              color: AppColors.onPrimary,
               size: 80.sp,
             ),
           ),
@@ -68,13 +68,13 @@ class OnboardingSlide extends StatelessWidget {
               vertical: 8.h,
             ),
             decoration: BoxDecoration(
-              color: AppColorPalette.gray100,
+              color: AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             ),
             child: Text(
               slide.highlight.toUpperCase(),
               style: AppTypography.labelSmall.copyWith(
-                color: AppColorPalette.gray700,
+                color: AppTextColors.secondary,
                 letterSpacing: 1.5,
                 fontWeight: FontWeight.w700,
               ),
@@ -94,7 +94,7 @@ class OnboardingSlide extends StatelessWidget {
           Text(
             slide.subtitle,
             style: AppTypography.bodyLarge.copyWith(
-              color: AppTextColor.secondary,
+              color: AppTextColors.secondary,
               height: 1.6,
             ),
             textAlign: TextAlign.center,
