@@ -7,6 +7,7 @@ import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
+import 'package:shapeshred/core/design_system/atoms/premium_card.dart';
 import 'package:shapeshred/core/services/advanced_analytics_service.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/features/training/data/workout_history_repository.dart';
@@ -26,11 +27,10 @@ class _SuperUltraPremiumAnalyticsDetailPageState
   bool _isLoading = true;
   Map<String, dynamic>? _trendAnalysis;
   Map<String, dynamic>? _prediction;
-  List<Map<String, dynamic>>? _recommendations;
+  List<Map<String, dynamic>> _recommendations = [];
   Map<String, dynamic>? _recoveryStatus;
   List<Map<String, dynamic>> _workoutHistory = [];
   late final WorkoutHistoryRepository _workoutRepository;
-  String? _userId;
 
   // Animation controllers for premium effects
   late final AnimationController _pulseController;
@@ -72,13 +72,12 @@ class _SuperUltraPremiumAnalyticsDetailPageState
       return;
     }
 
-    _userId = user.uid;
     _workoutRepository = FirebaseWorkoutHistoryRepository(
       firestore: FirebaseFirestore.instance,
       userId: user.uid,
     );
 
-    _loadAnalyticsData();
+    await _loadAnalyticsData();
   }
 
   Future<void> _loadAnalyticsData() async {
@@ -155,7 +154,7 @@ class _SuperUltraPremiumAnalyticsDetailPageState
         centerTitle: true,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
+          ? Center(child: CircularProgressIndicator(color: AppColors.primary))
           : RefreshIndicator(
               color: AppColors.primary,
               onRefresh: _loadAnalyticsData,
@@ -188,29 +187,9 @@ class _SuperUltraPremiumAnalyticsDetailPageState
       animation: _pulseAnimation,
       builder: (context, child) => Transform.scale(
         scale: _pulseAnimation.value,
-        child: Container(
+        child: PremiumCard(
           padding: EdgeInsets.all(AppSpacing.cardPadding.w),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColors.primary.withValues(alpha: 0.1),
-                AppColors.secondary.withValues(alpha: 0.1),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(AppRadius.radiusXL),
-            border: Border.all(
-              color: AppColors.outline.withValues(alpha: 0.2),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.1),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
+          hasBorder: true,
           child: Column(
             children: [
               Text(
@@ -233,7 +212,7 @@ class _SuperUltraPremiumAnalyticsDetailPageState
                       AppColors.secondary,
                       AppColors.tertiary,
                     ],
-                    stops: [0.0, 0.6, 1.0],
+                    stops: const [0.0, 0.6, 1.0],
                   ),
                   shape: BoxShape.circle,
                   boxShadow: [
@@ -246,7 +225,7 @@ class _SuperUltraPremiumAnalyticsDetailPageState
                 ),
                 child: Center(
                   child: Text(
-                    '${wellnessScore.toStringAsFixed(0)}',
+                    wellnessScore.toStringAsFixed(0),
                     style: AppTypography.displayMedium.copyWith(
                       color: AppColors.onPrimary,
                       fontWeight: FontWeight.w700,
@@ -322,9 +301,9 @@ class _SuperUltraPremiumAnalyticsDetailPageState
 
   String _getWellnessLabel(double score) {
     if (score >= 90) return 'Peak Performance';
-    if (score >= 80) => 'Excellent';
-    if (score >= 70) => 'Good';
-    if (score >= 60) => 'Fair';
+    if (score >= 80) return 'Excellent';
+    if (score >= 70) return 'Good';
+    if (score >= 60) return 'Fair';
     return 'Needs Attention';
   }
 
@@ -338,32 +317,23 @@ class _SuperUltraPremiumAnalyticsDetailPageState
     return AnimatedContainer(
       duration: AppDurations.substantial,
       curve: AppCurves.premiumFluid,
-      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColors.outline),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Performance Trend',
-            style: AppTypography.titleMedium.copyWith(
-              color: AppTextColors.primary,
-              fontWeight: FontWeight.w600,
+      child: PremiumCard(
+        padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+        hasBorder: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Performance Trend',
+              style: AppTypography.titleMedium.copyWith(
+                color: AppTextColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          SizedBox(height: AppSpacing.space16.h),
-          _buildTrendContent(),
-        ],
+            SizedBox(height: AppSpacing.space16.h),
+            _buildTrendContent(),
+          ],
+        ),
       ),
     );
   }
@@ -532,48 +502,39 @@ class _SuperUltraPremiumAnalyticsDetailPageState
     return AnimatedContainer(
       duration: AppDurations.substantial,
       curve: AppCurves.premiumFluid,
-      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColors.outline),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Next Workout Prediction',
-            style: AppTypography.titleMedium.copyWith(
-              color: AppTextColors.primary,
-              fontWeight: FontWeight.w600,
+      child: PremiumCard(
+        padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+        hasBorder: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Next Workout Prediction',
+              style: AppTypography.titleMedium.copyWith(
+                color: AppTextColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          SizedBox(height: AppSpacing.space16.h),
-          _prediction == null
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildPredictionItem(
-                        'Suggested Volume', _prediction!['suggestedVolume'] ?? 'N/A'),
-                    SizedBox(height: AppSpacing.space8.h),
-                    _buildPredictionItem(
-                        'Suggested Intensity (RPE)',
-                        '${(_prediction!['suggestedIntensity'] as num?)?.toStringAsFixed(1) ?? 'N/A'}'),
-                    SizedBox(height: AppSpacing.space8.h),
-                    _buildPredictionItem(
-                        'Confidence',
-                        '${(_prediction!['confidence'] as num?)?.toStringAsFixed(2) ?? '0.00'}'),
-                  ],
-                ),
-        ],
+            SizedBox(height: AppSpacing.space16.h),
+            _prediction == null
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildPredictionItem(
+                          'Suggested Volume', _prediction!['suggestedVolume']?.toString() ?? 'N/A'),
+                      SizedBox(height: AppSpacing.space8.h),
+                      _buildPredictionItem(
+                          'Suggested Intensity (RPE)',
+                          (_prediction!['suggestedIntensity'] as num?)?.toStringAsFixed(1) ?? 'N/A'),
+                      SizedBox(height: AppSpacing.space8.h),
+                      _buildPredictionItem(
+                          'Confidence',
+                          (_prediction!['confidence'] as num?)?.toStringAsFixed(2) ?? '0.00'),
+                    ],
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -608,48 +569,39 @@ class _SuperUltraPremiumAnalyticsDetailPageState
     return AnimatedContainer(
       duration: AppDurations.substantial,
       curve: AppCurves.premiumFluid,
-      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColors.outline),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Recommendations',
-            style: AppTypography.titleMedium.copyWith(
-              color: AppTextColors.primary,
-              fontWeight: FontWeight.w600,
+      child: PremiumCard(
+        padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+        hasBorder: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Recommendations',
+              style: AppTypography.titleMedium.copyWith(
+                color: AppTextColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          SizedBox(height: AppSpacing.space16.h),
-          _recommendations == null || _recommendations!.isEmpty
-              ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _recommendations!.length,
-                  itemBuilder: (context, index) {
-                    final rec = _recommendations![index];
-                    return _RecommendationItemWithAnimation(
-                      index: index,
-                      icon: rec['icon'] as IconData ?? Icons.tips_and_updates,
-                      title: rec['title'] as String ?? 'Recommendation',
-                      description: rec['description'] as String ?? '',
-                      priority: rec['priority'] as String ?? 'medium',
-                    );
-                  },
-                ),
-        ],
+            SizedBox(height: AppSpacing.space16.h),
+            _recommendations.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _recommendations.length,
+                    itemBuilder: (context, index) {
+                      final rec = _recommendations[index];
+                      return _RecommendationItemWithAnimation(
+                        index: index,
+                        icon: (rec['icon'] as IconData?) ?? Icons.tips_and_updates,
+                        title: (rec['title'] as String?) ?? 'Recommendation',
+                        description: (rec['description'] as String?) ?? '',
+                        priority: (rec['priority'] as String?) ?? 'medium',
+                      );
+                    },
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -658,75 +610,64 @@ class _SuperUltraPremiumAnalyticsDetailPageState
     return AnimatedContainer(
       duration: AppDurations.substantial,
       curve: AppCurves.premiumFluid,
-      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: Border.all(color: AppColors.outline),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Recovery Status',
-            style: AppTypography.titleMedium.copyWith(
-              color: AppTextColors.primary,
-              fontWeight: FontWeight.w600,
+      child: PremiumCard(
+        padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+        hasBorder: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Recovery Status',
+              style: AppTypography.titleMedium.copyWith(
+                color: AppTextColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          SizedBox(height: AppSpacing.space16.h),
-          _recoveryStatus == null
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildRiskLevelIndicator(),
-                    SizedBox(height: AppSpacing.space12.h),
-                    Text(
-                      'Recommendations:',
-                      style: AppTypography.bodyMedium.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppTextColors.primary,
+            SizedBox(height: AppSpacing.space16.h),
+            _recoveryStatus == null
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildRiskLevelIndicator(),
+                      SizedBox(height: AppSpacing.space12.h),
+                      Text(
+                        'Recommendations:',
+                        style: AppTypography.bodyMedium.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppTextColors.primary,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: AppSpacing.space8.h),
-                    ...(_recoveryStatus!['recommendations'] as List<dynamic>?)
-                            ?.map((rec) => Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: AppSpacing.space4.h),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle,
-                                        size: 16,
-                                        color: _getRiskColor(
-                                            _recoveryStatus!['riskLevel']),
-                                      ),
-                                      SizedBox(width: AppSpacing.space8.w),
-                                      Expanded(
-                                        child: Text(
-                                          rec.toString(),
-                                          style: AppTypography.bodySmall.copyWith(
-                                            color: AppTextColors.secondary,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                      SizedBox(height: AppSpacing.space8.h),
+                      if (_recoveryStatus != null && _recoveryStatus!['recommendations'] != null) ...[
+                        for (var rec in _recoveryStatus!['recommendations'] as List<dynamic>)
+                          Padding(
+                            padding: EdgeInsets.only(bottom: AppSpacing.space4.h),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  size: 16,
+                                  color: _getRiskColor(_recoveryStatus!['riskLevel']),
+                                ),
+                                SizedBox(width: AppSpacing.space8.w),
+                                Expanded(
+                                  child: Text(
+                                    rec.toString(),
+                                    style: AppTypography.bodySmall.copyWith(
+                                      color: AppTextColors.secondary,
+                                    ),
                                   ),
-                                )) ??
-                        [],
-                  ],
-                ),
-        ],
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ],
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -803,18 +744,13 @@ class _RecommendationItemWithAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AnimationController controller = AnimationController(
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.0, end: 1.0),
       duration: Duration(milliseconds: 500 + (index * 50)),
-      vsync: const AlwaysStoppedAnimation<double>(1.0),
-    );
-    // In a real implementation, we'd use a TickerProviderStateMixin
-    // For simplicity, we'll use a simple fade-in animation
-    return FadeTransition(
-      opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.easeInOut,
-        ),
+      curve: Curves.easeInOut,
+      builder: (context, double opacity, child) => Opacity(
+        opacity: opacity,
+        child: child,
       ),
       child: _RecommendationItem(
         icon: icon,

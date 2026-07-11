@@ -58,7 +58,7 @@ class AppColors {
   static const Color scrim = Colors.black;
 
   static Color get background => _getColorFromScheme(
-        const Color(0xFFFAFAFC), // Background (light)
+        const Color(0xFFFFFFFF), // Pure White
         const Color(0xFF0B0B10), // Obsidian background (dark)
       );
   static Color get onBackground => _getColorFromScheme(
@@ -67,16 +67,16 @@ class AppColors {
       );
 
   static Color get surface => _getColorFromScheme(
-        const Color(0xFFFFFFFF), // Surface (light)
+        const Color(0xFFF8F9FA), // Very Light Gray
         const Color(0xFF15151B), // Elevated obsidian surface (dark)
       );
   static Color get onSurface => _getColorFromScheme(
-        const Color(0xFF16161D), // On surface (light)
-        const Color(0xFFEDEDF2), // On surface (dark)
+        const Color(0xFF1A1A1A), // Deep Charcoal
+        const Color(0xFFE0E0E0), // Light gray for dark mode
       );
 
   static Color get surfaceVariant => _getColorFromScheme(
-        const Color(0xFFF0EEF7), // Surface variant (light)
+        const Color(0xFFF0F0F0), // Very light gray for subtle variation
         const Color(0xFF1F1F27), // Surface variant (dark)
       );
   static Color get onSurfaceVariant => _getColorFromScheme(

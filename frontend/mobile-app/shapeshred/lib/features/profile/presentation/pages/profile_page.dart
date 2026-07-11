@@ -941,12 +941,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: 'Super Ultra Premium',
                     subtitle: 'Cinematic animations, biometric-responsive design, particle effects',
                     icon: Icons.brush,
-                    onTap: () {
-                      PreferencesService.setBool('premium_ui_enabled', true);
-                      if (mounted) Navigator.pop(context);
-                      HapticHelper.light();
-                      // Trigger rebuild to update UI immediately
-                      );
+                    onTap: () async {
+                      await PreferencesService.setBool('premium_ui_enabled', true);
+                      if (mounted) {
+                        Navigator.pop(context);
+                        HapticHelper.light();
+                        setState(() {});
+                      }
+                    },
                   ),
                 ],
               ),

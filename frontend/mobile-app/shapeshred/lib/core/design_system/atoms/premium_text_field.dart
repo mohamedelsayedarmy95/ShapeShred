@@ -142,6 +142,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                       : (_borderColorAnimation.value ?? AppColors.outline),
                   width: hasError ? 2 : _borderAnimation.value,
                 ),
+                // Removed shadow for cleaner, border-focused design
               ),
               child: TextField(
                 controller: widget.controller,

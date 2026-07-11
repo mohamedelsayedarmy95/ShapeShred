@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/ui/main_layout.dart';
-import 'package:shapeshred/features/training/presentation/pages/home_page.dart';
-import 'package:shapeshred/features/training/presentation/pages/training_page.dart';
-import 'package:shapeshred/features/nutrition/presentation/pages/nutrition_page.dart';
-import 'package:shapeshred/features/profile/presentation/pages/profile_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/login_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/signup_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/super_ultra_premium_onboarding_page.dart';
+import 'package:shapeshred/features/training/presentation/pages/home_page.dart';
+import 'package:shapeshred/features/training/presentation/pages/training_page.dart';
+import 'package:shapeshred/features/nutrition/presentation/pages/nutrition_page.dart';
+import 'package:shapeshred/features/profile/presentation/pages/profile_page.dart';
 import 'package:shapeshred/features/training/presentation/pages/workout_player/super_ultra_premium_workout_page.dart';
 import 'package:shapeshred/features/profile/presentation/pages/super_ultra_premium_analytics_detail_page.dart';
 
@@ -72,6 +72,16 @@ class AppRouter {
             path: '/profile',
             name: 'profile',
             builder: (context, state) => const ProfilePage(),
+          ),
+          GoRoute(
+            path: '/super-ultra-premium-workout',
+            name: 'super-ultra-premium-workout',
+            builder: (context, state) => const SuperUltraPremiumWorkoutPage(),
+          ),
+          GoRoute(
+            path: '/super-ultra-premium-analytics',
+            name: 'super-ultra-premium-analytics',
+            builder: (context, state) => const SuperUltraPremiumAnalyticsDetailPage(),
           ),
         ],
       ),

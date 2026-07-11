@@ -127,11 +127,11 @@ class _PremiumButtonState extends State<PremiumButton>
                       ? _backgroundColor
                       : AppColors.outline.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                  boxShadow: isEnabled && !widget.isSecondary
-                      ? AppShadows.glow(_backgroundColor)
-                      : isEnabled
-                          ? [AppShadows.buttonShadow[0]]
-                          : null,
+                  border: Border.all(
+                    color: AppColors.outline.withValues(alpha: 0.1),
+                    width: 1.0,
+                  ),
+                  boxShadow: null,
                 ),
                 child: Center(
                   child: widget.isLoading

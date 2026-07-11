@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/design_system/tokens/shadows.dart';
 
 class PremiumCard extends StatelessWidget {
   final Widget child;
@@ -28,9 +27,7 @@ class PremiumCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border:
-              hasBorder ? Border.all(color: AppColors.outline, width: 1) : null,
-          boxShadow: AppShadows.subtle,
+          border: hasBorder ? Border.all(color: AppColors.outline, width: 1) : null,
         ),
         child: child,
       ),
