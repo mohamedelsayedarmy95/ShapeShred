@@ -5,11 +5,11 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
-class PremiumCard extends StatelessWidget {
+class PremiumStatusCard extends StatelessWidget {
   final bool isPremium;
   final VoidCallback? onUpgrade;
 
-  const PremiumCard({
+  const PremiumStatusCard({
     super.key,
     required this.isPremium,
     this.onUpgrade,

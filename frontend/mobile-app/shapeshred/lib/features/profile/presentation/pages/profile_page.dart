@@ -15,7 +15,7 @@ import 'package:shapeshred/features/profile/presentation/pages/profile_photo_pag
 import 'package:shapeshred/features/profile/presentation/pages/privacy_settings_page.dart';
 import 'package:shapeshred/features/profile/presentation/widgets/profile_header.dart';
 import 'package:shapeshred/features/profile/presentation/widgets/achievement_section.dart';
-import 'package:shapeshred/features/profile/presentation/widgets/premium_card.dart';
+import 'package:shapeshred/features/profile/presentation/widgets/premium_status_card.dart';
 import 'package:shapeshred/features/premium/presentation/pages/premium_page.dart';
 import 'package:shapeshred/features/training/presentation/pages/workout_history_page.dart';
 import 'package:shapeshred/features/profile/presentation/pages/analytics_detail_page.dart';
@@ -250,7 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: AppSpacing.space24.h),
 
               // Premium Upsell
-              PremiumCard(
+              PremiumStatusCard(
                 isPremium: false,
                 onUpgrade: () {
                   HapticHelper.light();
