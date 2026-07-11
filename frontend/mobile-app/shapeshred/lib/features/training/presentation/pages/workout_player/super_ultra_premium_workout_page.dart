@@ -3,13 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
+import 'package:shapeshred/core/design_system/atoms/premium_card.dart';
+import 'package:shapeshred/core/design_system/atoms/premium_text_field.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
-import 'package:shapeshred/core/design_system/tokens/typography.dart';
-import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/tokens/shadows.dart';
-import 'package:shapeshred/core/design_system/tokens/motion.dart';
-import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
+import 'package:shapeshred/core/design_system/tokens/spacing.dart';
+import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
 import 'package:shapeshred/providers/workout_session_provider.dart';
@@ -649,56 +651,32 @@ class _SuperUltraPremiumWorkoutPageState
         return Row(
           children: [
             Expanded(
-              child: Container(
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primary.withValues(alpha: 0.1),
-                      AppColors.secondary.withValues(alpha: 0.1),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                  border: Border.all(
-                    color: _getIntensityColor(value).withValues(alpha: 0.3),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
+              child: PremiumCard(
+                padding: EdgeInsets.all(AppSpacing.cardPadding.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Workout Intensity',
-                      style: TextStyle(
-                        fontSize: 12.sp,
+                      style: AppTypography.labelMedium.copyWith(
                         color: AppTextColors.secondary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: AppSpacing.space4.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           '${(value * 100).toStringAsFixed(0)}%',
-                          style: TextStyle(
-                            fontSize: 18.sp,
+                          style: AppTypography.titleMedium.copyWith(
                             fontWeight: FontWeight.bold,
                             color: _getIntensityColor(value),
                           ),
                         ),
                         Text(
                           'HR: ${_biometrics.estimatedHeartRate}bpm',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: AppTypography.labelMedium.copyWith(
                             color: AppTextColors.secondary,
                           ),
                         ),
@@ -708,39 +686,34 @@ class _SuperUltraPremiumWorkoutPageState
                 ),
               ),
             ),
-            SizedBox(width: 12.w),
-            Container(
-              width: 80.w,
-              height: 80.h,
-              decoration: BoxDecoration(
-                gradient: RadialGradient(
-                  colors: [
-                    _getIntensityColor(value).withValues(alpha: 0.3),
-                    _getIntensityColor(value).withValues(alpha: 0.1),
-                  ],
-                  center: Alignment.center,
-                  radius: 0.7,
-                ),
-                borderRadius: BorderRadius.circular(40.r),
-                border: Border.all(
-                  color: _getIntensityColor(value).withValues(alpha: 0.5),
-                  width: 2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: _getIntensityColor(value).withValues(alpha: 0.2),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
+            SizedBox(width: AppSpacing.space16.w),
+            PremiumCard(
+              padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+              child: Container(
+                width: 60.w,
+                height: 60.h,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [
+                      _getIntensityColor(value).withValues(alpha: 0.2),
+                      _getIntensityColor(value).withValues(alpha: 0.05),
+                    ],
+                    center: Alignment.center,
+                    radius: 0.7,
                   ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  '${_biometrics.estimatedHeartRate}',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: _getIntensityColor(value),
+                  border: Border.all(
+                    color: _getIntensityColor(value).withValues(alpha: 0.3),
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(AppRadius.radiusCircle),
+                ),
+                child: Center(
+                  child: Text(
+                    '${_biometrics.estimatedHeartRate}',
+                    style: AppTypography.displayMedium.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: _getIntensityColor(value),
+                    ),
                   ),
                 ),
               ),
@@ -762,98 +735,105 @@ class _SuperUltraPremiumWorkoutPageState
         (state.exerciseIndex + state.setIndex / state.currentExercise!.sets) /
             state.workout!.exercises.length;
 
-    return SizedBox(
-      height: 10.h,
-      child: Stack(
-        children: [
-          // Background track
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.outline),
-              borderRadius: BorderRadius.circular(5.r),
+    return PremiumCard(
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        height: 10.h,
+        child: Stack(
+          children: [
+            // Background track
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.outline),
+                borderRadius: BorderRadius.circular(5.r),
+              ),
             ),
-          ),
-          // Progress bar with biometric color and breathing effect
-          ValueListenableBuilder<double>(
-            valueListenable: _biometrics,
-            builder: (context, value, child) {
-              return FractionallySizedBox(
-                alignment: Alignment.centerLeft,
-                widthFactor: progress,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        _getIntensityColor(value),
-                        _getIntensityColor(value).withValues(alpha: 0.7),
+            // Progress bar with biometric color and breathing effect
+            ValueListenableBuilder<double>(
+              valueListenable: _biometrics,
+              builder: (context, value, child) {
+                return FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: progress,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          _getIntensityColor(value),
+                          _getIntensityColor(value).withValues(alpha: 0.7),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(5.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _getIntensityColor(value).withValues(alpha: 0.3),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(5.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: _getIntensityColor(value).withValues(alpha: 0.3),
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildExerciseInfo(Exercise exercise) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          exercise.name,
-          style: AppTypography.headlineMedium.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        SizedBox(height: AppSpacing.space8.h),
-        Text(
-          exercise.muscleGroup,
-          style: AppTypography.bodyMedium.copyWith(
-            color: AppTextColors.secondary,
-          ),
-        ),
-        SizedBox(height: AppSpacing.space4.h),
-        // Difficulty indicator with haptic preview
-        Row(
-          children: [
-            Text(
-              'Difficulty: ',
-              style: AppTypography.bodySmall.copyWith(
-                color: AppTextColors.secondary,
-              ),
+    return PremiumCard(
+      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            exercise.name,
+            style: AppTypography.headlineMedium.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AppColors.onSurface,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 8.w,
-                vertical: 4.h,
-              ),
-              decoration: BoxDecoration(
-                color: _getDifficultyColor(exercise.difficulty),
-                borderRadius: BorderRadius.circular(4.r),
-              ),
-              child: Text(
-                exercise.difficulty,
-                style: TextStyle(
-                  color: AppColors.onPrimary,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.bold,
+          ),
+          SizedBox(height: AppSpacing.space8.h),
+          Text(
+            exercise.muscleGroup,
+            style: AppTypography.bodyMedium.copyWith(
+              color: AppTextColors.secondary,
+            ),
+          ),
+          SizedBox(height: AppSpacing.space4.h),
+          // Difficulty indicator with haptic preview
+          Row(
+            children: [
+              Text(
+                'Difficulty: ',
+                style: AppTypography.bodySmall.copyWith(
+                  color: AppTextColors.secondary,
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
+                  vertical: 4.h,
+                ),
+                decoration: BoxDecoration(
+                  color: _getDifficultyColor(exercise.difficulty),
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                child: Text(
+                  exercise.difficulty,
+                  style: TextStyle(
+                    color: AppColors.onPrimary,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -872,24 +852,8 @@ class _SuperUltraPremiumWorkoutPageState
   }
 
   Widget _buildSetCounter(WorkoutSessionState state) {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.space16.w),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
-        borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-        border: Border.all(
-          color: _biometrics.value > 0.7
-              ? AppColors.error.withValues(alpha: 0.3)
-              : AppColors.outline,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    return PremiumCard(
+      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -897,8 +861,9 @@ class _SuperUltraPremiumWorkoutPageState
             'Set ${state.setIndex} of ${state.currentExercise!.sets}',
             style: AppTypography.titleMedium.copyWith(
               fontWeight: FontWeight.w700,
-              color:
-                  _biometrics.value > 0.7 ? AppColors.error : AppColors.primary,
+              color: _biometrics.value > 0.7
+                  ? AppColors.error
+                  : AppColors.primary,
             ),
           ),
           Text(
@@ -913,25 +878,8 @@ class _SuperUltraPremiumWorkoutPageState
   }
 
   Widget _buildRepCounter(WorkoutSessionState state) {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.space24.w),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: AppColors.heroGradient
-              .map((color) => color.withValues(alpha: 0.9))
-              .toList(),
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(AppRadius.radiusXL),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
-            blurRadius: 24,
-            offset: const Offset(0, 12),
-          ),
-        ],
-      ),
+    return PremiumCard(
+      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
       child: Column(
         children: [
           Text(
@@ -1009,31 +957,19 @@ class _SuperUltraPremiumWorkoutPageState
   }
 
   Widget _buildWeightInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Weight (kg) - Optional',
-          style: AppTypography.labelMedium.copyWith(
-            fontWeight: FontWeight.w600,
+    return PremiumCard(
+      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Weight (kg) - Optional',
+            style: AppTypography.labelMedium.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        SizedBox(height: AppSpacing.space8.h),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.space16.w),
-          decoration: BoxDecoration(
-            color: AppColors.surfaceVariant,
-            borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-            border: Border.all(color: AppColors.outline),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow.withValues(alpha: 0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: TextField(
+          SizedBox(height: AppSpacing.space8.h),
+          TextField(
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -1052,74 +988,71 @@ class _SuperUltraPremiumWorkoutPageState
               // For now, we ignore it.
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildRPESlider() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Rate of Perceived Exertion (RPE)',
-          style: AppTypography.labelMedium.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        SizedBox(height: AppSpacing.space8.h),
-        Row(
-          children: [
-            Expanded(
-              child: Slider(
-                value:
-                    5.0, // Placeholder - we don't store RPE in the notifier yet
-                min: 1,
-                max: 10,
-                divisions: 9,
-                label: '5',
-                activeColor: AppColors.primary,
-                onChanged: (value) {
-                    // We don't store RPE in the notifier; if needed, extend workout log.
-                    HapticHelper.lightImpact();
-                  },
-              ),
+    return PremiumCard(
+      padding: EdgeInsets.all(AppSpacing.cardPadding.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Rate of Perceived Exertion (RPE)',
+            style: AppTypography.labelMedium.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.onSurface,
             ),
-            SizedBox(width: AppSpacing.space16.w),
-            Container(
-              width: 48.w,
-              height: 48.h,
-              decoration: BoxDecoration(
-                color: _getRPEColor(5),
-                borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.shadow.withValues(alpha: 0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+          ),
+          SizedBox(height: AppSpacing.space8.h),
+          Row(
+            children: [
+              Expanded(
+                child: Slider(
+                  value:
+                      5.0, // Placeholder - we don't store RPE in the notifier yet
+                  min: 1,
+                  max: 10,
+                  divisions: 9,
+                  label: '5',
+                  activeColor: AppColors.primary,
+                  onChanged: (value) {
+                      // We don't store RPE in the notifier; if needed, extend workout log.
+                      HapticHelper.lightImpact();
+                    },
+                ),
               ),
-              child: Center(
-                child: Text(
-                  '5',
-                  style: AppTypography.titleMedium.copyWith(
-                    color: AppTextColors.inverse,
-                    fontWeight: FontWeight.w700,
+              SizedBox(width: AppSpacing.space16.w),
+              Container(
+                width: 48.w,
+                height: 48.h,
+                decoration: BoxDecoration(
+                  color: _getRPEColor(5),
+                  borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                ),
+                child: Center(
+                  child: Text(
+                    '5',
+                    style: AppTypography.titleMedium.copyWith(
+                      color: AppTextColors.inverse,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.space8.h),
-        Text(
-          _getRPELabel(5),
-          style: AppTypography.bodySmall.copyWith(
-            color: AppTextColors.secondary,
+            ],
           ),
-        ),
-      ],
+          SizedBox(height: AppSpacing.space8.h),
+          Text(
+            _getRPELabel(5),
+            style: AppTypography.bodySmall.copyWith(
+              color: AppTextColors.secondary,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
