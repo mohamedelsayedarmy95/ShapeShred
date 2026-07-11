@@ -14,9 +14,12 @@ final firebaseUserProvider = StreamProvider<User?>((ref) {
   return ref.watch(firebaseAuthProvider).authStateChanges();
 });
 
-// Provider that yields the current user ID (String or null)
+// Provider that yields the current user ID (String or null).
+// Falls back to FirebaseAuth.currentUser because the auth stream has not
+// emitted yet on a cold first read (it starts in AsyncLoading).
 final workoutUserIdProvider = Provider<String?>((ref) {
-  return ref.watch(firebaseUserProvider).value?.uid;
+  return ref.watch(firebaseUserProvider).value?.uid ??
+      ref.watch(firebaseAuthProvider).currentUser?.uid;
 });
 
 // Provider for the workout history repository

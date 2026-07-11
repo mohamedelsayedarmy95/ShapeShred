@@ -127,10 +127,12 @@ class FirebaseService {
 
     // Save token to Firestore for push notifications
     try {
-      await firestore.collection('users').doc(user.uid).update({
+      // set + merge: update() throws not-found when the user doc
+      // hasn't been created yet.
+      await firestore.collection('users').doc(user.uid).set({
         'fcmToken': token,
         'fcmTokenUpdatedAt': FieldValue.serverTimestamp(),
-      });
+      }, SetOptions(merge: true));
     } catch (e) {
       _logger.e('Failed to save FCM token: $e');
     }

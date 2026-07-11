@@ -19,38 +19,36 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.space16.h,
-          horizontal: AppSpacing.space8.w,
-        ),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceVariant,
-          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border: Border.all(color: AppColors.outline),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(icon, style: TextStyle(fontSize: 24.sp)),
-            SizedBox(height: AppSpacing.space4.h),
-            Text(
-              value,
-              style: AppTypography.titleMedium.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: AppSpacing.space16.h,
+        horizontal: AppSpacing.space8.w,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+        border: Border.all(color: AppColors.outline),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(icon, style: TextStyle(fontSize: 24.sp)),
+          SizedBox(height: AppSpacing.space4.h),
+          Text(
+            value,
+            style: AppTypography.titleMedium.copyWith(
+              fontWeight: FontWeight.w700,
             ),
-            SizedBox(height: AppSpacing.space2.h),
-            Text(
-              label,
-              style: AppTypography.labelSmall.copyWith(
-                color: AppTextColors.secondary,
-              ),
-              textAlign: TextAlign.center,
+          ),
+          SizedBox(height: AppSpacing.space2.h),
+          Text(
+            label,
+            style: AppTypography.labelSmall.copyWith(
+              color: AppTextColors.secondary,
             ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

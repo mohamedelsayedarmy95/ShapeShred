@@ -1091,7 +1091,7 @@ class _EnhancedWorkoutPlayerPageState
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
           child: Column(
             mainAxisSize: MainAxisSize.min,

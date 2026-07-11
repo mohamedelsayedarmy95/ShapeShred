@@ -88,7 +88,10 @@ class WorkoutSessionNotifier extends Notifier<WorkoutSessionState> {
 
     final workout = ref.watch(selectedWorkoutProvider);
     if (workout == null) {
-      throw StateError('No workout selected - cannot start a workout session');
+      // No selection (e.g. it was just reset after finishing a workout):
+      // stay idle instead of throwing; the player is only shown after a
+      // workout is selected, which rebuilds this provider with real state.
+      return const WorkoutSessionState();
     }
 
     final userId = ref.read(workoutUserIdProvider);

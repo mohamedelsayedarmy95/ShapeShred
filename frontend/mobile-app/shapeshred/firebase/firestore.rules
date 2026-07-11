@@ -24,9 +24,15 @@ service cloud.firestore {
     
     match /users/{userId} {
       allow read: if isAuthenticated() && isOwner(userId);
-      allow create: if isAuthenticated() && isOwner(userId) && isValidTimestamp();
-      allow update: if isAuthenticated() && isOwner(userId) && isValidTimestamp();
+      // Owner-only writes. No timestamp requirement: partial writes (e.g.
+      // the FCM token refresh via set+merge) don't carry createdAt/updatedAt.
+      allow create, update: if isAuthenticated() && isOwner(userId);
       allow delete: if false;
+
+      match /workout_history/{workoutId} {
+        allow read, create, delete: if isAuthenticated() && isOwner(userId);
+        allow update: if false;
+      }
     }
     
     match /user_profiles/{userId} {
