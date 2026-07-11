@@ -170,18 +170,18 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
                 Container(
                   padding: EdgeInsets.all(12.h),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
+                    color: AppColors.errorContainer,
                     borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.red.shade700),
+                      Icon(Icons.error_outline, color: AppColors.onErrorContainer),
                       SizedBox(width: AppSpacing.space12.w),
                       Expanded(
                         child: Text(
                           _errorMessage!,
                           style: AppTypography.bodySmall.copyWith(
-                            color: Colors.red.shade700,
+                            color: AppColors.onErrorContainer,
                           ),
                         ),
                       ),

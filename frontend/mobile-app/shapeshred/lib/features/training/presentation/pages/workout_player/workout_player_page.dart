@@ -96,7 +96,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
     showGeneralDialog<void>(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.black54,
+      barrierColor: AppColors.shadow,
       transitionDuration: AppDurations.cinematic,
       pageBuilder: (context, animation, secondaryAnimation) => const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {

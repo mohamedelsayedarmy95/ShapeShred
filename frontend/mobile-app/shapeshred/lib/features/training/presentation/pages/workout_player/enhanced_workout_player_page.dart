@@ -267,7 +267,7 @@ class _ExerciseVisualization3DState extends State<ExerciseVisualization3D>
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.black.withValues(alpha: 0.6),
+              AppColors.scrim.withValues(alpha: 0.6),
               Colors.transparent,
             ],
             begin: Alignment.bottomCenter,

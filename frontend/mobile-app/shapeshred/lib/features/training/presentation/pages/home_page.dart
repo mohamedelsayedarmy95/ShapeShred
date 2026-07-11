@@ -660,7 +660,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               vertical: 6.h,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
+              color: AppColors.onPrimary.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AppRadius.radiusPill),
             ),
             child: Text(

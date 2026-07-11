@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shapeshred/core/design_system/tokens/colors.dart';
 
 class Exercise {
   final String id;
@@ -59,7 +60,7 @@ class WorkoutRepository {
     level: 'High Intensity',
     category: 'HIIT',
     icon: Icons.flash_on,
-    color: const Color(0xFF121212),
+    color: AppColorPalette.absoluteBlack,
     exercises: [
       Exercise(
         id: 'jumping_jacks',

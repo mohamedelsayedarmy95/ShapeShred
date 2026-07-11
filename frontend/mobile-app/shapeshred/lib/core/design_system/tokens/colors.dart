@@ -45,6 +45,18 @@ class AppColors {
         Color(0xFF450A0A),
       );
 
+  static Color get errorContainer => _getColorFromScheme(
+        Color(0xFFFFEBEE), // Red 50 (light)
+        Color(0xFF450A0A), // Deep red container (dark)
+      );
+  static Color get onErrorContainer => _getColorFromScheme(
+        Color(0xFFD32F2F), // Red 700 (light)
+        Color(0xFFF87171), // Bright red text (dark)
+      );
+
+  /// Full-strength scrim for overlays and image gradients (M3 scrim role).
+  static const Color scrim = Colors.black;
+
   static Color get background => _getColorFromScheme(
         Color(0xFFFAFAFC), // Background (light)
         Color(0xFF0B0B10), // Obsidian background (dark)

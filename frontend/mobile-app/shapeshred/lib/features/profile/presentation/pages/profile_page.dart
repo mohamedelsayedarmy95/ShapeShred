@@ -686,7 +686,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Chat with Coach',
-      barrierColor: Colors.black54,
+      barrierColor: AppColors.shadow,
       transitionDuration: AppDurations.cinematic,
       pageBuilder: (context, animation, secondaryAnimation) => const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
