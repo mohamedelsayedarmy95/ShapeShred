@@ -125,7 +125,7 @@ class _PremiumButtonState extends State<PremiumButton>
                 decoration: BoxDecoration(
                   color: isEnabled
                       ? _backgroundColor
-                      : AppColors.outline.withOpacity(0.3),
+                      : AppColors.outline.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   boxShadow: isEnabled && !widget.isSecondary
                       ? AppShadows.glow(_backgroundColor)

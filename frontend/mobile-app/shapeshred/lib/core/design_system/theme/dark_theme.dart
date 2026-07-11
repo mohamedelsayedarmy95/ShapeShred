@@ -105,7 +105,7 @@ class AppDarkTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-        shadowColor: AppColors.shadow.withOpacity(0.1),
+        shadowColor: AppColors.shadow.withValues(alpha: 0.1),
         surfaceTintColor: Colors.transparent,
       ),
 
@@ -122,8 +122,8 @@ class AppDarkTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadius.md),
           ),
-          disabledBackgroundColor: AppColors.onSurface.withOpacity(0.12),
-          disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
+          disabledBackgroundColor: AppColors.onSurface.withValues(alpha: 0.12),
+          disabledForegroundColor: AppColors.onSurface.withValues(alpha: 0.38),
         ),
       ),
 
@@ -131,7 +131,7 @@ class AppDarkTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
-          disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
+          disabledForegroundColor: AppColors.onSurface.withValues(alpha: 0.38),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonPaddingHorizontal * 0.75,
             vertical: AppSpacing.buttonPaddingVertical * 0.75,
@@ -148,7 +148,7 @@ class AppDarkTheme {
             color: AppColors.outline,
             width: AppBorderWidth.regular,
           ),
-          disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
+          disabledForegroundColor: AppColors.onSurface.withValues(alpha: 0.38),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonPaddingHorizontal,
             vertical: AppSpacing.buttonPaddingVertical,
@@ -205,7 +205,7 @@ class AppDarkTheme {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
           borderSide: BorderSide(
-            color: AppColors.onSurface.withOpacity(0.12),
+            color: AppColors.onSurface.withValues(alpha: 0.12),
             width: AppBorderWidth.regular,
           ),
         ),
@@ -214,7 +214,7 @@ class AppDarkTheme {
           color: AppColors.onSurfaceVariant,
         ),
         hintStyle: AppTypography.bodySmall.copyWith(
-          color: AppColors.onSurfaceVariant.withOpacity(0.6),
+          color: AppColors.onSurfaceVariant.withValues(alpha: 0.6),
         ),
         suffixIconColor: AppColors.onSurfaceVariant,
         prefixIconColor: AppColors.onSurfaceVariant,
@@ -253,7 +253,7 @@ class AppDarkTheme {
       radioTheme: RadioThemeData(
         fillColor: WidgetStateProperty.all<Color>(AppColors.surface),
         overlayColor: WidgetStateProperty.all<Color>(
-          AppColors.primary.withOpacity(0.12),
+          AppColors.primary.withValues(alpha: 0.12),
         ),
         splashRadius: 20,
       ),
@@ -266,7 +266,7 @@ class AppDarkTheme {
               return AppColors.primary;
             }
             if (states.contains(WidgetState.disabled)) {
-              return AppColors.onSurface.withOpacity(0.38);
+              return AppColors.onSurface.withValues(alpha: 0.38);
             }
             return AppColors.surface;
           },
@@ -274,12 +274,12 @@ class AppDarkTheme {
         trackColor: WidgetStateProperty.resolveWith<Color>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.selected)) {
-              return AppColors.primary.withOpacity(0.36);
+              return AppColors.primary.withValues(alpha: 0.36);
             }
             if (states.contains(WidgetState.disabled)) {
-              return AppColors.onSurface.withOpacity(0.12);
+              return AppColors.onSurface.withValues(alpha: 0.12);
             }
-            return AppColors.onSurface.withOpacity(0.38);
+            return AppColors.onSurface.withValues(alpha: 0.38);
           },
         ),
         trackOutlineColor: WidgetStateProperty.all<Color>(
@@ -298,9 +298,9 @@ class AppDarkTheme {
       // Slider
       sliderTheme: SliderThemeData(
         activeTrackColor: AppColors.primary,
-        inactiveTrackColor: AppColors.onSurface.withOpacity(0.12),
+        inactiveTrackColor: AppColors.onSurface.withValues(alpha: 0.12),
         thumbColor: AppColors.primary,
-        overlayColor: AppColors.primary.withOpacity(0.12),
+        overlayColor: AppColors.primary.withValues(alpha: 0.12),
         valueIndicatorColor: AppColors.primary,
         valueIndicatorTextStyle: AppTypography.labelLarge.copyWith(
           color: AppColors.onPrimary,

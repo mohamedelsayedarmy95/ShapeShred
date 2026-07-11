@@ -12,7 +12,7 @@ import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/core/design_system/molecules/stat_card.dart';
 import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
 import 'package:shapeshred/core/design_system/molecules/weekly_activity_chart.dart';
-import 'package:shapeshred/features/training/presentation/pages/workout_player/enhanced_workout_player_page.dart';
+import 'package:shapeshred/features/training/presentation/pages/workout_player/super_ultra_premium_workout_page.dart';
 import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
@@ -477,17 +477,16 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _startWorkout() {
-    if (_todaysWorkout != null) {
-      // Set the selected workout in the provider
-      ref.read(selectedWorkoutProvider.notifier).select(_todaysWorkout);
-      // Navigate to the player page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const EnhancedWorkoutPlayerPage(),
-        ),
-      );
-    }
+    if (_todaysWorkout == null) return;
+    // Set the selected workout in the provider
+    ref.read(selectedWorkoutProvider.notifier).select(_todaysWorkout);
+    // Navigate to the Super Ultra Premium player page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SuperUltraPremiumWorkoutPage(),
+      ),
+    );
   }
 
   Widget _buildStatsRow() {

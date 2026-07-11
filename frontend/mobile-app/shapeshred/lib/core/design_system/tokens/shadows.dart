@@ -37,7 +37,7 @@ class AppShadows {
   // Pass the current AppColors.primary/secondary to tint the glow.
   static List<BoxShadow> glow(Color color, {double intensity = 0.35}) => [
         BoxShadow(
-          color: color.withOpacity(intensity),
+          color: color.withValues(alpha: intensity),
           blurRadius: 24,
           spreadRadius: -4,
           offset: const Offset(0, 8),

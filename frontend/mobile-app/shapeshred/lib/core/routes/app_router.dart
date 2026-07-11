@@ -8,6 +8,9 @@ import 'package:shapeshred/features/profile/presentation/pages/profile_page.dart
 import 'package:shapeshred/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/login_page.dart';
 import 'package:shapeshred/features/auth/presentation/pages/signup_page.dart';
+import 'package:shapeshred/features/auth/presentation/pages/super_ultra_premium_onboarding_page.dart';
+import 'package:shapeshred/features/training/presentation/pages/workout_player/super_ultra_premium_workout_page.dart';
+import 'package:shapeshred/features/profile/presentation/pages/super_ultra_premium_analytics_detail_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -24,7 +27,7 @@ class AppRouter {
       GoRoute(
         path: '/onboarding',
         name: 'onboarding',
-        builder: (context, state) => const OnboardingPage(),
+        builder: (context, state) => const SuperUltraPremiumOnboardingPage(),
       ),
 
       // Login Route

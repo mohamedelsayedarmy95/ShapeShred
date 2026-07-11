@@ -19,6 +19,9 @@ import 'package:shapeshred/features/profile/presentation/widgets/premium_status_
 import 'package:shapeshred/features/premium/presentation/pages/premium_page.dart';
 import 'package:shapeshred/features/training/presentation/pages/workout_history_page.dart';
 import 'package:shapeshred/features/profile/presentation/pages/analytics_detail_page.dart';
+import 'package:shapeshred/features/profile/presentation/pages/super_ultra_premium_analytics_detail_page.dart';
+import 'package:shapeshred/features/auth/presentation/pages/super_ultra_premium_onboarding_page.dart';
+import 'package:shapeshred/features/training/presentation/pages/workout_player/super_ultra_premium_workout_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -38,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String? _gender;
   String _motivationalMessage = '';
   bool _isLoading = true;
+  bool _isPremiumUiEnabled = false;
 
   @override
   void initState() {
@@ -448,7 +452,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AnalyticsDetailPage(),
+                    builder: (context) => const SuperUltraPremiumAnalyticsDetailPage(),
                   ),
                 );
               },
@@ -589,6 +593,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 MaterialPageRoute(
                     builder: (context) => const PrivacySettingsPage()),
               );
+            },
+          ),
+      () => _buildFeatureCard(
+            icon: Icons.brush,
+            title: 'UI Experience',
+            subtitle: 'Toggle between Classic and Premium UI',
+            onTap: () {
+              HapticHelper.light();
+              _showUiExperienceDialog(context);
             },
           ),
     ];
@@ -837,6 +850,213 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _showUiExperienceDialog(BuildContext context) async {
+    final bool isPremiumUiEnabled = (await PreferencesService.getBool('premium_ui_enabled')) ?? false;
+
+    showGeneralDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'UI Experience',
+      barrierColor: AppColors.shadow,
+      transitionDuration: AppDurations.cinematic,
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const SizedBox.shrink(),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        final curved =
+            CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
+        return Opacity(
+          opacity: animation.value.clamp(0.0, 1.0),
+          child: ScaleTransition(
+            scale: curved,
+            child: AlertDialog(
+              backgroundColor: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.radiusXL),
+              ),
+              title: Column(
+                children: [
+                  Container(
+                    width: 72.w,
+                    height: 72.h,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: AppColors.heroGradient,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.3),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.brush,
+                      size: 34.sp,
+                      color: AppColors.onPrimary,
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.space16.h),
+                  Text(
+                    'UI Experience',
+                    style: AppTypography.headlineSmall,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Choose your preferred interface experience:',
+                    style: AppTypography.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: AppSpacing.space24.h),
+                  _buildUiOption(
+                    context: context,
+                    isSelected: !isPremiumUiEnabled,
+                    title: 'Classic Experience',
+                    subtitle: 'Traditional interface with essential features',
+                    icon: Icons.straighten,
+                    onTap: () async {
+                      await PreferencesService.setBool('premium_ui_enabled', false);
+                      if (mounted) {
+                        Navigator.pop(context);
+                        HapticHelper.light();
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  SizedBox(height: AppSpacing.space16.h),
+                  _buildUiOption(
+                    context: context,
+                    isSelected: isPremiumUiEnabled,
+                    title: 'Super Ultra Premium',
+                    subtitle: 'Cinematic animations, biometric-responsive design, particle effects',
+                    icon: Icons.brush,
+                    onTap: () {
+                      PreferencesService.setBool('premium_ui_enabled', true);
+                      if (mounted) Navigator.pop(context);
+                      HapticHelper.light();
+                      // Trigger rebuild to update UI immediately
+                      );
+                  ),
+                ],
+              ),
+              actions: [
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      HapticHelper.light();
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.onPrimary,
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusLarge),
+                      ),
+                    ),
+                    child: Text(
+                      'Got it',
+                      style: AppTypography.labelLarge.copyWith(
+                        color: AppColors.onPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildUiOption({
+    required BuildContext context,
+    required bool isSelected,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return AnimatedContainer(
+      duration: AppDurations.standard,
+      curve: AppCurves.premiumFluid,
+      decoration: BoxDecoration(
+        color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+        border: Border.all(
+          color: isSelected ? AppColors.primary : AppColors.outline,
+          width: isSelected ? 2 : 1,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+          child: Padding(
+            padding: EdgeInsets.all(AppSpacing.space16.w),
+            child: Row(
+              children: [
+                Container(
+                  width: 48.w,
+                  height: 48.h,
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 24.sp,
+                    color: isSelected ? AppColors.onPrimary : AppColors.primary,
+                  ),
+                ),
+                SizedBox(width: AppSpacing.space16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: AppTypography.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: isSelected ? AppColors.primary : AppTextColors.primary,
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.space4.h),
+                      Text(
+                        subtitle,
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppTextColors.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  isSelected ? Icons.check_circle : Icons.circle_outlined,
+                  size: 24.sp,
+                  color: isSelected ? AppColors.success : AppTextColors.tertiary,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

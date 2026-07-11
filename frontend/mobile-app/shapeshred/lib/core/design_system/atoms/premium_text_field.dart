@@ -134,7 +134,7 @@ class _PremiumTextFieldState extends State<PremiumTextField>
               decoration: BoxDecoration(
                 color: widget.enabled
                     ? AppColors.surfaceVariant
-                    : AppColors.outline.withOpacity(0.08),
+                    : AppColors.outline.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
                 border: Border.all(
                   color: hasError

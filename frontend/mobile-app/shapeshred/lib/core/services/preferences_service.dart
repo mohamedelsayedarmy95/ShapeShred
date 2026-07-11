@@ -82,4 +82,15 @@ class PreferencesService {
     final prefs = await _getPrefs();
     return prefs.getInt(_userAgeKey);
   }
+
+  // Generic boolean getter and setter for UI preferences
+  static Future<void> setBool(String key, bool value) async {
+    final prefs = await _getPrefs();
+    await prefs.setBool(key, value);
+  }
+
+  static Future<bool?> getBool(String key) async {
+    final prefs = await _getPrefs();
+    return prefs.getBool(key);
+  }
 }
