@@ -38,7 +38,6 @@ class PrivacyPolicyPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: AppSpacing.space24.h),
-
             _buildSection(
               '1. Information We Collect',
               '''
@@ -50,7 +49,6 @@ We collect information you provide directly to us, including:
  Payment information (processed securely by third-party providers)
 ''',
             ),
-
             _buildSection(
               '2. How We Use Your Information',
               '''
@@ -63,7 +61,6 @@ We use the information we collect to:
  Develop new products and services
 ''',
             ),
-
             _buildSection(
               '3. Information Sharing',
               '''
@@ -74,14 +71,12 @@ We do not share your personal information with third parties except:
  With service providers who assist in our operations
 ''',
             ),
-
             _buildSection(
               '4. Data Security',
               '''
 We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
 ''',
             ),
-
             _buildSection(
               '5. Your Rights',
               '''
@@ -93,7 +88,6 @@ You have the right to:
  Opt-out of marketing communications
 ''',
             ),
-
             _buildSection(
               '6. Contact Us',
               '''
@@ -101,7 +95,6 @@ If you have questions about this Privacy Policy, please contact us at:
 privacy@shapeshred.com
 ''',
             ),
-
             SizedBox(height: AppSpacing.space32.h),
           ],
         ),

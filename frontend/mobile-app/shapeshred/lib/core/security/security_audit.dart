@@ -11,7 +11,8 @@ class SecurityAudit {
   static const int _maxEvents = 100;
 
   /// Log a security event
-  static void logEvent(SecurityEventType type, String message, {Map<String, dynamic>? metadata}) {
+  static void logEvent(SecurityEventType type, String message,
+      {Map<String, dynamic>? metadata}) {
     final event = SecurityEvent(
       type: type,
       message: message,
@@ -57,10 +58,11 @@ class SecurityAudit {
 
   /// Check for suspicious activity
   static List<SecurityEvent> getSuspiciousActivity() {
-    return _events.where((e) => 
-      e.type == SecurityEventType.critical || 
-      e.type == SecurityEventType.high
-    ).toList();
+    return _events
+        .where((e) =>
+            e.type == SecurityEventType.critical ||
+            e.type == SecurityEventType.high)
+        .toList();
   }
 
   /// Export security report
@@ -205,12 +207,12 @@ class SecurityMonitor {
 
   static bool _checkAndroidEmulator() {
     return Platform.environment.containsKey('ANDROID_ROOT') ||
-           Platform.environment.containsKey('ANDROID_EMULATOR');
+        Platform.environment.containsKey('ANDROID_EMULATOR');
   }
 
   static bool _checkIOSEmulator() {
     return Platform.environment.containsKey('SIMULATOR_DEVICE_NAME') ||
-           Platform.environment.containsKey('IPHONE_SIMULATOR_DEVICE_NAME');
+        Platform.environment.containsKey('IPHONE_SIMULATOR_DEVICE_NAME');
   }
 
   /// Check for debug mode in production
@@ -228,13 +230,13 @@ class SecurityMonitor {
   /// Check for secure storage integrity
   static Future<bool> isSecureStorageIntact() async {
     try {
-      final testKey = '_security_test_key';
-      final testValue = '_security_test_value';
-      
+      const testKey = '_security_test_key';
+      const testValue = '_security_test_value';
+
       await SecureStorageService.write(testKey, testValue);
       final readValue = await SecureStorageService.read(testKey);
       await SecureStorageService.delete(testKey);
-      
+
       if (readValue != testValue) {
         SecurityAudit.logEvent(
           SecurityEventType.high,
@@ -242,7 +244,7 @@ class SecurityMonitor {
         );
         return false;
       }
-      
+
       return true;
     } catch (e) {
       SecurityAudit.logEvent(

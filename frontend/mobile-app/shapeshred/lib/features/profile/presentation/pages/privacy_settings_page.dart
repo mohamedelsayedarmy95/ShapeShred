@@ -200,7 +200,8 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
                       children: [
                         _buildSwitchTile(
                           title: 'Data collection',
-                          subtitle: 'Help us improve the app by collecting usage data',
+                          subtitle:
+                              'Help us improve the app by collecting usage data',
                           value: _dataCollection,
                           onChanged: (value) {
                             setState(() => _dataCollection = value);
@@ -327,7 +328,7 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColors.primary,
+            activeThumbColor: AppColors.primary,
           ),
         ],
       ),
@@ -364,7 +365,9 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
                     title,
                     style: AppTypography.bodyMedium.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: isDestructive ? AppColors.error : AppTextColors.primary,
+                      color: isDestructive
+                          ? AppColors.error
+                          : AppTextColors.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space4.h),
@@ -412,22 +415,28 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
               ),
             ),
             SizedBox(height: AppSpacing.space8.h),
-            ...['Profile information', 'Workout history', 'Nutrition logs', 'Progress data']
-                .map((item) => Padding(
-                      padding: EdgeInsets.only(left: AppSpacing.space8.w, bottom: AppSpacing.space4.h),
-                      child: Row(
-                        children: [
-                          Icon(Icons.circle, size: 4.sp, color: AppTextColors.secondary),
-                          SizedBox(width: AppSpacing.space8.w),
-                          Text(
-                            item,
-                            style: AppTypography.bodySmall.copyWith(
-                              color: AppTextColors.secondary,
-                            ),
-                          ),
-                        ],
+            ...[
+              'Profile information',
+              'Workout history',
+              'Nutrition logs',
+              'Progress data'
+            ].map((item) => Padding(
+                  padding: EdgeInsets.only(
+                      left: AppSpacing.space8.w, bottom: AppSpacing.space4.h),
+                  child: Row(
+                    children: [
+                      Icon(Icons.circle,
+                          size: 4.sp, color: AppTextColors.secondary),
+                      SizedBox(width: AppSpacing.space8.w),
+                      Text(
+                        item,
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppTextColors.secondary,
+                        ),
                       ),
-                    )),
+                    ],
+                  ),
+                )),
             SizedBox(height: AppSpacing.space16.h),
             Text(
               'will be permanently deleted.',

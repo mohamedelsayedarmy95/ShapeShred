@@ -55,7 +55,7 @@
 **Frontend:**
 - Flutter (Mobile - Dart)
 - React (Coach Web - TypeScript)
-- BLoC (State Management)
+- Riverpod (State Management)
 - Flutter ScreenUtil
 
 **Backend:**
@@ -81,7 +81,7 @@
 
 ```
 ShapeShred/
-├── backend/
+├── backend/                  # NestJS microservices (TypeScript)
 │   ├── auth-service/
 │   ├── user-service/
 │   ├── workout-service/
@@ -93,22 +93,10 @@ ShapeShred/
 │   ├── analytics-service/
 │   └── shared/
 ├── frontend/
-│   ├── mobile-app/
-│   └── coach-web/
-├── database/
-│   ├── migrations/
-│   └── seeds/
-├── docs/
-│   ├── api/
-│   ├── architecture/
-│   └── design/
-├── devops/
-│   ├── docker/
-│   ├── kubernetes/
-│   └── ci-cd/
-└── infrastructure/
-    ├── terraform/
-    └── ansible/
+│   └── mobile-app/shapeshred/   # Flutter app (Riverpod, Firebase)
+├── database/                 # schema.sql, migrations, seeds
+├── docs/                     # api docs, architecture notes
+└── docker-compose.yml
 ```
 
 ## 🎨 نظام التصميم

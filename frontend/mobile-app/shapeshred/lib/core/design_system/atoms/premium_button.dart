@@ -1,5 +1,4 @@
-﻿import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
@@ -124,7 +123,9 @@ class _PremiumButtonState extends State<PremiumButton>
                 width: widget.fullWidth ? double.infinity : null,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: isEnabled ? _backgroundColor : AppColors.outline.withOpacity(0.3),
+                  color: isEnabled
+                      ? _backgroundColor
+                      : AppColors.outline.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
                   boxShadow: isEnabled && !widget.isSecondary
                       ? AppShadows.glow(_backgroundColor)
@@ -179,4 +180,3 @@ class _PremiumButtonState extends State<PremiumButton>
     );
   }
 }
-

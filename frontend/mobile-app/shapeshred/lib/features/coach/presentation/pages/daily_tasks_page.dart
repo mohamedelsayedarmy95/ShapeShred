@@ -1,10 +1,9 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
-import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/features/coach/domain/entities/task.dart';
 
@@ -152,13 +151,10 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
               height: 24.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: task.isCompleted
-                    ? AppColors.primary
-                    : AppColors.surface,
+                color: task.isCompleted ? AppColors.primary : AppColors.surface,
                 border: Border.all(
-                  color: task.isCompleted
-                      ? AppColors.primary
-                      : AppColors.outline,
+                  color:
+                      task.isCompleted ? AppColors.primary : AppColors.outline,
                   width: 2,
                 ),
               ),
@@ -179,9 +175,13 @@ class _DailyTasksPageState extends State<DailyTasksPage> {
                 Text(
                   task.title,
                   style: AppTypography.titleMedium.copyWith(
-                    fontWeight: task.isCompleted ? FontWeight.w400 : FontWeight.w600,
-                    color: task.isCompleted ? AppTextColors.secondary : AppTextColors.primary,
-                    decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+                    fontWeight:
+                        task.isCompleted ? FontWeight.w400 : FontWeight.w600,
+                    color: task.isCompleted
+                        ? AppTextColors.secondary
+                        : AppTextColors.primary,
+                    decoration:
+                        task.isCompleted ? TextDecoration.lineThrough : null,
                   ),
                 ),
                 if (task.description.isNotEmpty)

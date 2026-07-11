@@ -91,8 +91,18 @@ class _ProfilePageState extends State<ProfilePage> {
   String _formatMemberSince(DateTime? date) {
     if (date == null) return 'Member';
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return 'Member since ${months[date.month - 1]} ${date.year}';
   }
@@ -215,12 +225,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildStat('Height',
-                        _height != null ? '${_height!.toStringAsFixed(0)} cm' : '--'),
-                    _buildStat('Weight',
-                        _weight != null ? '${_weight!.toStringAsFixed(1)} kg' : '--'),
-                    _buildStat('Age',
-                        _age != null ? '$_age years' : '--'),
+                    _buildStat(
+                        'Height',
+                        _height != null
+                            ? '${_height!.toStringAsFixed(0)} cm'
+                            : '--'),
+                    _buildStat(
+                        'Weight',
+                        _weight != null
+                            ? '${_weight!.toStringAsFixed(1)} kg'
+                            : '--'),
+                    _buildStat('Age', _age != null ? '$_age years' : '--'),
                   ],
                 ),
               ),
@@ -236,14 +251,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 child: Column(
                   children: [
-                    _buildInfoRow('Goal',
-                        _goal?.toUpperCase() ?? 'Not set'),
-                    Divider(color: AppColors.outline, height: AppSpacing.space8.h),
+                    _buildInfoRow('Goal', _goal?.toUpperCase() ?? 'Not set'),
+                    Divider(
+                        color: AppColors.outline, height: AppSpacing.space8.h),
                     _buildInfoRow('Fitness Level',
                         _fitnessLevel?.toUpperCase() ?? 'Not set'),
-                    Divider(color: AppColors.outline, height: AppSpacing.space8.h),
-                    _buildInfoRow('Gender',
-                        _gender?.toUpperCase() ?? 'Not set'),
+                    Divider(
+                        color: AppColors.outline, height: AppSpacing.space8.h),
+                    _buildInfoRow(
+                        'Gender', _gender?.toUpperCase() ?? 'Not set'),
                   ],
                 ),
               ),
@@ -256,7 +272,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   HapticHelper.light();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const PremiumPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const PremiumPage()),
                   );
                 },
               ),
@@ -294,9 +311,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     foregroundColor: AppColors.onPrimary,
-                    padding: EdgeInsets.symmetric(vertical: AppSpacing.space16.h),
+                    padding:
+                        EdgeInsets.symmetric(vertical: AppSpacing.space16.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusLarge),
                     ),
                   ),
                   child: Text(
@@ -403,14 +422,20 @@ class _ProfilePageState extends State<ProfilePage> {
               final data = snapshot.data!;
               return Column(
                 children: [
-                  _buildAnalyticsMetric('Progress Trend', data['trend'] as String,
-                      Icons.trending_up, AppColors.success),
+                  _buildAnalyticsMetric(
+                      'Progress Trend',
+                      data['trend'] as String,
+                      Icons.trending_up,
+                      AppColors.success),
                   SizedBox(height: AppSpacing.space8.h),
                   _buildAnalyticsMetric('Workout Score', '${data['score']}%',
                       Icons.star, AppColors.warning),
                   SizedBox(height: AppSpacing.space8.h),
-                  _buildAnalyticsMetric('Consistency', '${data['consistency']}%',
-                      Icons.reset_tv, AppColors.info),
+                  _buildAnalyticsMetric(
+                      'Consistency',
+                      '${data['consistency']}%',
+                      Icons.reset_tv,
+                      AppColors.info),
                 ],
               );
             },
@@ -455,7 +480,8 @@ class _ProfilePageState extends State<ProfilePage> {
     };
   }
 
-  Widget _buildAnalyticsMetric(String label, dynamic value, IconData icon, Color color) {
+  Widget _buildAnalyticsMetric(
+      String label, dynamic value, IconData icon, Color color) {
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
@@ -688,9 +714,11 @@ class _ProfilePageState extends State<ProfilePage> {
       barrierLabel: 'Chat with Coach',
       barrierColor: AppColors.shadow,
       transitionDuration: AppDurations.cinematic,
-      pageBuilder: (context, animation, secondaryAnimation) => const SizedBox.shrink(),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final curved = CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
+        final curved =
+            CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
         return Opacity(
           opacity: animation.value.clamp(0.0, 1.0),
           child: ScaleTransition(
@@ -706,7 +734,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 72.w,
                     height: 72.h,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: AppColors.heroGradient,
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -791,7 +819,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       foregroundColor: AppColors.onPrimary,
                       padding: EdgeInsets.symmetric(vertical: 14.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusLarge),
                       ),
                     ),
                     child: Text(

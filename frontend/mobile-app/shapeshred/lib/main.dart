@@ -1,4 +1,4 @@
-﻿import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,7 @@ import 'core/routes/app_router.dart';
 import 'core/services/secure_storage_service.dart';
 import 'core/services/theme_service.dart';
 import 'core/services/firebase_service.dart';
-import 'core/services/advanced_analytics_service.dart'; // New import
+// New import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +37,7 @@ void main() async {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.error_outline,
                     size: 64,
                     color: AppGreyscale.gray900,

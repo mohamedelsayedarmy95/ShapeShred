@@ -331,7 +331,8 @@ class FoodRepository {
       fat: 15.0,
       fiber: 6.7,
       sugar: 0.7,
-      category: 'Vegetables', // Note: Botanically a fruit, but nutritionally used as vegetable
+      category:
+          'Vegetables', // Note: Botanically a fruit, but nutritionally used as vegetable
     ),
 
     // FRUITS
@@ -559,10 +560,11 @@ class FoodRepository {
 
   static List<Food> search(String query) {
     final lowerQuery = query.toLowerCase();
-    return foods.where((f) =>
-        f.name.toLowerCase().contains(lowerQuery) ||
-        f.brand.toLowerCase().contains(lowerQuery)
-    ).toList();
+    return foods
+        .where((f) =>
+            f.name.toLowerCase().contains(lowerQuery) ||
+            f.brand.toLowerCase().contains(lowerQuery))
+        .toList();
   }
 
   static Food? getById(String id) {
@@ -574,12 +576,12 @@ class FoodRepository {
   }
 
   static List<String> get categories => [
-    'Protein',
-    'Carbohydrates',
-    'Vegetables',
-    'Fruits',
-    'Dairy',
-    'Nuts & Seeds',
-    'Snacks',
-  ];
+        'Protein',
+        'Carbohydrates',
+        'Vegetables',
+        'Fruits',
+        'Dairy',
+        'Nuts & Seeds',
+        'Snacks',
+      ];
 }

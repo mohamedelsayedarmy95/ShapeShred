@@ -3,22 +3,15 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/shadows.dart';
 import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
-import 'package:shapeshred/core/design_system/atoms/rest_timer.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
-import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
 import 'package:shapeshred/providers/workout_session_provider.dart';
-import 'package:shapeshred/providers/firebase_providers.dart';
 
 /// Enhanced 3D Exercise Visualization Widget
 /// Would typically integrate with a 3D model viewer like flutter_unity_widget,
@@ -36,7 +29,8 @@ class ExerciseVisualization3D extends StatefulWidget {
   });
 
   @override
-  State<ExerciseVisualization3D> createState() => _ExerciseVisualization3DState();
+  State<ExerciseVisualization3D> createState() =>
+      _ExerciseVisualization3DState();
 }
 
 class _ExerciseVisualization3DState extends State<ExerciseVisualization3D>
@@ -280,8 +274,10 @@ class _ExerciseVisualization3DState extends State<ExerciseVisualization3D>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildFormMetric('Depth', _latestFormBackup!['depth'] as double),
-                _buildFormMetric('Speed', _latestFormBackup!['speed'] as double),
+                _buildFormMetric(
+                    'Depth', _latestFormBackup!['depth'] as double),
+                _buildFormMetric(
+                    'Speed', _latestFormBackup!['speed'] as double),
                 _buildFormMetric(
                     'Alignment', _latestFormBackup!['alignment'] as double),
                 _buildFormMetric(
@@ -351,14 +347,16 @@ class EnhancedWorkoutPlayerPage extends ConsumerStatefulWidget {
   const EnhancedWorkoutPlayerPage({super.key});
 
   @override
-  ConsumerState<EnhancedWorkoutPlayerPage> createState() => _EnhancedWorkoutPlayerPageState();
+  ConsumerState<EnhancedWorkoutPlayerPage> createState() =>
+      _EnhancedWorkoutPlayerPageState();
 }
 
-class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlayerPage>
+class _EnhancedWorkoutPlayerPageState
+    extends ConsumerState<EnhancedWorkoutPlayerPage>
     with TickerProviderStateMixin {
   // UI-specific state (not part of the workout session logic)
   late final WorkoutBiometricsMonitor _biometrics;
-  Map<String, double> _formScores = {};
+  final Map<String, double> _formScores = {};
   bool _showFormFeedback = false;
   bool _isCameraActive = false;
   String _lastHrZone = 'warmup';
@@ -408,12 +406,11 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
     // Process form feedback and provide haptic guidance
     setState(() {
       // Store historical form scores
-      _formScores[DateTime.now().toIso8601String()] = (
-        (feedback['depth'] as double) * 0.3 +
-        (feedback['speed'] as double) * 0.2 +
-        (feedback['alignment'] as double) * 0.3 +
-        (feedback['stability'] as double) * 0.2
-      );
+      _formScores[DateTime.now().toIso8601String()] =
+          ((feedback['depth'] as double) * 0.3 +
+              (feedback['speed'] as double) * 0.2 +
+              (feedback['alignment'] as double) * 0.3 +
+              (feedback['stability'] as double) * 0.2);
 
       // Keep only last 10 scores
       if (_formScores.length > 10) {
@@ -422,7 +419,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
       }
 
       // Calculate average form score for this exercise
-      final double avgScore = _formScores.values.reduce((a, b) => a + b) / _formScores.length;
+      final double avgScore =
+          _formScores.values.reduce((a, b) => a + b) / _formScores.length;
       // Note: We could store this in a workout log if desired, but we'll keep it simple.
     });
 
@@ -460,189 +458,190 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
 
     // Main workout UI
     return Scaffold(
-          backgroundColor: AppColors.background,
-          body: SafeArea(
-            child: NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (overscroll) {
-                overscroll.disallowIndicator();
-                return true;
-              },
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (overscroll) {
+            overscroll.disallowIndicator();
+            return true;
+          },
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Biometric Header
+                _buildBiometricHeader(),
+                SizedBox(height: AppSpacing.space16.h),
+
+                // Progress Indicator with Biometric Color
+                _buildProgressIndicator(state),
+                SizedBox(height: AppSpacing.space16.h),
+
+                // Exercise Info
+                _buildExerciseInfo(state.currentExercise!.exercise),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // 3D Exercise Visualization
+                ExerciseVisualization3D(
+                  exercise: state.currentExercise!.exercise,
+                  showFormFeedback: _showFormFeedback,
+                  onFormFeedback: _onFormFeedback,
+                ),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // Set Counter
+                _buildSetCounter(state),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // Rep Counter
+                _buildRepCounter(state),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // Weight Input
+                _buildWeightInput(),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // RPE Slider
+                _buildRPESlider(),
+                SizedBox(height: AppSpacing.space32.h),
+
+                // Form Tips
+                _buildFormTips(),
+                SizedBox(height: AppSpacing.space32.h),
+
+                // Complete Set Button
+                PremiumButton(
+                  label: 'Complete Set',
+                  onPressed: () {
+                    ref.read(workoutSessionProvider.notifier).completeSet();
+                    HapticHelper.light();
+                  },
+                  fullWidth: true,
+                ),
+                SizedBox(height: AppSpacing.space16.h),
+
+                // Skip Button
+                OutlinedButton(
+                  onPressed: () {
+                    ref.read(workoutSessionProvider.notifier).skipExercise();
+                    HapticHelper.light();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.outline),
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusMedium),
+                    ),
+                  ),
+                  child: Text(
+                    'Skip Exercise',
+                    style: AppTypography.labelMedium.copyWith(
+                      color: AppTextColors.secondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBiometricHeader() {
+    return ValueListenableBuilder<double>(
+      valueListenable: _biometrics,
+      builder: (context, value, child) {
+        return Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.primary.withValues(alpha: 0.1),
+                      AppColors.secondary.withValues(alpha: 0.1),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                  border: Border.all(
+                    color: _getIntensityColor(value).withValues(alpha: 0.3),
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Biometric Header
-                    _buildBiometricHeader(),
-                    SizedBox(height: AppSpacing.space16.h),
-
-                    // Progress Indicator with Biometric Color
-                    _buildProgressIndicator(state),
-                    SizedBox(height: AppSpacing.space16.h),
-
-                    // Exercise Info
-                    _buildExerciseInfo(state.currentExercise!.exercise),
-                    SizedBox(height: AppSpacing.space24.h),
-
-                    // 3D Exercise Visualization
-                    ExerciseVisualization3D(
-                      exercise: state.currentExercise!.exercise,
-                      showFormFeedback: _showFormFeedback,
-                      onFormFeedback: _onFormFeedback,
-                    ),
-                    SizedBox(height: AppSpacing.space24.h),
-
-                    // Set Counter
-                    _buildSetCounter(state),
-                    SizedBox(height: AppSpacing.space24.h),
-
-                    // Rep Counter
-                    _buildRepCounter(state),
-                    SizedBox(height: AppSpacing.space24.h),
-
-                    // Weight Input
-                    _buildWeightInput(),
-                    SizedBox(height: AppSpacing.space24.h),
-
-                    // RPE Slider
-                    _buildRPESlider(),
-                    SizedBox(height: AppSpacing.space32.h),
-
-                    // Form Tips
-                    _buildFormTips(),
-                    SizedBox(height: AppSpacing.space32.h),
-
-                    // Complete Set Button
-                    PremiumButton(
-                      label: 'Complete Set',
-                      onPressed: () {
-                        ref.read(workoutSessionProvider.notifier).completeSet();
-                        HapticHelper.light();
-                      },
-                      fullWidth: true,
-                    ),
-                    SizedBox(height: AppSpacing.space16.h),
-
-                    // Skip Button
-                    OutlinedButton(
-                      onPressed: () {
-                        ref.read(workoutSessionProvider.notifier).skipExercise();
-                        HapticHelper.light();
-                      },
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppColors.outline),
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                        ),
+                    Text(
+                      'Workout Intensity',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: AppTextColors.secondary,
+                        fontWeight: FontWeight.w600,
                       ),
-                      child: Text(
-                        'Skip Exercise',
-                        style: AppTypography.labelMedium.copyWith(
-                          color: AppTextColors.secondary,
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${(value * 100).toStringAsFixed(0)}%',
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: _getIntensityColor(value),
+                          ),
                         ),
-                      ),
+                        Text(
+                          'HR: ${_biometrics.estimatedHeartRate}bpm',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: AppTextColors.secondary,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
-          ),
+            SizedBox(width: 12.w),
+            Container(
+              width: 80.w,
+              height: 80.h,
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    _getIntensityColor(value).withValues(alpha: 0.3),
+                    _getIntensityColor(value).withValues(alpha: 0.1),
+                  ],
+                  center: Alignment.center,
+                  radius: 0.7,
+                ),
+                borderRadius: BorderRadius.circular(40.r),
+                border: Border.all(
+                  color: _getIntensityColor(value).withValues(alpha: 0.5),
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  '${_biometrics.estimatedHeartRate}',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: _getIntensityColor(value),
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
-  }
-
-  Widget _buildBiometricHeader() {
-    return ValueListenableBuilder<double>(
-        valueListenable: _biometrics,
-        builder: (context, value, child) {
-          return Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primary.withValues(alpha: 0.1),
-                        AppColors.secondary.withValues(alpha: 0.1),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-                    border: Border.all(
-                      color: _getIntensityColor(value).withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Workout Intensity',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppTextColors.secondary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${(value * 100).toStringAsFixed(0)}%',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: _getIntensityColor(value),
-                            ),
-                          ),
-                          Text(
-                            'HR: ${_biometrics.estimatedHeartRate}bpm',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: AppTextColors.secondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(width: 12.w),
-              Container(
-                width: 80.w,
-                height: 80.h,
-                decoration: BoxDecoration(
-                  gradient: RadialGradient(
-                    colors: [
-                      _getIntensityColor(value).withValues(alpha: 0.3),
-                      _getIntensityColor(value).withValues(alpha: 0.1),
-                    ],
-                    center: Alignment.center,
-                    radius: 0.7,
-                  ),
-                  borderRadius: BorderRadius.circular(40.r),
-                  border: Border.all(
-                    color: _getIntensityColor(value).withValues(alpha: 0.5),
-                    width: 2,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    '${_biometrics.estimatedHeartRate}',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: _getIntensityColor(value),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+      },
     );
   }
 
@@ -653,9 +652,9 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
   }
 
   Widget _buildProgressIndicator(WorkoutSessionState state) {
-    final double progress = (state.exerciseIndex +
-            state.setIndex / state.currentExercise!.sets) /
-        state.workout!.exercises.length;
+    final double progress =
+        (state.exerciseIndex + state.setIndex / state.currentExercise!.sets) /
+            state.workout!.exercises.length;
 
     return SizedBox(
       height: 8.h,
@@ -778,7 +777,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
             'Set ${state.setIndex} of ${state.currentExercise!.sets}',
             style: AppTypography.titleMedium.copyWith(
               fontWeight: FontWeight.w700,
-              color: _biometrics.value > 0.7 ? AppColors.error : AppColors.primary,
+              color:
+                  _biometrics.value > 0.7 ? AppColors.error : AppColors.primary,
             ),
           ),
           Text(
@@ -797,7 +797,9 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
       padding: EdgeInsets.all(AppSpacing.space24.w),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: AppColors.heroGradient.map((color) => color.withValues(alpha: 0.9)).toList(),
+          colors: AppColors.heroGradient
+              .map((color) => color.withValues(alpha: 0.9))
+              .toList(),
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -863,7 +865,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
     );
   }
 
-  Widget _buildRepButton({required IconData icon, required VoidCallback onTap}) {
+  Widget _buildRepButton(
+      {required IconData icon, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -912,7 +915,7 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
                 color: AppTextColors.tertiary,
               ),
               suffixText: 'kg',
-              contentPadding: EdgeInsets.symmetric(
+              contentPadding: const EdgeInsets.symmetric(
                 vertical: AppSpacing.inputPaddingVertical,
               ),
             ),
@@ -942,7 +945,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
           children: [
             Expanded(
               child: Slider(
-                value: 5.0, // Placeholder - we don't store RPE in the notifier yet
+                value:
+                    5.0, // Placeholder - we don't store RPE in the notifier yet
                 min: 1,
                 max: 10,
                 divisions: 9,
@@ -1001,224 +1005,226 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
   Widget _buildFormTips() {
     final WorkoutSessionState state = ref.watch(workoutSessionProvider);
     return Container(
-        padding: EdgeInsets.all(AppSpacing.space16.w),
-        decoration: BoxDecoration(
-          color: AppColors.surfaceVariant,
-          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-          border: Border.all(
-            color: _showFormFeedback
-                ? AppColors.primary.withValues(alpha: 0.3)
-                : AppColors.outline,
-          ),
+      padding: EdgeInsets.all(AppSpacing.space16.w),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+        border: Border.all(
+          color: _showFormFeedback
+              ? AppColors.primary.withValues(alpha: 0.3)
+              : AppColors.outline,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.lightbulb_outline,
-                  color: AppTextColors.secondary,
-                  size: 20.sp,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.lightbulb_outline,
+                color: AppTextColors.secondary,
+                size: 20.sp,
+              ),
+              SizedBox(width: AppSpacing.space8.w),
+              Text(
+                'Form Tips',
+                style: AppTypography.labelMedium.copyWith(
+                  fontWeight: FontWeight.w600,
                 ),
-                SizedBox(width: AppSpacing.space8.w),
-                Text(
-                  'Form Tips',
-                  style: AppTypography.labelMedium.copyWith(
-                    fontWeight: FontWeight.w600,
+              ),
+              if (_showFormFeedback)
+                IconButton(
+                  icon: Icon(
+                    Icons.videocam,
+                    size: 20.sp,
+                    color: _isCameraActive
+                        ? AppColors.success
+                        : AppTextColors.secondary,
                   ),
+                  onPressed: () {
+                    setState(() {
+                      _isCameraActive = !_isCameraActive;
+                      if (_isCameraActive) {
+                        HapticHelper.selectionClick();
+                      } else {
+                        HapticHelper.lightImpact();
+                      }
+                    });
+                  },
+                  tooltip: _isCameraActive
+                      ? 'Stop Form Analysis'
+                      : 'Start Form Analysis',
                 ),
-                if (_showFormFeedback)
-                  IconButton(
-                    icon: Icon(
-                      Icons.videocam,
-                      size: 20.sp,
-                      color: _isCameraActive
-                          ? AppColors.success
-                          : AppTextColors.secondary,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isCameraActive = !_isCameraActive;
-                        if (_isCameraActive) {
-                          HapticHelper.selectionClick();
-                        } else {
-                          HapticHelper.lightImpact();
-                        }
-                      });
-                    },
-                    tooltip: _isCameraActive
-                        ? 'Stop Form Analysis'
-                        : 'Start Form Analysis',
-                  ),
-              ],
-            ),
-            SizedBox(height: AppSpacing.space12.h),
-            ...state.currentExercise!.exercise.instructions
-                .take(3)
-                .map((tip) => Padding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.space8.h),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.check_circle_outline,
-                        size: 16.sp,
-                        color: AppTextColors.secondary,
-                      ),
-                      SizedBox(width: AppSpacing.space8.w),
-                      Expanded(
-                        child: Text(
-                          tip,
-                          style: AppTypography.bodySmall.copyWith(
-                            color: AppTextColors.secondary,
+            ],
+          ),
+          SizedBox(height: AppSpacing.space12.h),
+          ...state.currentExercise!.exercise.instructions
+              .take(3)
+              .map((tip) => Padding(
+                    padding: EdgeInsets.only(bottom: AppSpacing.space8.h),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.check_circle_outline,
+                          size: 16.sp,
+                          color: AppTextColors.secondary,
+                        ),
+                        SizedBox(width: AppSpacing.space8.w),
+                        Expanded(
+                          child: Text(
+                            tip,
+                            style: AppTypography.bodySmall.copyWith(
+                              color: AppTextColors.secondary,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                )),
-          ],
-        ),
-      );
+                      ],
+                    ),
+                  )),
+        ],
+      ),
+    );
   }
 
   Widget _buildFinishedScreen(BuildContext context, WorkoutSessionState state) {
     return Scaffold(
-        backgroundColor: AppColors.background,
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.all(AppSpacing.screenPadding.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Celebration animation
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 1500),
-                  curve: Curves.elasticOut,
-                  width: 120.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppColors.success.withValues(alpha: 0.3),
-                        AppColors.success.withValues(alpha: 0.1),
-                      ],
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Celebration animation
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 1500),
+                curve: Curves.elasticOut,
+                width: 120.w,
+                height: 120.h,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppColors.success.withValues(alpha: 0.3),
+                      AppColors.success.withValues(alpha: 0.1),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.success,
+                      blurRadius: 24,
+                      spreadRadius: 8,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.success,
-                        blurRadius: 24,
-                        spreadRadius: 8,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        size: 60.sp,
-                        color: AppColors.success,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'COMPLETE!',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.success,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: AppSpacing.space32.h),
-                Text(
-                  'Workout Complete!',
-                  style: AppTypography.headlineMedium.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.space16.h),
-                Text(
-                  state.workout?.name ?? 'Workout',
-                  style: AppTypography.titleLarge.copyWith(
-                    color: AppTextColors.secondary,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.space24.h),
-
-                // Workout Stats with Biometrics
-                _buildStatCard(
-                  label: 'Duration',
-                  value: '${state.elapsed.inMinutes} min',
-                  icon: Icons.access_time,
-                ),
-                SizedBox(height: AppSpacing.space16.h),
-                _buildStatCard(
-                  label: 'Calories Burned',
-                  value: '${_calculateCalories(state.elapsed)} cal',
-                  icon: Icons.local_fire_department,
-                ),
-                SizedBox(height: AppSpacing.space16.h),
-                _buildStatCard(
-                  label: 'Avg Heart Rate',
-                  value: '${_biometrics.value > 0 ? (_biometrics.value * 200).round() : 0} bpm', // Approximation
-                  icon: Icons.favorite,
-                ),
-                SizedBox(height: AppSpacing.space16.h),
-                _buildStatCard(
-                  label: 'Form Score',
-                  value: _formScores.isNotEmpty
-                      ? '${(_formScores.values.reduce((a, b) => a + b) / _formScores.length * 100).toStringAsFixed(0)}%'
-                      : 'N/A',
-                  icon: Icons.health_and_safety,
-                ),
-                SizedBox(height: AppSpacing.space32.h),
-
-                // Achievement Badges
-                Wrap(
-                  spacing: 8.w,
-                  runSpacing: 8.h,
-                  children: [
-                    if ((state.workout?.exercises.length ?? 0) >= 5)
-                      _buildAchievementBadge(
-                          'Consistency', Icons.local_fire_department, AppColors.success),
-                    if (_biometrics.value > 0.7)
-                      _buildAchievementBadge(
-                          'Intensity', Icons.favorite, AppColors.error),
-                    if (_formScores.isNotEmpty &&
-                        _formScores.values.where((score) => score > 0.8).length >= 3)
-                      _buildAchievementBadge(
-                          'Form Master', Icons.emoji_events, AppColors.warning),
                   ],
                 ),
-                SizedBox(height: AppSpacing.space32.h),
-                PremiumButton(
-                  label: 'Finish Workout',
-                  onPressed: () {
-                    HapticHelper.successImpact();
-                    // Reset the selected workout provider so we don't reuse the same workout
-                    ref.read(selectedWorkoutProvider.notifier).select(null);
-                    // Pop to home
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                  fullWidth: true,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      size: 60.sp,
+                      color: AppColors.success,
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      'COMPLETE!',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.success,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: AppSpacing.space32.h),
+              Text(
+                'Workout Complete!',
+                style: AppTypography.headlineMedium.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: AppSpacing.space16.h),
+              Text(
+                state.workout?.name ?? 'Workout',
+                style: AppTypography.titleLarge.copyWith(
+                  color: AppTextColors.secondary,
+                ),
+              ),
+              SizedBox(height: AppSpacing.space24.h),
+
+              // Workout Stats with Biometrics
+              _buildStatCard(
+                label: 'Duration',
+                value: '${state.elapsed.inMinutes} min',
+                icon: Icons.access_time,
+              ),
+              SizedBox(height: AppSpacing.space16.h),
+              _buildStatCard(
+                label: 'Calories Burned',
+                value: '${_calculateCalories(state.elapsed)} cal',
+                icon: Icons.local_fire_department,
+              ),
+              SizedBox(height: AppSpacing.space16.h),
+              _buildStatCard(
+                label: 'Avg Heart Rate',
+                value:
+                    '${_biometrics.value > 0 ? (_biometrics.value * 200).round() : 0} bpm', // Approximation
+                icon: Icons.favorite,
+              ),
+              SizedBox(height: AppSpacing.space16.h),
+              _buildStatCard(
+                label: 'Form Score',
+                value: _formScores.isNotEmpty
+                    ? '${(_formScores.values.reduce((a, b) => a + b) / _formScores.length * 100).toStringAsFixed(0)}%'
+                    : 'N/A',
+                icon: Icons.health_and_safety,
+              ),
+              SizedBox(height: AppSpacing.space32.h),
+
+              // Achievement Badges
+              Wrap(
+                spacing: 8.w,
+                runSpacing: 8.h,
+                children: [
+                  if ((state.workout?.exercises.length ?? 0) >= 5)
+                    _buildAchievementBadge('Consistency',
+                        Icons.local_fire_department, AppColors.success),
+                  if (_biometrics.value > 0.7)
+                    _buildAchievementBadge(
+                        'Intensity', Icons.favorite, AppColors.error),
+                  if (_formScores.isNotEmpty &&
+                      _formScores.values.where((score) => score > 0.8).length >=
+                          3)
+                    _buildAchievementBadge(
+                        'Form Master', Icons.emoji_events, AppColors.warning),
+                ],
+              ),
+              SizedBox(height: AppSpacing.space32.h),
+              PremiumButton(
+                label: 'Finish Workout',
+                onPressed: () {
+                  HapticHelper.successImpact();
+                  // Reset the selected workout provider so we don't reuse the same workout
+                  ref.read(selectedWorkoutProvider.notifier).select(null);
+                  // Pop to home
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                fullWidth: true,
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 
   int _calculateCalories(Duration duration) {
     // More accurate calorie calculation using MET values and heart rate
     final double durationHours = duration.inSeconds / 3600;
-    final double weightKg = 70.0; // Would come from user profile
-    final double metValue = 6.0; // Moderate effort MET value
+    const double weightKg = 70.0; // Would come from user profile
+    const double metValue = 6.0; // Moderate effort MET value
     return (metValue * weightKg * durationHours).round();
   }
 
@@ -1226,7 +1232,6 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
     required String label,
     required String value,
     required IconData icon,
-    Color? color,
   }) {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space20.w),
@@ -1297,7 +1302,8 @@ class _EnhancedWorkoutPlayerPageState extends ConsumerState<EnhancedWorkoutPlaye
 // Helper class for biometric monitoring (kept from original)
 // ---------------------------------------------------------------------------
 class WorkoutBiometricsMonitor extends ValueNotifier<double> {
-  WorkoutBiometricsMonitor(super.value); // value represents workout intensity 0.0-1.0
+  WorkoutBiometricsMonitor(
+      super.value); // value represents workout intensity 0.0-1.0
 
   bool get isHighIntensity => value > 0.7;
   bool get isRecovery => value < 0.3;

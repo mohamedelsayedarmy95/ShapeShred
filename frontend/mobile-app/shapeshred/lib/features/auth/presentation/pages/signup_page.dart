@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -48,7 +48,8 @@ class _SignupPageState extends State<SignupPage> {
       }
 
       // Email format validation
-      final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+      final emailRegex =
+          RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
       if (!emailRegex.hasMatch(_emailController.text.trim())) {
         throw Exception('Please enter a valid email address');
       }
@@ -82,13 +83,14 @@ class _SignupPageState extends State<SignupPage> {
             duration: const Duration(seconds: 2),
           ),
         );
-        
+
         // Navigate to body metrics page
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute<void>(builder: (context) => const GoalSelectionPage()),
+            MaterialPageRoute<void>(
+                builder: (context) => const GoalSelectionPage()),
           );
         }
       }
@@ -140,7 +142,8 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline, color: AppColors.onErrorContainer),
+                      Icon(Icons.error_outline,
+                          color: AppColors.onErrorContainer),
                       SizedBox(width: AppSpacing.space12.w),
                       Expanded(
                         child: Text(
@@ -207,7 +210,9 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: AppTextColors.secondary,
                     ),
                     onPressed: () {
@@ -237,7 +242,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               SizedBox(height: AppSpacing.space8.h),
-              
+
               // Password Strength Indicator
               PasswordStrengthIndicator(
                 password: _passwordController.text,
@@ -260,7 +265,9 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscureConfirmPassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: AppTextColors.secondary,
                     ),
                     onPressed: () {
@@ -329,12 +336,14 @@ class _SignupPageState extends State<SignupPage> {
                       _errorMessage = null;
                     });
 
-                    final userCredential = await _authService.signInWithGoogle();
-                    
+                    final userCredential =
+                        await _authService.signInWithGoogle();
+
                     if (userCredential != null && mounted) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute<void>(builder: (context) => const GoalSelectionPage()),
+                        MaterialPageRoute<void>(
+                            builder: (context) => const GoalSelectionPage()),
                       );
                     }
                   } catch (e) {
@@ -422,4 +431,3 @@ class _SocialButton extends StatelessWidget {
     );
   }
 }
-

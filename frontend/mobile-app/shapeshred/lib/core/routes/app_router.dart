@@ -12,7 +12,8 @@ import 'package:shapeshred/features/auth/presentation/pages/signup_page.dart';
 class AppRouter {
   AppRouter._();
 
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   static final GoRouter router = GoRouter(
     navigatorKey: navigatorKey,
@@ -44,8 +45,8 @@ class AppRouter {
       ShellRoute(
         builder: (context, state, child) {
           return MainLayout(
-            child: child,
             currentIndex: _getCurrentIndex(state.uri.path),
+            child: child,
           );
         },
         routes: [

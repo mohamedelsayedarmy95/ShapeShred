@@ -10,20 +10,21 @@ class AppRadius {
 
   // === RADIUS SCALE (aligned with 4px grid) ===
   static const double none = 0.0;
-  static const double xs = 2.0;    // 0.5
-  static const double sm = 4.0;    // 1.0
-  static const double md = 6.0;    // 1.5
-  static const double lg = 8.0;    // 2.0
-  static const double xl = 10.0;   // 2.5
-  static const double xxl = 12.0;  // 3.0
+  static const double xs = 2.0; // 0.5
+  static const double sm = 4.0; // 1.0
+  static const double md = 6.0; // 1.5
+  static const double lg = 8.0; // 2.0
+  static const double xl = 10.0; // 2.5
+  static const double xxl = 12.0; // 3.0
   static const double xxxl = 14.0; // 3.5
-  static const double xxxxl = 16.0;// 4.0
+  static const double xxxxl = 16.0; // 4.0
 
   // Specialized radii
-  static const double pill = 50.0;     // For pill-shaped elements
-  static const double circle = 50.0;   // For circular elements (will be overridden by width/height)
-  static const double mega = 24.0;     // Extra large radius
-  static const double giga = 32.0;     // Giant radius
+  static const double pill = 50.0; // For pill-shaped elements
+  static const double circle =
+      50.0; // For circular elements (will be overridden by width/height)
+  static const double mega = 24.0; // Extra large radius
+  static const double giga = 32.0; // Giant radius
 
   // Legacy names for backward compatibility (deprecated)
   // These map to the new semantic system
@@ -88,7 +89,8 @@ class AppInsets {
   static const EdgeInsets horizontalMd = EdgeInsets.symmetric(horizontal: 6.0);
   static const EdgeInsets horizontalLg = EdgeInsets.symmetric(horizontal: 8.0);
   static const EdgeInsets horizontalXl = EdgeInsets.symmetric(horizontal: 10.0);
-  static const EdgeInsets horizontalXxl = EdgeInsets.symmetric(horizontal: 12.0);
+  static const EdgeInsets horizontalXxl =
+      EdgeInsets.symmetric(horizontal: 12.0);
 
   // Vertical only
   static const EdgeInsets verticalXs = EdgeInsets.symmetric(vertical: 2.0);
@@ -104,22 +106,35 @@ class AppInsets {
   static const EdgeInsets insetMd = EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0);
   static const EdgeInsets insetLg = EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0);
   static const EdgeInsets insetXl = EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0);
-  static const EdgeInsets insetXxl = EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 12.0);
+  static const EdgeInsets insetXxl =
+      EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 12.0);
 
   // Asymmetric common patterns
-  static const EdgeInsets insetHorizontalXs = EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 0.0);
-  static const EdgeInsets insetHorizontalSm = EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0);
-  static const EdgeInsets insetHorizontalMd = EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 0.0);
-  static const EdgeInsets insetHorizontalLg = EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0);
-  static const EdgeInsets insetHorizontalXl = EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0);
-  static const EdgeInsets insetHorizontalXxl = EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0);
+  static const EdgeInsets insetHorizontalXs =
+      EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 0.0);
+  static const EdgeInsets insetHorizontalSm =
+      EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0);
+  static const EdgeInsets insetHorizontalMd =
+      EdgeInsets.fromLTRB(6.0, 0.0, 6.0, 0.0);
+  static const EdgeInsets insetHorizontalLg =
+      EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0);
+  static const EdgeInsets insetHorizontalXl =
+      EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0);
+  static const EdgeInsets insetHorizontalXxl =
+      EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0);
 
-  static const EdgeInsets insetVerticalXs = EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 2.0);
-  static const EdgeInsets insetVerticalSm = EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0);
-  static const EdgeInsets insetVerticalMd = EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 6.0);
-  static const EdgeInsets insetVerticalLg = EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0);
-  static const EdgeInsets insetVerticalXl = EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0);
-  static const EdgeInsets insetVerticalXxl = EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0);
+  static const EdgeInsets insetVerticalXs =
+      EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 2.0);
+  static const EdgeInsets insetVerticalSm =
+      EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0);
+  static const EdgeInsets insetVerticalMd =
+      EdgeInsets.fromLTRB(0.0, 6.0, 0.0, 6.0);
+  static const EdgeInsets insetVerticalLg =
+      EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0);
+  static const EdgeInsets insetVerticalXl =
+      EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0);
+  static const EdgeInsets insetVerticalXxl =
+      EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0);
 }
 
 // Corner radius specific utilities
@@ -156,12 +171,12 @@ class AppBorderRadius {
       BorderRadius.horizontal(right: Radius.circular(radius));
 
   // Elliptical radii
-  static BorderRadius ellipticalXs = BorderRadius.all(
-      Radius.elliptical(2.0, 4.0));
-  static BorderRadius ellipticalSm = BorderRadius.all(
-      Radius.elliptical(4.0, 8.0));
-  static BorderRadius ellipticalMd = BorderRadius.all(
-      Radius.elliptical(6.0, 12.0));
-  static BorderRadius ellipticalLg = BorderRadius.all(
-      Radius.elliptical(8.0, 16.0));
+  static BorderRadius ellipticalXs =
+      const BorderRadius.all(Radius.elliptical(2.0, 4.0));
+  static BorderRadius ellipticalSm =
+      const BorderRadius.all(Radius.elliptical(4.0, 8.0));
+  static BorderRadius ellipticalMd =
+      const BorderRadius.all(Radius.elliptical(6.0, 12.0));
+  static BorderRadius ellipticalLg =
+      const BorderRadius.all(Radius.elliptical(8.0, 16.0));
 }

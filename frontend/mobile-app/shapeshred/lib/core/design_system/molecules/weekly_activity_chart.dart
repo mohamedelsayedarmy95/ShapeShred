@@ -55,12 +55,14 @@ class WeeklyActivityChart extends StatelessWidget {
                           curve: AppCurves.premiumFluid,
                           builder: (context, animatedValue, child) {
                             return FractionallySizedBox(
-                              heightFactor: animatedValue <= 0 ? 0.03 : animatedValue,
+                              heightFactor:
+                                  animatedValue <= 0 ? 0.03 : animatedValue,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(AppRadius.radiusTiny),
+                                  borderRadius: BorderRadius.circular(
+                                      AppRadius.radiusTiny),
                                   gradient: isToday
-                                      ? LinearGradient(
+                                      ? const LinearGradient(
                                           begin: Alignment.topCenter,
                                           end: Alignment.bottomCenter,
                                           colors: AppColors.heroGradient,
@@ -68,7 +70,8 @@ class WeeklyActivityChart extends StatelessWidget {
                                       : null,
                                   color: isToday
                                       ? null
-                                      : AppColors.primary.withValues(alpha: 0.18),
+                                      : AppColors.primary
+                                          .withValues(alpha: 0.18),
                                 ),
                               ),
                             );
@@ -80,7 +83,9 @@ class WeeklyActivityChart extends StatelessWidget {
                     Text(
                       labels[index],
                       style: AppTypography.labelSmall.copyWith(
-                        color: isToday ? AppColors.primary : AppTextColors.tertiary,
+                        color: isToday
+                            ? AppColors.primary
+                            : AppTextColors.tertiary,
                         fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
                       ),
                     ),

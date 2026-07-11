@@ -160,7 +160,7 @@ class WorkoutDetailPage extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 16.h),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: AppColors.heroGradient,
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,

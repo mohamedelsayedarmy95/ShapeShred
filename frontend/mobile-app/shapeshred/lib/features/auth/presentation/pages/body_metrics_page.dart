@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -88,135 +88,139 @@ class _BodyMetricsPageState extends State<BodyMetricsPage> {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(AppSpacing.screenPadding.w),
           child: _FadeSlideIn(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Your body metrics',
-                style: AppTypography.headlineLarge,
-              ),
-              SizedBox(height: AppSpacing.space8.h),
-              Text(
-                'Help us calculate your personalized plan',
-                style: AppTypography.bodyLarge.copyWith(
-                  color: AppTextColors.secondary,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Your body metrics',
+                  style: AppTypography.headlineLarge,
                 ),
-              ),
-              SizedBox(height: AppSpacing.space32.h),
-
-              // Gender Selection
-              Text(
-                'Gender',
-                style: AppTypography.titleMedium.copyWith(
-                  fontWeight: FontWeight.w600,
+                SizedBox(height: AppSpacing.space8.h),
+                Text(
+                  'Help us calculate your personalized plan',
+                  style: AppTypography.bodyLarge.copyWith(
+                    color: AppTextColors.secondary,
+                  ),
                 ),
-              ),
-              SizedBox(height: AppSpacing.space12.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: _GenderButton(
-                      label: 'Male',
-                      icon: Icons.male,
-                      isSelected: _selectedGender == 'male',
-                      onTap: () => setState(() => _selectedGender = 'male'),
+                SizedBox(height: AppSpacing.space32.h),
+
+                // Gender Selection
+                Text(
+                  'Gender',
+                  style: AppTypography.titleMedium.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(height: AppSpacing.space12.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _GenderButton(
+                        label: 'Male',
+                        icon: Icons.male,
+                        isSelected: _selectedGender == 'male',
+                        onTap: () => setState(() => _selectedGender = 'male'),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: AppSpacing.space12.w),
-                  Expanded(
-                    child: _GenderButton(
-                      label: 'Female',
-                      icon: Icons.female,
-                      isSelected: _selectedGender == 'female',
-                      onTap: () => setState(() => _selectedGender = 'female'),
+                    SizedBox(width: AppSpacing.space12.w),
+                    Expanded(
+                      child: _GenderButton(
+                        label: 'Female',
+                        icon: Icons.female,
+                        isSelected: _selectedGender == 'female',
+                        onTap: () => setState(() => _selectedGender = 'female'),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.space24.h),
+                  ],
+                ),
+                SizedBox(height: AppSpacing.space24.h),
 
-              // Height Input
-              _MetricInput(
-                controller: _heightController,
-                label: 'Height',
-                unit: 'cm',
-                icon: Icons.height,
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(height: AppSpacing.space16.h),
+                // Height Input
+                _MetricInput(
+                  controller: _heightController,
+                  label: 'Height',
+                  unit: 'cm',
+                  icon: Icons.height,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: AppSpacing.space16.h),
 
-              // Weight Input
-              _MetricInput(
-                controller: _weightController,
-                label: 'Weight',
-                unit: 'kg',
-                icon: Icons.monitor_weight,
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(height: AppSpacing.space16.h),
+                // Weight Input
+                _MetricInput(
+                  controller: _weightController,
+                  label: 'Weight',
+                  unit: 'kg',
+                  icon: Icons.monitor_weight,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: AppSpacing.space16.h),
 
-              // Age Input
-              _MetricInput(
-                controller: _ageController,
-                label: 'Age',
-                unit: 'years',
-                icon: Icons.cake,
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(height: AppSpacing.space32.h),
+                // Age Input
+                _MetricInput(
+                  controller: _ageController,
+                  label: 'Age',
+                  unit: 'years',
+                  icon: Icons.cake,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: AppSpacing.space32.h),
 
-              // Error Message
-              if (_errorMessage != null)
-                Container(
-                  padding: EdgeInsets.all(12.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.errorContainer,
-                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.error_outline, color: AppColors.onErrorContainer),
-                      SizedBox(width: AppSpacing.space12.w),
-                      Expanded(
-                        child: Text(
-                          _errorMessage!,
-                          style: AppTypography.bodySmall.copyWith(
-                            color: AppColors.onErrorContainer,
+                // Error Message
+                if (_errorMessage != null)
+                  Container(
+                    padding: EdgeInsets.all(12.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.errorContainer,
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusMedium),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.error_outline,
+                            color: AppColors.onErrorContainer),
+                        SizedBox(width: AppSpacing.space12.w),
+                        Expanded(
+                          child: Text(
+                            _errorMessage!,
+                            style: AppTypography.bodySmall.copyWith(
+                              color: AppColors.onErrorContainer,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              if (_errorMessage != null) SizedBox(height: AppSpacing.space16.h),
+                if (_errorMessage != null)
+                  SizedBox(height: AppSpacing.space16.h),
 
-              // Continue Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _handleContinue,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.onPrimary,
-                    padding: EdgeInsets.symmetric(vertical: 18.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                // Continue Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _handleContinue,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.onPrimary,
+                      padding: EdgeInsets.symmetric(vertical: 18.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusLarge),
+                      ),
+                      elevation: 0,
                     ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    'CONTINUE',
-                    style: AppTypography.labelLarge.copyWith(
-                      color: AppColors.onPrimary,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.2,
+                    child: Text(
+                      'CONTINUE',
+                      style: AppTypography.labelLarge.copyWith(
+                        color: AppColors.onPrimary,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.2,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-            ],
-          ),
+                SizedBox(height: AppSpacing.space16.h),
+              ],
+            ),
           ),
         ),
       ),
@@ -289,7 +293,8 @@ class _GenderButton extends StatelessWidget {
             Text(
               label,
               style: AppTypography.labelLarge.copyWith(
-                color: isSelected ? AppColors.onPrimary : AppTextColors.secondary,
+                color:
+                    isSelected ? AppColors.onPrimary : AppTextColors.secondary,
                 fontWeight: FontWeight.w700,
               ),
             ),

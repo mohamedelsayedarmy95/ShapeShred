@@ -7,7 +7,8 @@ class ExerciseRepository {
       id: 'push_ups',
       name: 'Push Ups',
       category: 'Strength',
-      description: 'Classic bodyweight exercise for chest, shoulders, and triceps.',
+      description:
+          'Classic bodyweight exercise for chest, shoulders, and triceps.',
       muscleGroup: 'Chest',
       equipment: 'Bodyweight',
       difficulty: 'Beginner',

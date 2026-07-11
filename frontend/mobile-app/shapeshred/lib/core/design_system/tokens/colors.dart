@@ -10,8 +10,8 @@ import 'package:shapeshred/core/services/theme_service.dart';
 class AppColors {
   // Core semantic roles - these should be used throughout the app
   static Color get primary => _getColorFromScheme(
-        Color(0xFF6D28D9), // Electric violet (light)
-        Color(0xFF8B5CF6), // Electric violet, brighter for pop on black
+        const Color(0xFF6D28D9), // Electric violet (light)
+        const Color(0xFF8B5CF6), // Electric violet, brighter for pop on black
       );
   static Color get onPrimary => _getColorFromScheme(
         Colors.white,
@@ -19,86 +19,86 @@ class AppColors {
       );
 
   static Color get secondary => _getColorFromScheme(
-        Color(0xFF0D9488), // Electric teal (light)
-        Color(0xFF2DD4BF), // Electric teal, brighter for dark
+        const Color(0xFF0D9488), // Electric teal (light)
+        const Color(0xFF2DD4BF), // Electric teal, brighter for dark
       );
   static Color get onSecondary => _getColorFromScheme(
         Colors.white,
-        Color(0xFF042F2E),
+        const Color(0xFF042F2E),
       );
 
   static Color get tertiary => _getColorFromScheme(
-        Color(0xFF16A34A), // Performance lime-green (light)
-        Color(0xFF4ADE80), // Performance lime-green (dark)
+        const Color(0xFF16A34A), // Performance lime-green (light)
+        const Color(0xFF4ADE80), // Performance lime-green (dark)
       );
   static Color get onTertiary => _getColorFromScheme(
         Colors.white,
-        Color(0xFF052E16),
+        const Color(0xFF052E16),
       );
 
   static Color get error => _getColorFromScheme(
-        Color(0xFFDC2626), // Error red (light)
-        Color(0xFFF87171), // Error red, brighter for dark
+        const Color(0xFFDC2626), // Error red (light)
+        const Color(0xFFF87171), // Error red, brighter for dark
       );
   static Color get onError => _getColorFromScheme(
         Colors.white,
-        Color(0xFF450A0A),
+        const Color(0xFF450A0A),
       );
 
   static Color get errorContainer => _getColorFromScheme(
-        Color(0xFFFFEBEE), // Red 50 (light)
-        Color(0xFF450A0A), // Deep red container (dark)
+        const Color(0xFFFFEBEE), // Red 50 (light)
+        const Color(0xFF450A0A), // Deep red container (dark)
       );
   static Color get onErrorContainer => _getColorFromScheme(
-        Color(0xFFD32F2F), // Red 700 (light)
-        Color(0xFFF87171), // Bright red text (dark)
+        const Color(0xFFD32F2F), // Red 700 (light)
+        const Color(0xFFF87171), // Bright red text (dark)
       );
 
   /// Full-strength scrim for overlays and image gradients (M3 scrim role).
   static const Color scrim = Colors.black;
 
   static Color get background => _getColorFromScheme(
-        Color(0xFFFAFAFC), // Background (light)
-        Color(0xFF0B0B10), // Obsidian background (dark)
+        const Color(0xFFFAFAFC), // Background (light)
+        const Color(0xFF0B0B10), // Obsidian background (dark)
       );
   static Color get onBackground => _getColorFromScheme(
-        Color(0xFF16161D), // On background (light)
-        Color(0xFFEDEDF2), // On background (dark)
+        const Color(0xFF16161D), // On background (light)
+        const Color(0xFFEDEDF2), // On background (dark)
       );
 
   static Color get surface => _getColorFromScheme(
-        Color(0xFFFFFFFF), // Surface (light)
-        Color(0xFF15151B), // Elevated obsidian surface (dark)
+        const Color(0xFFFFFFFF), // Surface (light)
+        const Color(0xFF15151B), // Elevated obsidian surface (dark)
       );
   static Color get onSurface => _getColorFromScheme(
-        Color(0xFF16161D), // On surface (light)
-        Color(0xFFEDEDF2), // On surface (dark)
+        const Color(0xFF16161D), // On surface (light)
+        const Color(0xFFEDEDF2), // On surface (dark)
       );
 
   static Color get surfaceVariant => _getColorFromScheme(
-        Color(0xFFF0EEF7), // Surface variant (light)
-        Color(0xFF1F1F27), // Surface variant (dark)
+        const Color(0xFFF0EEF7), // Surface variant (light)
+        const Color(0xFF1F1F27), // Surface variant (dark)
       );
   static Color get onSurfaceVariant => _getColorFromScheme(
-        Color(0xFF49454F), // On surface variant (light)
-        Color(0xFFB8B5C0), // On surface variant (dark)
+        const Color(0xFF49454F), // On surface variant (light)
+        const Color(0xFFB8B5C0), // On surface variant (dark)
       );
 
   static Color get outline => _getColorFromScheme(
-        Color(0xFFE0DDE8), // Outline (light)
-        Color(0xFF2E2E38), // Outline (dark)
+        const Color(0xFFE0DDE8), // Outline (light)
+        const Color(0xFF2E2E38), // Outline (dark)
       );
 
   static Color get shadow => Colors.black54;
 
   static Color get divider => _getColorFromScheme(
-        Color(0xFFEDEBF2), // Divider (light)
-        Color(0xFF232329), // Divider (dark)
+        const Color(0xFFEDEBF2), // Divider (light)
+        const Color(0xFF232329), // Divider (dark)
       );
 
   static Color get warning => _getColorFromScheme(
-        Color(0xFFD97706), // Amber (light)
-        Color(0xFFFBBF24), // Amber (dark)
+        const Color(0xFFD97706), // Amber (light)
+        const Color(0xFFFBBF24), // Amber (dark)
       );
 
   static Color get success => tertiary;
@@ -107,12 +107,12 @@ class AppColors {
 
   // INVERSE COLORS FOR SPECIAL CASES
   static Color get inverseSurface => _getColorFromScheme(
-        Color(0xFF0B0B10), // Dark surface
-        Color(0xFFFFFFFF), // Light surface
+        const Color(0xFF0B0B10), // Dark surface
+        const Color(0xFFFFFFFF), // Light surface
       );
   static Color get inverseOnSurface => _getColorFromScheme(
-        Color(0xFFEDEDF2), // Light-on-dark text
-        Color(0xFF16161D), // Dark-on-light text
+        const Color(0xFFEDEDF2), // Light-on-dark text
+        const Color(0xFF16161D), // Dark-on-light text
       );
 
   // HERO GRADIENT - violet -> teal, used for CTAs, hero cards, progress rings

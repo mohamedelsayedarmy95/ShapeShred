@@ -39,11 +39,11 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
           .map((snapshot) => snapshot.docs
               .map((doc) => {
                     'id': doc.id,
-                    ...doc.data() as Map<String, dynamic>,
+                    ...doc.data(),
                   })
               .toList());
     } catch (e) {
-      throw ServerFailure();
+      throw const ServerFailure();
     }
   }
 
@@ -56,7 +56,7 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
           .collection('workout_history')
           .add(workoutData);
     } catch (e) {
-      throw ServerFailure();
+      throw const ServerFailure();
     }
   }
 
@@ -70,7 +70,7 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
           .doc(workoutId)
           .delete();
     } catch (e) {
-      throw ServerFailure();
+      throw const ServerFailure();
     }
   }
 
@@ -123,7 +123,7 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
         'allWorkouts': workouts,
       };
     } catch (e) {
-      throw ServerFailure();
+      throw const ServerFailure();
     }
   }
 }

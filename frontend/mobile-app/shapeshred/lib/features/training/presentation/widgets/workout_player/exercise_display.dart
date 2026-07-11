@@ -89,7 +89,8 @@ class _BreathingIconCircleState extends State<_BreathingIconCircle>
     final accent = widget.isResting ? AppColors.secondary : AppColors.primary;
     return AnimatedBuilder(
       animation: _scale,
-      builder: (context, child) => Transform.scale(scale: _scale.value, child: child),
+      builder: (context, child) =>
+          Transform.scale(scale: _scale.value, child: child),
       child: AnimatedSwitcher(
         duration: AppDurations.substantial,
         switchInCurve: AppCurves.premiumFluid,
@@ -104,7 +105,10 @@ class _BreathingIconCircleState extends State<_BreathingIconCircle>
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: widget.isResting
-                  ? [AppColors.secondary, AppColors.secondary.withValues(alpha: 0.7)]
+                  ? [
+                      AppColors.secondary,
+                      AppColors.secondary.withValues(alpha: 0.7)
+                    ]
                   : AppColors.heroGradient,
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -120,7 +124,8 @@ class _BreathingIconCircleState extends State<_BreathingIconCircle>
           ),
           child: Icon(
             widget.icon,
-            color: widget.isResting ? AppColors.onSecondary : AppColors.onPrimary,
+            color:
+                widget.isResting ? AppColors.onSecondary : AppColors.onPrimary,
             size: 60.sp,
           ),
         ),

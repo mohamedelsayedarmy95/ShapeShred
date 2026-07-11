@@ -3,17 +3,9 @@
 // Features biometric-responsive animations that adapt to heart rate, workout intensity, etc.
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/physics.dart';
-import 'package:shapeshred/core/services/theme_service.dart';
 
 // Temporary enum to work around AnimatedStatus import issues
-enum _AnimationStatus {
-  dismissed,
-  forward,
-  reverse,
-  completed
-}
+enum _AnimationStatus { dismissed, forward, reverse, completed }
 
 /// PREMIUM MOTION DURATIONS
 // Thoughtfully timed durations for different interaction types
@@ -22,7 +14,7 @@ class AppDurations {
 
   // INSTANTANEOUS (0-50ms) - Immediate feedback
   static const Duration instantaneous = Duration(milliseconds: 0);
-  static const Duration micro = Duration(milliseconds: 16);  // ~1 frame at 60fps
+  static const Duration micro = Duration(milliseconds: 16); // ~1 frame at 60fps
   static const Duration ultraQuick = Duration(milliseconds: 25);
   static const Duration swift = Duration(milliseconds: 35);
 
@@ -72,7 +64,8 @@ class BioResponsiveMotion {
   /// Returns animation duration based on heart rate variability
   /// Higher HRV (more relaxed) = slower, more graceful animations
   /// Lower HRV (more stressed/tired) = quicker, more alert animations
-  static Duration forHeartRateVariability(double hrv, {Duration baseDuration = const Duration(milliseconds: 250)}) {
+  static Duration forHeartRateVariability(double hrv,
+      {Duration baseDuration = const Duration(milliseconds: 250)}) {
     // hrv: typically 20-100ms for adults
     // Normalize to 0-1 range where 0 = low stress, 1 = high stress
     double normalized = (hrv - 20) / 80; // Assuming 20-100 range
@@ -88,7 +81,8 @@ class BioResponsiveMotion {
   /// Returns animation curve based on workout intensity
   /// Low intensity = smoother, more easing
   /// High intensity = more responsive, less easing
-  static Curve forWorkoutIntensity(double intensity, {bool isRecovery = false}) {
+  static Curve forWorkoutIntensity(double intensity,
+      {bool isRecovery = false}) {
     // intensity: 0.0 (rest) to 1.0 (max effort)
     if (isRecovery) {
       // During recovery: very smooth, easing motions
@@ -204,7 +198,8 @@ class _FluidCurve extends Curve {
     // Simple fluid dynamics approximation for UI
     double resistance = 1.0 - (viscosity * 0.5); // 0.5 to 1.0 range
     double momentum = t * mass;
-    double position = momentum * (1.0 - resistance * t * 0.3); // Dampening factor
+    double position =
+        momentum * (1.0 - resistance * t * 0.3); // Dampening factor
     return position.clamp(0.0, 1.0);
   }
 }
@@ -216,10 +211,15 @@ class CompositeAnimation extends Animation<double> {
   CompositeAnimation(this._animations);
 
   @override
-  AnimationStatus get status => _animations.isNotEmpty ? _animations.first.status : AnimationStatus.dismissed;
+  AnimationStatus get status => _animations.isNotEmpty
+      ? _animations.first.status
+      : AnimationStatus.dismissed;
 
   @override
-  double get value => _animations.isNotEmpty ? _animations.map((a) => a.value).reduce((a, b) => a + b) / _animations.length : 0.0;
+  double get value => _animations.isNotEmpty
+      ? _animations.map((a) => a.value).reduce((a, b) => a + b) /
+          _animations.length
+      : 0.0;
 
   @override
   void addListener(VoidCallback listener) {
@@ -260,7 +260,8 @@ class CompositeAnimation extends Animation<double> {
   }
 
   @override
-  String toStringDetails() => '${super.toStringDetails()}, animations: $_animations';
+  String toStringDetails() =>
+      '${super.toStringDetails()}, animations: $_animations';
 }
 
 /// Clamping animation that applies a curve but clamps the result
@@ -282,13 +283,16 @@ class ClampingAnimation extends Animation<double> {
   void addListener(VoidCallback listener) => _parent.addListener(listener);
 
   @override
-  void removeListener(VoidCallback listener) => _parent.removeListener(listener);
+  void removeListener(VoidCallback listener) =>
+      _parent.removeListener(listener);
 
   @override
-  void addStatusListener(AnimationStatusListener listener) => _parent.addStatusListener(listener);
+  void addStatusListener(AnimationStatusListener listener) =>
+      _parent.addStatusListener(listener);
 
   @override
-  void removeStatusListener(AnimationStatusListener listener) => _parent.removeStatusListener(listener);
+  void removeStatusListener(AnimationStatusListener listener) =>
+      _parent.removeStatusListener(listener);
 
   @override
   Animation<T> drive<T>(Animatable<T> animatee) => _parent.drive(animatee);
@@ -318,7 +322,8 @@ class IntervalTimer {
     int staggerDelay = AnimationStaggerConfig.delay,
   }) {
     return List.generate(count, (index) {
-      final double start = index * (staggerDelay / 1000.0) / duration.inMilliseconds;
+      final double start =
+          index * (staggerDelay / 1000.0) / duration.inMilliseconds;
       final double end = math.min(1.0, start + 1.0);
 
       return Tween<double>(begin: start, end: end).animate(
@@ -371,7 +376,7 @@ extension CurveFlipped on Curve {
 class _FlippedCurve extends Curve {
   final Curve _original;
 
-  _FlippedCurve(this._original);
+  const _FlippedCurve(this._original);
 
   @override
   double transform(double t) => 1.0 - _original.transform(1.0 - t);

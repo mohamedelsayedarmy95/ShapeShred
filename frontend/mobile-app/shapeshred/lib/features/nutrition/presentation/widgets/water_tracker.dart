@@ -49,7 +49,7 @@ class WaterTracker extends StatelessWidget {
             ],
           ),
           SizedBox(height: AppSpacing.space16.h),
-          
+
           // Water Glasses
           Row(
             children: List.generate(
@@ -63,7 +63,8 @@ class WaterTracker extends StatelessWidget {
                       color: index < current
                           ? AppColors.info
                           : AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusSmall),
                       border: Border.all(
                         color: AppColors.outline,
                         width: 1,

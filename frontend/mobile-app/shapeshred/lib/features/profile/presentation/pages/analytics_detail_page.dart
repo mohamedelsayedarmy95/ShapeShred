@@ -6,12 +6,10 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/services/advanced_analytics_service.dart';
 import 'dart:math' as math;
 import 'package:shapeshred/features/training/data/workout_history_repository.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
-import 'package:shapeshred/core/error/failures.dart';
 
 class AnalyticsDetailPage extends StatefulWidget {
   const AnalyticsDetailPage({super.key});
@@ -60,20 +58,23 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
 
     try {
       // Get real workout data from repository
-      final workoutSnapshot = await _workoutRepository.getWorkoutHistory().first;
+      final workoutSnapshot =
+          await _workoutRepository.getWorkoutHistory().first;
       _workoutHistory = workoutSnapshot;
 
       // Analyze performance trends
-      _trendAnalysis =
-          await AdvancedAnalyticsService.analyzePerformanceTrends(_workoutHistory);
+      _trendAnalysis = await AdvancedAnalyticsService.analyzePerformanceTrends(
+          _workoutHistory);
 
       // Predict next workout
       _prediction =
           await AdvancedAnalyticsService.predictNextWorkout(_workoutHistory);
 
       // Get user preferences for recommendations
-      final String primaryGoal = await PreferencesService.getUserGoal() ?? 'build_muscle';
-      final String fitnessLevel = await PreferencesService.getFitnessLevel() ?? 'intermediate';
+      final String primaryGoal =
+          await PreferencesService.getUserGoal() ?? 'build_muscle';
+      final String fitnessLevel =
+          await PreferencesService.getFitnessLevel() ?? 'intermediate';
 
       // Generate recommendations
       _recommendations = await AdvancedAnalyticsService.generateRecommendations(
@@ -85,8 +86,8 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
       // Assess recovery status (using last 3 workouts)
       final List<Map<String, dynamic>> recentWorkouts =
           _workoutHistory.take(3).toList();
-      _recoveryStatus = await AdvancedAnalyticsService.assessRecoveryStatus(
-          recentWorkouts);
+      _recoveryStatus =
+          await AdvancedAnalyticsService.assessRecoveryStatus(recentWorkouts);
     } catch (e) {
       // In a real app, show error message
       debugPrint('Error loading analytics: $e');
@@ -168,7 +169,8 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
     }
 
     final String trend = _trendAnalysis!['trend'] as String? ?? 'unknown';
-    final double volumeChange = (_trendAnalysis!['volumeChange'] as num?)?.toDouble() ?? 0.0;
+    final double volumeChange =
+        (_trendAnalysis!['volumeChange'] as num?)?.toDouble() ?? 0.0;
     final double intensityChange =
         (_trendAnalysis!['intensityChange'] as num?)?.toDouble() ?? 0.0;
     final bool isPlateau = _trendAnalysis!['isPlateau'] as bool? ?? false;
@@ -197,9 +199,9 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
           spacing: AppSpacing.space16.w,
           runSpacing: AppSpacing.space8.h,
           children: [
-            _buildMetricCard('Volume Change', '${volumeChange.toStringAsFixed(2)}'),
-            _buildMetricCard(
-                'Intensity Change', '${(intensityChange * 100).toStringAsFixed(1)}%'),
+            _buildMetricCard('Volume Change', volumeChange.toStringAsFixed(2)),
+            _buildMetricCard('Intensity Change',
+                '${(intensityChange * 100).toStringAsFixed(1)}%'),
             _buildMetricCard('Plateau Detected', isPlateau ? 'Yes' : 'No'),
           ],
         ),
@@ -395,10 +397,11 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
                     SizedBox(height: AppSpacing.space8.h),
                     ...(_recoveryStatus!['recommendations'] as List<dynamic>?)
                             ?.map((rec) => Padding(
-                                  padding:
-                                      EdgeInsets.only(bottom: AppSpacing.space4.h),
+                                  padding: EdgeInsets.only(
+                                      bottom: AppSpacing.space4.h),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Icon(
                                         Icons.check_circle,
@@ -409,7 +412,8 @@ class _AnalyticsDetailPageState extends State<AnalyticsDetailPage> {
                                       Expanded(
                                         child: Text(
                                           rec.toString(),
-                                          style: AppTypography.bodySmall.copyWith(
+                                          style:
+                                              AppTypography.bodySmall.copyWith(
                                             color: AppTextColors.secondary,
                                           ),
                                         ),
@@ -455,10 +459,11 @@ class _RecommendationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color priorityColor = {
-      'high': AppColors.error,
-      'medium': AppColors.warning,
-      'low': AppColors.info,
-    }[priority] ?? AppTextColors.secondary;
+          'high': AppColors.error,
+          'medium': AppColors.warning,
+          'low': AppColors.info,
+        }[priority] ??
+        AppTextColors.secondary;
 
     return Padding(
       padding: EdgeInsets.only(bottom: AppSpacing.space12.h),
@@ -551,7 +556,7 @@ class _VolumeChartPainter extends CustomPainter {
 
     final double width = size.width;
     final double height = size.height;
-    final double padding = 20.0; // Space for labels
+    const double padding = 20.0; // Space for labels
     final double chartWidth = width - 2 * padding;
     final double chartHeight = height - 2 * padding;
 
@@ -585,10 +590,8 @@ class _VolumeChartPainter extends CustomPainter {
     // Draw the line chart
     final List<Offset> points = [];
     for (int i = 0; i < values.length; i++) {
-      final double x =
-          padding + (chartWidth * i / (values.length - 1));
-      final double normalized =
-          (values[i] - minVal) / (maxVal - minVal);
+      final double x = padding + (chartWidth * i / (values.length - 1));
+      final double normalized = (values[i] - minVal) / (maxVal - minVal);
       final double y = padding + (chartHeight * (1 - normalized));
       points.add(Offset(x, y));
     }

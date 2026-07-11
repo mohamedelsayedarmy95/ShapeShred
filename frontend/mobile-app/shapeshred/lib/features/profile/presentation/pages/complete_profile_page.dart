@@ -23,7 +23,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   final _ageController = TextEditingController();
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
-  
+
   String _selectedGender = 'Male';
   String _selectedGoal = 'Lose Weight';
   String _selectedActivityLevel = 'Beginner';
@@ -145,7 +145,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: AppSpacing.space16.h),
-                
+
                 // Progress Indicator
                 LinearProgressIndicator(
                   value: 0.33,
@@ -301,7 +301,8 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                           color: isSelected
                               ? AppColors.primary
                               : AppColors.surfaceVariant,
-                          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.radiusMedium),
                           border: Border.all(
                             color: isSelected
                                 ? AppColors.primary

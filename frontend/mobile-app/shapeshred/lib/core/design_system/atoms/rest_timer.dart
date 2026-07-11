@@ -274,7 +274,8 @@ class _RestTimerState extends State<RestTimer> with TickerProviderStateMixin {
             Text(
               label,
               style: AppTypography.labelSmall.copyWith(
-                color: isSecondary ? AppTextColors.primary : AppColors.onPrimary,
+                color:
+                    isSecondary ? AppTextColors.primary : AppColors.onPrimary,
               ),
             ),
           ],

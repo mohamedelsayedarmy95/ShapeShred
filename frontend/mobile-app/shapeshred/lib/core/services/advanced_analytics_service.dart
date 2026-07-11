@@ -1,9 +1,6 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shapeshred/core/services/secure_storage_service.dart';
-import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
-import 'package:shapeshred/features/training/domain/models/exercise.dart';
 
 /// Advanced Analytics Service
 /// Provides AI-powered insights, predictions, and recommendations for workouts
@@ -34,13 +31,13 @@ class AdvancedAnalyticsService {
     // Sort workouts by date (oldest first) - FIXED: Properly handle Timestamp objects
     final sortedWorkouts = List<Map<String, dynamic>>.from(workoutHistory)
       ..sort((a, b) {
-          final dateA = (a['completedAt'] as Timestamp?)?.toDate();
-          final dateB = (b['completedAt'] as Timestamp?)?.toDate();
-          if (dateA == null && dateB == null) return 0;
-          if (dateA == null) return -1; // null dates go first
-          if (dateB == null) return 1;  // null dates go first
-          return dateA.difference(dateB).inSeconds;
-        });
+        final dateA = (a['completedAt'] as Timestamp?)?.toDate();
+        final dateB = (b['completedAt'] as Timestamp?)?.toDate();
+        if (dateA == null && dateB == null) return 0;
+        if (dateA == null) return -1; // null dates go first
+        if (dateB == null) return 1; // null dates go first
+        return dateA.difference(dateB).inSeconds;
+      });
 
     for (final workout in sortedWorkouts) {
       // Volume = weight * reps * sets (summed across all exercises)
@@ -59,8 +56,9 @@ class AdvancedAnalyticsService {
         final rpe = (exercise['rpe'] as num?)?.toDouble();
         if (rpe != null) rpeValues.add(rpe);
       }
-      final double avgRpe =
-          rpeValues.isNotEmpty ? rpeValues.reduce((a, b) => a + b) / rpeValues.length : 5.0;
+      final double avgRpe = rpeValues.isNotEmpty
+          ? rpeValues.reduce((a, b) => a + b) / rpeValues.length
+          : 5.0;
       intensities.add(avgRpe / 10.0); // Normalize to 0-1 scale
 
       // Frequency (workouts per time period - simplified)
@@ -128,7 +126,8 @@ class AdvancedAnalyticsService {
 
     final int n = values.length;
     final List<int> indices = List<int>.generate(n, (i) => i);
-    final double sumX = indices.map((i) => i.toDouble()).reduce((a, b) => a + b);
+    final double sumX =
+        indices.map((i) => i.toDouble()).reduce((a, b) => a + b);
     final double sumY = values.reduce((a, b) => a + b);
     final double sumXY =
         indices.map((i) => i * values[i]).reduce((a, b) => a + b);
@@ -156,19 +155,18 @@ class AdvancedAnalyticsService {
     // Sort workouts by date (oldest first) - FIXED: Properly handle Timestamp objects
     final sortedWorkouts = List<Map<String, dynamic>>.from(workoutHistory)
       ..sort((a, b) {
-          final dateA = (a['completedAt'] as Timestamp?)?.toDate();
-          final dateB = (b['completedAt'] as Timestamp?)?.toDate();
-          if (dateA == null && dateB == null) return 0;
-          if (dateA == null) return -1; // null dates go first
-          if (dateB == null) return 1;  // null dates go first
-          return dateA.difference(dateB).inSeconds;
-        });
+        final dateA = (a['completedAt'] as Timestamp?)?.toDate();
+        final dateB = (b['completedAt'] as Timestamp?)?.toDate();
+        if (dateA == null && dateB == null) return 0;
+        if (dateA == null) return -1; // null dates go first
+        if (dateB == null) return 1; // null dates go first
+        return dateA.difference(dateB).inSeconds;
+      });
 
     // Get recent workouts (last 5)
-    final List<Map<String, dynamic>> recentWorkouts =
-        sortedWorkouts.length > 5
-            ? sortedWorkouts.sublist(sortedWorkouts.length - 5)
-            : sortedWorkouts;
+    final List<Map<String, dynamic>> recentWorkouts = sortedWorkouts.length > 5
+        ? sortedWorkouts.sublist(sortedWorkouts.length - 5)
+        : sortedWorkouts;
 
     // Calculate average volume and intensity from recent workouts
     final List<double> recentVolumes = [];
@@ -189,8 +187,9 @@ class AdvancedAnalyticsService {
         final rpe = exercise['rpe'] as int?;
         if (rpe != null) rpeValues.add(rpe);
       }
-      final double avgRpe =
-          rpeValues.isNotEmpty ? rpeValues.reduce((a, b) => a + b) / rpeValues.length : 5.0;
+      final double avgRpe = rpeValues.isNotEmpty
+          ? rpeValues.reduce((a, b) => a + b) / rpeValues.length
+          : 5.0;
       recentIntensities.add(avgRpe / 10.0);
     }
 
@@ -217,8 +216,10 @@ class AdvancedAnalyticsService {
     final double volumeStdDev = _calculateStandardDeviation(recentVolumes);
     final double intensityStdDev =
         _calculateStandardDeviation(recentIntensities);
-    final double consistency =
-        1.0 - ((volumeStdDev / (avgVolume + 0.1)) + (intensityStdDev / (avgIntensity + 0.1))) / 2;
+    final double consistency = 1.0 -
+        ((volumeStdDev / (avgVolume + 0.1)) +
+                (intensityStdDev / (avgIntensity + 0.1))) /
+            2;
     final double confidence = (0.5 + consistency * 0.5).clamp(0.3, 0.9);
 
     String predictionLabel;
@@ -236,7 +237,8 @@ class AdvancedAnalyticsService {
       'prediction': predictionLabel,
       'confidence': confidence,
       'suggestedVolume': clampedVolume.round(),
-      'suggestedIntensity': (clampedIntensity * 10).roundToDouble(), // Convert back to RPE scale
+      'suggestedIntensity':
+          (clampedIntensity * 10).roundToDouble(), // Convert back to RPE scale
       'volumeTrend': volumeTrend,
       'intensityTrend': intensityTrend,
       'recentAverageVolume': avgVolume.round(),
@@ -249,20 +251,18 @@ class AdvancedAnalyticsService {
     if (values.isEmpty) return 0.0;
     if (values.length == 1) return 0.0;
 
-    final double mean =
-        values.reduce((a, b) => a + b) / values.length;
-    final double variance = values
-        .map((v) => (v - mean) * (v - mean))
-        .reduce((a, b) => a + b) /
-        values.length;
+    final double mean = values.reduce((a, b) => a + b) / values.length;
+    final double variance =
+        values.map((v) => (v - mean) * (v - mean)).reduce((a, b) => a + b) /
+            values.length;
     return sqrt(variance);
   }
 
   /// Generate personalized workout recommendations
   static Future<List<Map<String, dynamic>>> generateRecommendations(
-      List<Map<String, dynamic>> workoutHistory,
-      String primaryGoal,
-      String fitnessLevel,
+    List<Map<String, dynamic>> workoutHistory,
+    String primaryGoal,
+    String fitnessLevel,
   ) async {
     final List<Map<String, dynamic>> recommendations = [];
 
@@ -308,9 +308,9 @@ class AdvancedAnalyticsService {
   }
 
   static List<Map<String, dynamic>> _getFatLossRecommendations(
-      Map<String, dynamic> trendAnalysis,
-      String fitnessLevel,
-      List<Map<String, dynamic>> workoutHistory,
+    Map<String, dynamic> trendAnalysis,
+    String fitnessLevel,
+    List<Map<String, dynamic>> workoutHistory,
   ) {
     final List<Map<String, dynamic>> recs = [];
 
@@ -351,7 +351,8 @@ class AdvancedAnalyticsService {
         'icon': Icons.refresh,
         'priority': 'high',
         'duration': 'Ongoing',
-        'action': 'Try new cardio formats, change exercise order, or try different equipment',
+        'action':
+            'Try new cardio formats, change exercise order, or try different equipment',
       });
     }
 
@@ -359,9 +360,9 @@ class AdvancedAnalyticsService {
   }
 
   static List<Map<String, dynamic>> _getMuscleBuildingRecommendations(
-      Map<String, dynamic> trendAnalysis,
-      String fitnessLevel,
-      List<Map<String, dynamic>> workoutHistory,
+    Map<String, dynamic> trendAnalysis,
+    String fitnessLevel,
+    List<Map<String, dynamic>> workoutHistory,
   ) {
     final List<Map<String, dynamic>> recs = [];
 
@@ -374,7 +375,8 @@ class AdvancedAnalyticsService {
       'icon': Icons.trending_up,
       'priority': 'high',
       'duration': 'Every workout',
-      'action': 'Aim to increase weight by 2.5-5% when you can complete all reps with good form',
+      'action':
+          'Aim to increase weight by 2.5-5% when you can complete all reps with good form',
     });
 
     // Protein timing
@@ -399,7 +401,8 @@ class AdvancedAnalyticsService {
         'icon': Icons.fitness_center,
         'priority': 'high',
         'duration': '4-6 weeks',
-        'action': 'Build your workouts around 3-4 compound movements per session',
+        'action':
+            'Build your workouts around 3-4 compound movements per session',
       });
     }
 
@@ -407,9 +410,9 @@ class AdvancedAnalyticsService {
   }
 
   static List<Map<String, dynamic>> _getEnduranceRecommendations(
-      Map<String, dynamic> trendAnalysis,
-      String fitnessLevel,
-      List<Map<String, dynamic>> workoutHistory,
+    Map<String, dynamic> trendAnalysis,
+    String fitnessLevel,
+    List<Map<String, dynamic>> workoutHistory,
   ) {
     final List<Map<String, dynamic>> recs = [];
 
@@ -422,7 +425,8 @@ class AdvancedAnalyticsService {
       'icon': Icons.terrain,
       'priority': 'high',
       'duration': 'Ongoing',
-      'action': 'Keep heart rate in zone 2 (60-70% max HR) for most of your workout',
+      'action':
+          'Keep heart rate in zone 2 (60-70% max HR) for most of your workout',
     });
 
     // Interval training
@@ -436,7 +440,8 @@ class AdvancedAnalyticsService {
         'icon': Icons.fitness_center,
         'priority': 'medium',
         'duration': '20-30 minutes',
-        'action': 'Try 4x4 minute intervals at 85-95% max HR with 3-minute recoveries',
+        'action':
+            'Try 4x4 minute intervals at 85-95% max HR with 3-minute recoveries',
       });
     }
 
@@ -451,7 +456,8 @@ class AdvancedAnalyticsService {
         'icon': Icons.straighten,
         'priority': 'medium',
         'duration': '60-90 minutes',
-        'action': 'Go for a long run, bike ride, or swim at conversational pace',
+        'action':
+            'Go for a long run, bike ride, or swim at conversational pace',
       });
     }
 
@@ -459,9 +465,9 @@ class AdvancedAnalyticsService {
   }
 
   static List<Map<String, dynamic>> _getGeneralFitnessRecommendations(
-      Map<String, dynamic> trendAnalysis,
-      String fitnessLevel,
-      List<Map<String, dynamic>> workoutHistory,
+    Map<String, dynamic> trendAnalysis,
+    String fitnessLevel,
+    List<Map<String, dynamic>> workoutHistory,
   ) {
     final List<Map<String, dynamic>> recs = [];
 
@@ -474,7 +480,8 @@ class AdvancedAnalyticsService {
       'icon': Icons.balance,
       'priority': 'medium',
       'duration': 'Weekly',
-      'action': 'Aim for 2-3 strength sessions, 2 cardio sessions, and daily mobility work',
+      'action':
+          'Aim for 2-3 strength sessions, 2 cardio sessions, and daily mobility work',
     });
 
     // Recovery importance
@@ -486,7 +493,8 @@ class AdvancedAnalyticsService {
       'icon': Icons.nightlight_round,
       'priority': 'high',
       'duration': 'Daily',
-      'action': 'Aim for 7-9 hours of sleep, drink plenty of water, and eat nutrient-dense foods',
+      'action':
+          'Aim for 7-9 hours of sleep, drink plenty of water, and eat nutrient-dense foods',
     });
 
     // Form and technique
@@ -499,7 +507,8 @@ class AdvancedAnalyticsService {
         'icon': Icons.slow_motion_video,
         'priority': 'medium',
         'duration': 'Every workout',
-        'action': 'Record yourself performing key exercises or work with a trainer periodically',
+        'action':
+            'Record yourself performing key exercises or work with a trainer periodically',
       });
     }
 
@@ -508,7 +517,7 @@ class AdvancedAnalyticsService {
 
   /// Detect potential overtraining or injury risk
   static Future<Map<String, dynamic>> assessRecoveryStatus(
-      List<Map<String, dynamic>> recentWorkouts,
+    List<Map<String, dynamic>> recentWorkouts,
   ) async {
     if (recentWorkouts.isEmpty) {
       return {
@@ -550,8 +559,8 @@ class AdvancedAnalyticsService {
     if (recentWorkouts.length >= 5) {
       // More than 5 workouts in whatever time period the data represents
       riskFactors.add('High training frequency');
-      recommendations.add(
-          "Ensure you're getting adequate recovery between sessions");
+      recommendations
+          .add("Ensure you're getting adequate recovery between sessions");
     }
 
     // Check for monotony (same exercises repeatedly)
@@ -563,8 +572,8 @@ class AdvancedAnalyticsService {
     }
     if (exerciseIds.length < 3 && recentWorkouts.length >= 3) {
       riskFactors.add('Low exercise variety');
-      recommendations.add(
-          'Vary your exercise selection to prevent overuse injuries');
+      recommendations
+          .add('Vary your exercise selection to prevent overuse injuries');
     }
 
     // Determine risk level
@@ -618,7 +627,8 @@ class AdvancedAnalyticsService {
     }
 
     // Adjust based on strength-to-weight ratio (if available)
-    final double? strengthRatio = recentMetrics['strengthToWeightRatio'] as double?;
+    final double? strengthRatio =
+        recentMetrics['strengthToWeightRatio'] as double?;
     if (strengthRatio != null) {
       // Higher ratio = younger fitness age
       // Rough benchmark: 1.0+ for excellent strength-to-weight

@@ -86,7 +86,8 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
               child: _filteredFoods.isEmpty
                   ? _buildEmptyState()
                   : ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.screenPadding.w),
                       itemCount: _filteredFoods.length,
                       itemBuilder: (context, index) {
                         final food = _filteredFoods[index];
@@ -108,7 +109,8 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
         scrollDirection: Axis.horizontal,
         itemCount: ['All', ...FoodRepository.categories].length,
         itemBuilder: (context, index) {
-          final category = index == 0 ? 'All' : FoodRepository.categories[index - 1];
+          final category =
+              index == 0 ? 'All' : FoodRepository.categories[index - 1];
           final isSelected = _selectedCategory == category;
           return Padding(
             padding: EdgeInsets.only(right: AppSpacing.space8.w),
@@ -123,7 +125,8 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
                   vertical: AppSpacing.space12.h,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
+                  color:
+                      isSelected ? AppColors.primary : AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   border: Border.all(
                     color: isSelected ? AppColors.primary : AppColors.outline,
@@ -132,7 +135,9 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
                 child: Text(
                   category,
                   style: AppTypography.labelMedium.copyWith(
-                    color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
+                    color: isSelected
+                        ? AppColors.onPrimary
+                        : AppTextColors.primary,
                   ),
                 ),
               ),
@@ -240,7 +245,8 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
     );
   }
 
-  Widget _buildMacroItem({required String label, required String value, required Color color}) {
+  Widget _buildMacroItem(
+      {required String label, required String value, required Color color}) {
     return Column(
       children: [
         Text(
@@ -302,7 +308,7 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(AppRadius.radiusXL),
             ),
           ),
@@ -372,12 +378,16 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
                 ),
               ),
               SizedBox(height: AppSpacing.space16.h),
-              _buildMacroRow('Calories', '${food.calories}', AppTextColors.primary),
+              _buildMacroRow(
+                  'Calories', '${food.calories}', AppTextColors.primary),
               _buildMacroRow('Protein', '${food.protein}g', AppColors.success),
-              _buildMacroRow('Carbohydrates', '${food.carbs}g', AppColors.warning),
+              _buildMacroRow(
+                  'Carbohydrates', '${food.carbs}g', AppColors.warning),
               _buildMacroRow('Fat', '${food.fat}g', AppColors.error),
-              _buildMacroRow('Fiber', '${food.fiber}g', AppTextColors.secondary),
-              _buildMacroRow('Sugar', '${food.sugar}g', AppTextColors.secondary),
+              _buildMacroRow(
+                  'Fiber', '${food.fiber}g', AppTextColors.secondary),
+              _buildMacroRow(
+                  'Sugar', '${food.sugar}g', AppTextColors.secondary),
               SizedBox(height: AppSpacing.space24.h),
 
               // Quantity Input
@@ -402,7 +412,7 @@ class _FoodDatabasePageState extends State<FoodDatabasePage> {
                     hintStyle: AppTypography.bodyMedium.copyWith(
                       color: AppTextColors.tertiary,
                     ),
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       horizontal: AppSpacing.inputPaddingHorizontal,
                       vertical: AppSpacing.inputPaddingVertical,
                     ),

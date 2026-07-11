@@ -1,4 +1,4 @@
-﻿import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -11,7 +11,7 @@ import 'package:logger/logger.dart';
 
 class FirebaseService {
   FirebaseService._();
-  
+
   static final Logger _logger = Logger();
 
   static Future<void> initialize() async {
@@ -34,7 +34,8 @@ class FirebaseService {
 
     // Enable Crashlytics with consent
     if (crashlyticsConsent && !kDebugMode) {
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+      FlutterError.onError =
+          FirebaseCrashlytics.instance.recordFlutterFatalError;
       PlatformDispatcher.instance.onError = (error, stack) {
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
         return true;
@@ -42,8 +43,9 @@ class FirebaseService {
     }
 
     // Configure Analytics with consent
-    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(analyticsConsent && !kDebugMode);
-    
+    await FirebaseAnalytics.instance
+        .setAnalyticsCollectionEnabled(analyticsConsent && !kDebugMode);
+
     // Set default parameters for premium analytics
     if (analyticsConsent && !kDebugMode) {
       await FirebaseAnalytics.instance.setDefaultEventParameters({
@@ -51,7 +53,7 @@ class FirebaseService {
         'platform': kIsWeb ? 'web' : 'mobile',
       });
     }
-    
+
     // Set user identifier for crash reporting
     final user = auth.currentUser;
     if (user != null && crashlyticsConsent) {
@@ -79,7 +81,7 @@ class FirebaseService {
       if (kDebugMode) {
         _logger.d('FCM Token: $token');
       }
-      
+
       // Save token to Firestore for user
       if (token != null) {
         await _saveFCMToken(token);
@@ -92,23 +94,25 @@ class FirebaseService {
           _logger.d('Message data: ${message.data}');
 
           if (message.notification != null) {
-            _logger.d('Message also contained a notification: ${message.notification}');
+            _logger.d(
+                'Message also contained a notification: ${message.notification}');
           }
         }
-        
+
         // Handle foreground messages with premium notification
         _handleForegroundMessage(message);
       });
 
       // Handle background messages
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-      
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
+
       // Handle messages when app is in terminated state
       final initialMessage = await messaging.getInitialMessage();
       if (initialMessage != null) {
         _handleBackgroundMessageTap(initialMessage);
       }
-      
+
       // Handle message opened from background
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         _logger.d('Message opened from background: ${message.messageId}');
@@ -116,11 +120,11 @@ class FirebaseService {
       });
     }
   }
-  
+
   static Future<void> _saveFCMToken(String token) async {
     final user = auth.currentUser;
     if (user == null) return;
-    
+
     // Save token to Firestore for push notifications
     try {
       await firestore.collection('users').doc(user.uid).update({
@@ -131,19 +135,20 @@ class FirebaseService {
       _logger.e('Failed to save FCM token: $e');
     }
   }
-  
+
   static void _handleForegroundMessage(RemoteMessage message) {
     // Show in-app notification for foreground messages
     // This would show a premium notification banner
   }
-  
+
   static void _handleBackgroundMessageTap(RemoteMessage message) {
     // Navigate to relevant screen based on message data
     // This would implement deep linking from notifications
   }
 
   @pragma('vm:entry-point')
-  static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  static Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
     await Firebase.initializeApp();
     if (kDebugMode) {
       _logger.d('Handling a background message: ${message.messageId}');
@@ -164,19 +169,19 @@ class FirebaseService {
 
   // Messaging Instance
   static FirebaseMessaging get messaging => FirebaseMessaging.instance;
-  
+
   /// Subscribe to a topic for targeted notifications
   static Future<void> subscribeToTopic(String topic) async {
     await messaging.subscribeToTopic(topic);
     _logger.d('Subscribed to topic: $topic');
   }
-  
+
   /// Unsubscribe from a topic
   static Future<void> unsubscribeFromTopic(String topic) async {
     await messaging.unsubscribeFromTopic(topic);
     _logger.d('Unsubscribed from topic: $topic');
   }
-  
+
   /// Log premium analytics event
   static Future<void> logEvent({
     required String name,
@@ -189,7 +194,7 @@ class FirebaseService {
       );
     }
   }
-  
+
   /// Set user properties for analytics
   static Future<void> setUserProperty({
     required String name,
@@ -199,7 +204,7 @@ class FirebaseService {
       await analytics.setUserProperty(name: name, value: value);
     }
   }
-  
+
   /// Log screen view for analytics
   static Future<void> logScreenView({
     required String screenName,
@@ -208,18 +213,17 @@ class FirebaseService {
     if (!kDebugMode) {
       await analytics.logScreenView(
         screenName: screenName,
-        
       );
     }
   }
-  
+
   /// Log login event for analytics
   static Future<void> logLogin({required String loginMethod}) async {
     if (!kDebugMode) {
       await analytics.logLogin(loginMethod: loginMethod);
     }
   }
-  
+
   /// Log sign up event for analytics
   static Future<void> logSignUp({required String signUpMethod}) async {
     if (!kDebugMode) {
@@ -227,7 +231,3 @@ class FirebaseService {
     }
   }
 }
-
-
-
-

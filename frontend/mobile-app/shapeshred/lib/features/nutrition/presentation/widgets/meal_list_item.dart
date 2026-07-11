@@ -48,15 +48,13 @@ class MealListItem extends StatelessWidget {
             ),
             child: Icon(
               isEmpty ? Icons.add : icon,
-              color: isEmpty
-                  ? AppTextColors.secondary
-                  : AppColors.primary,
+              color: isEmpty ? AppTextColors.secondary : AppColors.primary,
               size: 24.sp,
             ),
           ),
-          
+
           SizedBox(width: AppSpacing.space16.w),
-          
+
           // Meal Info
           Expanded(
             child: Column(
@@ -69,8 +67,8 @@ class MealListItem extends StatelessWidget {
                         mealType,
                         style: AppTypography.titleMedium.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: isEmpty 
-                              ? AppTextColors.secondary 
+                          color: isEmpty
+                              ? AppTextColors.secondary
                               : AppTextColors.primary,
                         ),
                       ),
@@ -89,8 +87,8 @@ class MealListItem extends StatelessWidget {
                 Text(
                   isEmpty ? 'Tap to add meal' : '$time  $items',
                   style: AppTypography.bodySmall.copyWith(
-                    color: isEmpty 
-                        ? AppTextColors.tertiary 
+                    color: isEmpty
+                        ? AppTextColors.tertiary
                         : AppTextColors.secondary,
                   ),
                   maxLines: 1,
@@ -99,7 +97,7 @@ class MealListItem extends StatelessWidget {
               ],
             ),
           ),
-          
+
           if (!isEmpty) ...[
             SizedBox(width: AppSpacing.space8.w),
             Icon(

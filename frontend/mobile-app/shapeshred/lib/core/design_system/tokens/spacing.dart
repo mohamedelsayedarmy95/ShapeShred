@@ -10,25 +10,25 @@ class AppSpacing {
   // Base units for consistent spacing throughout the app
 
   // XXS - Extra extra small
-  static const double xxsmall = 2.0;   // 0.5
+  static const double xxsmall = 2.0; // 0.5
 
   // XS - Extra small
-  static const double xsmall = 4.0;    // 1.0
+  static const double xsmall = 4.0; // 1.0
 
   // SM - Small
-  static const double small = 6.0;     // 1.5
+  static const double small = 6.0; // 1.5
 
   // MD - Medium
-  static const double medium = 8.0;    // 2.0
+  static const double medium = 8.0; // 2.0
 
   // LG - Large
-  static const double large = 12.0;    // 3.0
+  static const double large = 12.0; // 3.0
 
   // XL - Extra large
-  static const double xlarge = 16.0;   // 4.0
+  static const double xlarge = 16.0; // 4.0
 
   // XXL - Extra extra large
-  static const double xxlarge = 20.0;  // 5.0
+  static const double xxlarge = 20.0; // 5.0
 
   // XXXL - Extra extra extra large
   static const double xxxlarge = 24.0; // 6.0
@@ -56,38 +56,38 @@ class AppSpacing {
 
   // Layout spacing
   static const double layoutNone = 0.0;
-  static const double layoutXs = 4.0;    // For tight spaces
-  static const double layoutSm = 8.0;    // Standard small spacing
-  static const double layoutMd = 12.0;   // Standard medium spacing
-  static const double layoutLg = 16.0;   // Standard large spacing
-  static const double layoutXl = 20.0;   // Extra large spacing
-  static const double layoutXxl = 24.0;  // Double extra large
+  static const double layoutXs = 4.0; // For tight spaces
+  static const double layoutSm = 8.0; // Standard small spacing
+  static const double layoutMd = 12.0; // Standard medium spacing
+  static const double layoutLg = 16.0; // Standard large spacing
+  static const double layoutXl = 20.0; // Extra large spacing
+  static const double layoutXxl = 24.0; // Double extra large
   static const double layoutXxxl = 28.0; // Triple extra large
   static const double layoutXxxxl = 32.0; // Quadruple extra large
 
   // Component spacing
   static const double componentNone = 0.0;
-  static const double componentXs = 4.0;     // Tiny component gaps
-  static const double componentSm = 6.0;     // Small component gaps
-  static const double componentMd = 8.0;     // Standard component gap
-  static const double componentLg = 12.0;    // Large component gap
-  static const double componentXl = 16.0;    // Extra large component gap
-  static const double componentXxl = 20.0;   // XXL component gap
+  static const double componentXs = 4.0; // Tiny component gaps
+  static const double componentSm = 6.0; // Small component gaps
+  static const double componentMd = 8.0; // Standard component gap
+  static const double componentLg = 12.0; // Large component gap
+  static const double componentXl = 16.0; // Extra large component gap
+  static const double componentXxl = 20.0; // XXL component gap
 
   // Text spacing
   static const double textNone = 0.0;
-  static const double textXs = 2.0;      // Tight letter/word spacing
-  static const double textSm = 4.0;      // Small text spacing
-  static const double textMd = 6.0;      // Medium text spacing
-  static const double textLg = 8.0;      // Large text spacing
-  static const double textXl = 10.0;     // Extra large text spacing
+  static const double textXs = 2.0; // Tight letter/word spacing
+  static const double textSm = 4.0; // Small text spacing
+  static const double textMd = 6.0; // Medium text spacing
+  static const double textLg = 8.0; // Large text spacing
+  static const double textXl = 10.0; // Extra large text spacing
 
   // Icon spacing
   static const double iconNone = 0.0;
-  static const double iconXs = 2.0;      // Icon padding
-  static const double iconSm = 4.0;      // Small icon spacing
-  static const double iconMd = 6.0;      // Medium icon spacing
-  static const double iconLg = 8.0;      // Large icon spacing
+  static const double iconXs = 2.0; // Icon padding
+  static const double iconSm = 4.0; // Small icon spacing
+  static const double iconMd = 6.0; // Medium icon spacing
+  static const double iconLg = 8.0; // Large icon spacing
 
   // === LAYOUT SPECIFIC SPACING ===
   // Screen and container padding

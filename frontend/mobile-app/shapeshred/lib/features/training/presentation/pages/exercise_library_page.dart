@@ -34,26 +34,31 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
     // Filter by search
     if (_searchController.text.isNotEmpty) {
       final search = _searchController.text.toLowerCase();
-      exercises = exercises.where((e) =>
-          e.name.toLowerCase().contains(search) ||
-          e.description.toLowerCase().contains(search) ||
-          e.muscleGroup.toLowerCase().contains(search)
-      ).toList();
+      exercises = exercises
+          .where((e) =>
+              e.name.toLowerCase().contains(search) ||
+              e.description.toLowerCase().contains(search) ||
+              e.muscleGroup.toLowerCase().contains(search))
+          .toList();
     }
 
     // Filter by category
     if (_selectedCategory != 'All') {
-      exercises = exercises.where((e) => e.category == _selectedCategory).toList();
+      exercises =
+          exercises.where((e) => e.category == _selectedCategory).toList();
     }
 
     // Filter by muscle group
     if (_selectedMuscleGroup != 'All') {
-      exercises = exercises.where((e) => e.muscleGroup == _selectedMuscleGroup).toList();
+      exercises = exercises
+          .where((e) => e.muscleGroup == _selectedMuscleGroup)
+          .toList();
     }
 
     // Filter by difficulty
     if (_selectedDifficulty != 'All') {
-      exercises = exercises.where((e) => e.difficulty == _selectedDifficulty).toList();
+      exercises =
+          exercises.where((e) => e.difficulty == _selectedDifficulty).toList();
     }
 
     return exercises;
@@ -98,7 +103,8 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
               child: _filteredExercises.isEmpty
                   ? _buildEmptyState()
                   : ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.screenPadding.w),
                       itemCount: _filteredExercises.length,
                       itemBuilder: (context, index) {
                         final exercise = _filteredExercises[index];
@@ -132,7 +138,9 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
               scrollDirection: Axis.horizontal,
               itemCount: ['All', ...ExerciseRepository.categories].length,
               itemBuilder: (context, index) {
-                final category = index == 0 ? 'All' : ExerciseRepository.categories[index - 1];
+                final category = index == 0
+                    ? 'All'
+                    : ExerciseRepository.categories[index - 1];
                 final isSelected = _selectedCategory == category;
                 return _buildFilterChip(
                   label: category,
@@ -161,7 +169,9 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
               scrollDirection: Axis.horizontal,
               itemCount: ['All', ...ExerciseRepository.muscleGroups].length,
               itemBuilder: (context, index) {
-                final muscleGroup = index == 0 ? 'All' : ExerciseRepository.muscleGroups[index - 1];
+                final muscleGroup = index == 0
+                    ? 'All'
+                    : ExerciseRepository.muscleGroups[index - 1];
                 final isSelected = _selectedMuscleGroup == muscleGroup;
                 return _buildFilterChip(
                   label: muscleGroup,
@@ -190,7 +200,9 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
               scrollDirection: Axis.horizontal,
               itemCount: ['All', ...ExerciseRepository.difficulties].length,
               itemBuilder: (context, index) {
-                final difficulty = index == 0 ? 'All' : ExerciseRepository.difficulties[index - 1];
+                final difficulty = index == 0
+                    ? 'All'
+                    : ExerciseRepository.difficulties[index - 1];
                 final isSelected = _selectedDifficulty == difficulty;
                 return _buildFilterChip(
                   label: difficulty,
@@ -388,7 +400,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(AppRadius.radiusXL),
             ),
           ),
@@ -466,7 +478,8 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                         margin: EdgeInsets.only(right: AppSpacing.space12.w),
                         decoration: BoxDecoration(
                           color: AppColors.surfaceVariant,
-                          borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.radiusSmall),
                         ),
                         child: Center(
                           child: Text(
@@ -486,7 +499,7 @@ class _ExerciseLibraryPageState extends State<ExerciseLibraryPage> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
               SizedBox(height: AppSpacing.space24.h),
 
               // Add to Workout Button

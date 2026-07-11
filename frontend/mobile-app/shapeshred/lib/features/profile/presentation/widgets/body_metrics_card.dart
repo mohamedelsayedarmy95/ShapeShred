@@ -141,7 +141,9 @@ class _MetricItem extends StatelessWidget {
           Text(
             label,
             style: AppTypography.labelSmall.copyWith(
-              color: highlight ? AppColors.onPrimary.withValues(alpha: 0.7) : AppTextColors.secondary,
+              color: highlight
+                  ? AppColors.onPrimary.withValues(alpha: 0.7)
+                  : AppTextColors.secondary,
             ),
           ),
           SizedBox(height: AppSpacing.space4.h),
@@ -151,7 +153,8 @@ class _MetricItem extends StatelessWidget {
               Text(
                 value,
                 style: AppTypography.titleMedium.copyWith(
-                  color: highlight ? AppColors.onPrimary : AppTextColors.primary,
+                  color:
+                      highlight ? AppColors.onPrimary : AppTextColors.primary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -161,7 +164,9 @@ class _MetricItem extends StatelessWidget {
                 child: Text(
                   unit,
                   style: AppTypography.labelSmall.copyWith(
-                    color: highlight ? AppColors.onPrimary.withValues(alpha: 0.6) : AppTextColors.tertiary,
+                    color: highlight
+                        ? AppColors.onPrimary.withValues(alpha: 0.6)
+                        : AppTextColors.tertiary,
                   ),
                 ),
               ),

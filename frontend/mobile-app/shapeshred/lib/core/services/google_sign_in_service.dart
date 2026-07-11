@@ -23,7 +23,7 @@ class GoogleSignInService {
     try {
       // Check biometric if required
       if (requireBiometric) {
-        final hasBiometric = await BiometricService.isAvailable;
+        final hasBiometric = BiometricService.isAvailable;
         if (hasBiometric) {
           final biometricSuccess = await BiometricService.authenticate(
             localizedReason: 'Authenticate to sign in with Google',
@@ -46,7 +46,8 @@ class GoogleSignInService {
       HapticHelper.successImpact();
 
       // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
@@ -55,12 +56,12 @@ class GoogleSignInService {
       );
 
       // Sign in to Firebase with the Google credentials
-      final UserCredential userCredential = 
+      final UserCredential userCredential =
           await FirebaseService.auth.signInWithCredential(credential);
 
       // Log analytics event
       await FirebaseService.logLogin(loginMethod: 'google');
-      
+
       // Set user properties for analytics
       await FirebaseService.setUserProperty(
         name: 'sign_in_method',
@@ -97,23 +98,25 @@ class GoogleSignInService {
 
   /// Get current Google user
   static GoogleSignInAccount? get currentUser => _googleSignIn.currentUser;
-  
+
   /// Silent sign-in for premium UX
   static Future<UserCredential?> signInSilently() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signInSilently();
-      
+      final GoogleSignInAccount? googleUser =
+          await _googleSignIn.signInSilently();
+
       if (googleUser == null) {
         return null;
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential = 
+      final UserCredential userCredential =
           await FirebaseService.auth.signInWithCredential(credential);
 
       return userCredential;
@@ -122,7 +125,7 @@ class GoogleSignInService {
       return null;
     }
   }
-  
+
   /// Disconnect from Google (revoke access)
   static Future<void> disconnect() async {
     try {

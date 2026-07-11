@@ -95,9 +95,7 @@ class _StatItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: highlight ? AppColors.primary : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-        border: highlight
-            ? null
-            : Border.all(color: AppColors.outline),
+        border: highlight ? null : Border.all(color: AppColors.outline),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +117,9 @@ class _StatItem extends StatelessWidget {
           Text(
             label,
             style: AppTypography.labelSmall.copyWith(
-              color: highlight ? AppColors.onPrimary.withValues(alpha: 0.7) : AppTextColors.secondary,
+              color: highlight
+                  ? AppColors.onPrimary.withValues(alpha: 0.7)
+                  : AppTextColors.secondary,
             ),
           ),
         ],

@@ -42,7 +42,8 @@ class AchievementSection extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: achievements.length,
-            separatorBuilder: (context, index) => SizedBox(width: AppSpacing.space12.w),
+            separatorBuilder: (context, index) =>
+                SizedBox(width: AppSpacing.space12.w),
             itemBuilder: (context, index) {
               final achievement = achievements[index];
               return _AchievementBadge(
@@ -75,10 +76,14 @@ class _AchievementBadge extends StatelessWidget {
       width: 90.w,
       padding: EdgeInsets.all(AppSpacing.space12.w),
       decoration: BoxDecoration(
-        color: unlocked ? AppColors.surfaceVariant : AppColors.surfaceVariant.withValues(alpha: 0.4),
+        color: unlocked
+            ? AppColors.surfaceVariant
+            : AppColors.surfaceVariant.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(
-          color: unlocked ? AppColors.outline : AppColors.outline.withValues(alpha: 0.5),
+          color: unlocked
+              ? AppColors.outline
+              : AppColors.outline.withValues(alpha: 0.5),
         ),
       ),
       child: Column(

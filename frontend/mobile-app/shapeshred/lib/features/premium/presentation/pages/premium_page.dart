@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -54,10 +54,12 @@ class _PremiumPageState extends State<PremiumPage>
   @override
   void initState() {
     super.initState();
-    _breatheController = AnimationController(vsync: this, duration: AppDurations.epic)
-      ..repeat(reverse: true);
+    _breatheController =
+        AnimationController(vsync: this, duration: AppDurations.epic)
+          ..repeat(reverse: true);
     _breatheScale = Tween<double>(begin: 1.0, end: 1.1).animate(
-      CurvedAnimation(parent: _breatheController, curve: AppCurves.premiumFluid),
+      CurvedAnimation(
+          parent: _breatheController, curve: AppCurves.premiumFluid),
     );
   }
 
@@ -93,7 +95,7 @@ class _PremiumPageState extends State<PremiumPage>
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 24.w),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -188,7 +190,8 @@ class _PremiumPageState extends State<PremiumPage>
                         foregroundColor: AppColors.onPrimary,
                         padding: EdgeInsets.symmetric(vertical: 16.h),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.radiusLarge),
                         ),
                       ),
                       child: _isLoading
@@ -297,19 +300,23 @@ class _PremiumPageState extends State<PremiumPage>
                         plan['name'] as String,
                         style: AppTypography.bodyLarge.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
+                          color: isSelected
+                              ? AppColors.onPrimary
+                              : AppTextColors.primary,
                         ),
                       ),
                       if (plan['popular'] as bool)
                         Padding(
                           padding: EdgeInsets.only(left: 8.w),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 2.h),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? AppColors.onPrimary.withValues(alpha: 0.2)
                                   : AppColors.primary,
-                              borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.radiusSmall),
                             ),
                             child: Text(
                               'Best Value',
@@ -325,7 +332,9 @@ class _PremiumPageState extends State<PremiumPage>
                   Text(
                     plan['description'] as String,
                     style: AppTypography.bodySmall.copyWith(
-                      color: isSelected ? AppColors.onPrimary.withValues(alpha: 0.75) : AppTextColors.secondary,
+                      color: isSelected
+                          ? AppColors.onPrimary.withValues(alpha: 0.75)
+                          : AppTextColors.secondary,
                     ),
                   ),
                 ],
@@ -337,21 +346,27 @@ class _PremiumPageState extends State<PremiumPage>
                 Text(
                   '\$${plan['price'].toStringAsFixed(2)}',
                   style: AppTypography.headlineSmall.copyWith(
-                    color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
+                    color: isSelected
+                        ? AppColors.onPrimary
+                        : AppTextColors.primary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
                   '/ ${plan['period']}',
                   style: AppTypography.bodySmall.copyWith(
-                    color: isSelected ? AppColors.onPrimary.withValues(alpha: 0.7) : AppTextColors.secondary,
+                    color: isSelected
+                        ? AppColors.onPrimary.withValues(alpha: 0.7)
+                        : AppTextColors.secondary,
                   ),
                 ),
                 if ((plan['discount'] as num) > 0)
                   Text(
                     'Save ${(plan['discount'] * 100).toInt()}%',
                     style: AppTypography.labelSmall.copyWith(
-                      color: isSelected ? AppColors.onPrimary : AppTextColors.secondary,
+                      color: isSelected
+                          ? AppColors.onPrimary
+                          : AppTextColors.secondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -380,9 +395,11 @@ class _PremiumPageState extends State<PremiumPage>
       barrierDismissible: false,
       barrierColor: AppColors.shadow,
       transitionDuration: AppDurations.cinematic,
-      pageBuilder: (context, animation, secondaryAnimation) => const SizedBox.shrink(),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final curved = CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
+        final curved =
+            CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
         return Opacity(
           opacity: animation.value.clamp(0.0, 1.0),
           child: ScaleTransition(
@@ -398,7 +415,7 @@ class _PremiumPageState extends State<PremiumPage>
                     width: 88.w,
                     height: 88.h,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: AppColors.heroGradient,
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -443,7 +460,8 @@ class _PremiumPageState extends State<PremiumPage>
                       foregroundColor: AppColors.onPrimary,
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusLarge),
                       ),
                     ),
                     child: Text(

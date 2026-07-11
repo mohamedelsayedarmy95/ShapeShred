@@ -17,7 +17,8 @@ class ThemeService {
   static Future<void> initialize() async {
     final savedTheme = await SecureStorageService.read(_themeKey);
     if (savedTheme != null) {
-      modeNotifier.value = savedTheme == 'light' ? ThemeMode.light : ThemeMode.dark;
+      modeNotifier.value =
+          savedTheme == 'light' ? ThemeMode.light : ThemeMode.dark;
     }
   }
 
@@ -35,6 +36,7 @@ class ThemeService {
   /// Set specific theme
   static Future<void> setTheme(ThemeMode mode) async {
     modeNotifier.value = mode;
-    await SecureStorageService.write(_themeKey, mode == ThemeMode.dark ? 'dark' : 'light');
+    await SecureStorageService.write(
+        _themeKey, mode == ThemeMode.dark ? 'dark' : 'light');
   }
 }

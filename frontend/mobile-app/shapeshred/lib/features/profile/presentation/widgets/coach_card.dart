@@ -39,9 +39,9 @@ class CoachCard extends StatelessWidget {
                 Container(
                   width: 56.w,
                   height: 56.h,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: const LinearGradient(
+                    gradient: LinearGradient(
                       colors: AppColors.heroGradient,
                     ),
                   ),
@@ -125,7 +125,8 @@ class CoachCard extends StatelessWidget {
                           color: isOnline
                               ? AppColors.success.withValues(alpha: 0.1)
                               : AppColors.surfaceVariant,
-                          borderRadius: BorderRadius.circular(AppRadius.radiusPill),
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.radiusPill),
                         ),
                         child: Text(
                           isOnline ? 'Online' : 'Offline',

@@ -153,7 +153,9 @@ class EmptyStates {
     return EmptyState(
       icon: Icons.search_off,
       title: 'No results found',
-      message: query != null ? 'No results for "$query"' : 'Try a different search term',
+      message: query != null
+          ? 'No results for "$query"'
+          : 'Try a different search term',
       actionLabel: 'Clear Search',
       onActionPressed: onClear,
     );

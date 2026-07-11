@@ -24,7 +24,7 @@ class CaloriesHeroCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.space24.w),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: AppColors.heroGradient,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

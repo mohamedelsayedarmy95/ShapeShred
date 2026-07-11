@@ -185,9 +185,10 @@ class _PremiumTextFieldState extends State<PremiumTextField>
                           onPressed: widget.onSuffixIconPressed,
                         )
                       : null,
-                  counterText: widget.showCharacterCount && widget.maxLength != null
-                      ? '$currentLength/${widget.maxLength}'
-                      : null,
+                  counterText:
+                      widget.showCharacterCount && widget.maxLength != null
+                          ? '$currentLength/${widget.maxLength}'
+                          : null,
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.inputPaddingHorizontal,

@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 import 'package:flutter/services.dart';
 
 /// Ultra Premium Haptic Feedback System
@@ -178,11 +178,14 @@ class HapticHelper {
     double intensity = 0.5; // Default medium
 
     if (type == 'calories') {
-      intensity = (value / 500).clamp(0.0, 1.0); // Assume 500 cal is max for session
+      intensity =
+          (value / 500).clamp(0.0, 1.0); // Assume 500 cal is max for session
     } else if (type == 'distance') {
-      intensity = (value / 10).clamp(0.0, 1.0); // Assume 10km is max for session
+      intensity =
+          (value / 10).clamp(0.0, 1.0); // Assume 10km is max for session
     } else if (type == 'time') {
-      intensity = (value / 3600).clamp(0.0, 1.0); // Assume 1 hour is max for session
+      intensity =
+          (value / 3600).clamp(0.0, 1.0); // Assume 1 hour is max for session
     }
 
     // Apply haptic feedback based on intensity

@@ -51,7 +51,7 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
 
   Future<void> _pickImage(ImageSource source) async {
     HapticHelper.light();
-    
+
     try {
       final XFile? image = await _imagePicker.pickImage(
         source: source,
@@ -95,7 +95,8 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
       if (user == null) throw Exception('User not authenticated');
 
       // Upload to Firebase Storage
-      final fileName = 'profile_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final fileName =
+          'profile_${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final ref = FirebaseStorage.instance
           .ref()
           .child('profile_photos')
@@ -256,7 +257,8 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                 ),
                 child: _selectedImage != null
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(AppRadius.radiusCircle),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusCircle),
                         child: Image.file(
                           _selectedImage!,
                           fit: BoxFit.cover,
@@ -264,7 +266,8 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                       )
                     : _currentPhotoUrl != null
                         ? ClipRRect(
-                            borderRadius: BorderRadius.circular(AppRadius.radiusCircle),
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.radiusCircle),
                             child: CachedNetworkImage(
                               imageUrl: _currentPhotoUrl!,
                               fit: BoxFit.cover,
@@ -273,7 +276,8 @@ class _ProfilePhotoPageState extends State<ProfilePhotoPage> {
                                   color: AppColors.primary,
                                 ),
                               ),
-                              errorWidget: (context, url, error) => _buildPlaceholder(),
+                              errorWidget: (context, url, error) =>
+                                  _buildPlaceholder(),
                             ),
                           )
                         : _buildPlaceholder(),

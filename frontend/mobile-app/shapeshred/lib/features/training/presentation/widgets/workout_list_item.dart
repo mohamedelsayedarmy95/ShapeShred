@@ -48,9 +48,9 @@ class WorkoutListItem extends StatelessWidget {
                 size: 28.sp,
               ),
             ),
-            
+
             SizedBox(width: AppSpacing.space16.w),
-            
+
             // Workout Info
             Expanded(
               child: Column(
@@ -96,7 +96,8 @@ class WorkoutListItem extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusSmall),
                     ),
                     child: Text(
                       workout['level'] as String,
@@ -108,7 +109,7 @@ class WorkoutListItem extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             // Arrow
             Icon(
               Icons.arrow_forward_ios,

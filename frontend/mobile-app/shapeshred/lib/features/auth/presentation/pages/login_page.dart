@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +7,6 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
-import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
@@ -44,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _isLoading = true);
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return;
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -64,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _isLoading = true);
       final LoginResult result = await FacebookAuth.instance.login();
       if (result.status == LoginStatus.cancelled) return;
-      final OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
+      final OAuthCredential credential =
+          FacebookAuthProvider.credential(result.accessToken!.token);
       await FirebaseAuth.instance.signInWithCredential(credential);
       if (!mounted) return;
       context.go('/');
@@ -122,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: 88.w,
                   height: 88.h,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       colors: AppColors.heroGradient,
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,

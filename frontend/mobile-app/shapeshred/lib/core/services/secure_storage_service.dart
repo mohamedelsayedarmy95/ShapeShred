@@ -1,7 +1,7 @@
-﻿import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageService {
-  static final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static Future<void> initialize() async {
     // Initialization logic if needed

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:shapeshred/core/services/secure_storage_service.dart';
 
 /// Ultra Premium Privacy & GDPR Compliance Service
@@ -39,7 +38,8 @@ class PrivacyService {
     await Future.wait([
       SecureStorageService.write(_consentKey, 'true'),
       SecureStorageService.write(_analyticsConsentKey, analytics.toString()),
-      SecureStorageService.write(_crashlyticsConsentKey, crashlytics.toString()),
+      SecureStorageService.write(
+          _crashlyticsConsentKey, crashlytics.toString()),
       SecureStorageService.write(_marketingConsentKey, marketing.toString()),
       SecureStorageService.write(_consentDateKey, now),
     ]);
@@ -70,13 +70,16 @@ class PrivacyService {
     bool? marketing,
   }) async {
     if (analytics != null) {
-      await SecureStorageService.write(_analyticsConsentKey, analytics.toString());
+      await SecureStorageService.write(
+          _analyticsConsentKey, analytics.toString());
     }
     if (crashlytics != null) {
-      await SecureStorageService.write(_crashlyticsConsentKey, crashlytics.toString());
+      await SecureStorageService.write(
+          _crashlyticsConsentKey, crashlytics.toString());
     }
     if (marketing != null) {
-      await SecureStorageService.write(_marketingConsentKey, marketing.toString());
+      await SecureStorageService.write(
+          _marketingConsentKey, marketing.toString());
     }
   }
 

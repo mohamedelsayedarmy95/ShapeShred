@@ -8,8 +8,8 @@ import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
-import 'package:shapeshred/features/nutrition/domain/models/food.dart';
-import 'package:shapeshred/features/nutrition/domain/models/food.dart' as food_models;
+import 'package:shapeshred/features/nutrition/domain/models/food.dart'
+    as food_models;
 import 'package:shapeshred/features/nutrition/presentation/pages/food_database_page.dart';
 
 class MealLoggingPage extends StatefulWidget {
@@ -31,9 +31,12 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
     'Snack',
   ];
 
-  int get _totalCalories => _mealItems.fold(0, (sum, item) => sum + item.calories);
-  double get _totalProtein => _mealItems.fold(0.0, (sum, item) => sum + item.protein);
-  double get _totalCarbs => _mealItems.fold(0.0, (sum, item) => sum + item.carbs);
+  int get _totalCalories =>
+      _mealItems.fold(0, (sum, item) => sum + item.calories);
+  double get _totalProtein =>
+      _mealItems.fold(0.0, (sum, item) => sum + item.protein);
+  double get _totalCarbs =>
+      _mealItems.fold(0.0, (sum, item) => sum + item.carbs);
   double get _totalFat => _mealItems.fold(0.0, (sum, item) => sum + item.fat);
 
   @override
@@ -87,7 +90,8 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                         color: isSelected
                             ? AppColors.primary
                             : AppColors.surfaceVariant,
-                        borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusMedium),
                         border: Border.all(
                           color: isSelected
                               ? AppColors.primary
@@ -118,7 +122,8 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                       builder: (context) => FoodDatabasePage(
                         onFoodSelected: (food, quantity) {
                           setState(() {
-                            _mealItems.add(food_models.MealItem.fromFood(food, quantity));
+                            _mealItems.add(
+                                food_models.MealItem.fromFood(food, quantity));
                           });
                         },
                       ),
@@ -182,7 +187,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                   final index = entry.key;
                   final item = entry.value;
                   return _buildMealItemCard(item, index);
-                }).toList(),
+                }),
               SizedBox(height: AppSpacing.space24.h),
 
               // Summary
@@ -195,10 +200,18 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                   ),
                   child: Column(
                     children: [
-                      _buildSummaryRow('Calories', '$_totalCalories', AppTextColors.primary),
-                      _buildSummaryRow('Protein', '${_totalProtein.toStringAsFixed(1)}g', AppColors.success),
-                      _buildSummaryRow('Carbs', '${_totalCarbs.toStringAsFixed(1)}g', AppColors.warning),
-                      _buildSummaryRow('Fat', '${_totalFat.toStringAsFixed(1)}g', AppColors.error),
+                      _buildSummaryRow(
+                          'Calories', '$_totalCalories', AppTextColors.primary),
+                      _buildSummaryRow(
+                          'Protein',
+                          '${_totalProtein.toStringAsFixed(1)}g',
+                          AppColors.success),
+                      _buildSummaryRow(
+                          'Carbs',
+                          '${_totalCarbs.toStringAsFixed(1)}g',
+                          AppColors.warning),
+                      _buildSummaryRow('Fat',
+                          '${_totalFat.toStringAsFixed(1)}g', AppColors.error),
                     ],
                   ),
                 ),
@@ -324,7 +337,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
             duration: const Duration(seconds: 2),
           ),
         );
-        
+
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
           Navigator.pop(context);

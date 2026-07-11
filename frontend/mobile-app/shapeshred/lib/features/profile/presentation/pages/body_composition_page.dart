@@ -7,7 +7,6 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
-import 'package:shapeshred/core/design_system/atoms/premium_text_field.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 
 class BodyCompositionPage extends StatefulWidget {
@@ -25,7 +24,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
   final _armsController = TextEditingController();
   final _thighsController = TextEditingController();
   final _calvesController = TextEditingController();
-  
+
   bool _isLoading = false;
 
   @override
@@ -133,7 +132,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: AppSpacing.space16.h),
-                
+
                 // Info Card
                 Container(
                   padding: EdgeInsets.all(AppSpacing.space16.w),
@@ -278,7 +277,7 @@ class _BodyCompositionPageState extends State<BodyCompositionPage> {
               ),
               suffixText: 'cm',
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(
+              contentPadding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.inputPaddingHorizontal,
                 vertical: AppSpacing.inputPaddingVertical,
               ),

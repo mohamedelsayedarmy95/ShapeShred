@@ -22,7 +22,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return const Scaffold(body: Center(child: Text('Not logged in')));
+    if (user == null)
+      return const Scaffold(body: Center(child: Text('Not logged in')));
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -106,10 +107,12 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                   final workouts = snapshot.data!.docs;
 
                   return ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.screenPadding.w),
                     itemCount: workouts.length,
                     itemBuilder: (context, index) {
-                      final workout = workouts[index].data() as Map<String, dynamic>;
+                      final workout =
+                          workouts[index].data() as Map<String, dynamic>;
                       return _buildWorkoutCard(workout, workouts[index].id);
                     },
                   );
@@ -147,7 +150,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                   vertical: AppSpacing.space12.h,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary : AppColors.surfaceVariant,
+                  color:
+                      isSelected ? AppColors.primary : AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                   border: Border.all(
                     color: isSelected ? AppColors.primary : AppColors.outline,
@@ -156,7 +160,9 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                 child: Text(
                   filter,
                   style: AppTypography.labelMedium.copyWith(
-                    color: isSelected ? AppColors.onPrimary : AppTextColors.primary,
+                    color: isSelected
+                        ? AppColors.onPrimary
+                        : AppTextColors.primary,
                   ),
                 ),
               ),
@@ -314,112 +320,113 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
         builder: (context, scrollController) {
           final exercises = workout['exercises'] as List? ?? [];
           return Container(
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(AppRadius.radiusXL),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppRadius.radiusXL),
+              ),
             ),
-          ),
-          child: ListView(
-            controller: scrollController,
-            padding: EdgeInsets.all(AppSpacing.screenPadding.w),
-            children: [
-              // Handle
-              Center(
-                child: Container(
-                  width: 40.w,
-                  height: 4.h,
-                  margin: EdgeInsets.only(bottom: AppSpacing.space16.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.outline,
-                    borderRadius: BorderRadius.circular(AppRadius.radiusPill),
-                  ),
-                ),
-              ),
-
-              // Workout Name
-              Text(
-                workout['name'] as String? ?? 'Workout',
-                style: AppTypography.headlineSmall.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-
-              // Stats Grid
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildDetailStat(
-                      label: 'Duration',
-                      value: '${workout['duration'] ?? 0} min',
-                      icon: Icons.access_time,
+            child: ListView(
+              controller: scrollController,
+              padding: EdgeInsets.all(AppSpacing.screenPadding.w),
+              children: [
+                // Handle
+                Center(
+                  child: Container(
+                    width: 40.w,
+                    height: 4.h,
+                    margin: EdgeInsets.only(bottom: AppSpacing.space16.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.outline,
+                      borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                     ),
                   ),
-                  SizedBox(width: AppSpacing.space16.w),
-                  Expanded(
-                    child: _buildDetailStat(
-                      label: 'Calories',
-                      value: '${workout['caloriesBurned'] ?? 0} cal',
-                      icon: Icons.local_fire_department,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.space24.h),
-
-              // Exercises
-              Text(
-                'Exercises',
-                style: AppTypography.titleMedium.copyWith(
-                  fontWeight: FontWeight.w700,
                 ),
-              ),
-              SizedBox(height: AppSpacing.space16.h),
 
-              if (exercises.isEmpty)
+                // Workout Name
                 Text(
-                  'No exercises recorded',
-                  style: AppTypography.bodyMedium.copyWith(
-                    color: AppTextColors.secondary,
+                  workout['name'] as String? ?? 'Workout',
+                  style: AppTypography.headlineSmall.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
-                )
-              else
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: exercises.length,
-                  itemBuilder: (context, index) {
-                    final exercise = exercises[index] as Map<String, dynamic>;
-                    return _buildExerciseItem(exercise);
-                  },
                 ),
-              SizedBox(height: AppSpacing.space24.h),
+                SizedBox(height: AppSpacing.space16.h),
 
-              // Delete Button
-              OutlinedButton.icon(
-                onPressed: () {
-                  HapticHelper.light();
-                  _deleteWorkout(workout['id'] as String?);
-                },
-                icon: Icon(Icons.delete, color: AppColors.error),
-                label: Text(
-                  'Delete Entry',
-                  style: AppTypography.labelMedium.copyWith(
-                    color: AppColors.error,
+                // Stats Grid
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildDetailStat(
+                        label: 'Duration',
+                        value: '${workout['duration'] ?? 0} min',
+                        icon: Icons.access_time,
+                      ),
+                    ),
+                    SizedBox(width: AppSpacing.space16.w),
+                    Expanded(
+                      child: _buildDetailStat(
+                        label: 'Calories',
+                        value: '${workout['caloriesBurned'] ?? 0} cal',
+                        icon: Icons.local_fire_department,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // Exercises
+                Text(
+                  'Exercises',
+                  style: AppTypography.titleMedium.copyWith(
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: AppColors.error),
-                  padding: EdgeInsets.symmetric(vertical: 16.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                SizedBox(height: AppSpacing.space16.h),
+
+                if (exercises.isEmpty)
+                  Text(
+                    'No exercises recorded',
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppTextColors.secondary,
+                    ),
+                  )
+                else
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: exercises.length,
+                    itemBuilder: (context, index) {
+                      final exercise = exercises[index] as Map<String, dynamic>;
+                      return _buildExerciseItem(exercise);
+                    },
+                  ),
+                SizedBox(height: AppSpacing.space24.h),
+
+                // Delete Button
+                OutlinedButton.icon(
+                  onPressed: () {
+                    HapticHelper.light();
+                    _deleteWorkout(workout['id'] as String?);
+                  },
+                  icon: Icon(Icons.delete, color: AppColors.error),
+                  label: Text(
+                    'Delete Entry',
+                    style: AppTypography.labelMedium.copyWith(
+                      color: AppColors.error,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.error),
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusMedium),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
         },
       ),
     );
@@ -734,7 +741,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
     );
   }
 
-  Widget _buildAnalyticsMetric(String label, dynamic value, IconData icon, Color color) {
+  Widget _buildAnalyticsMetric(
+      String label, dynamic value, IconData icon, Color color) {
     return Column(
       children: [
         Icon(
@@ -768,7 +776,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
     // and use the AdvancedAnalyticsService to process it
     // For demo purposes, we're returning mock data based on some randomness
 
-    await Future.delayed(const Duration(milliseconds: 800)); // Simulate network delay
+    await Future.delayed(
+        const Duration(milliseconds: 800)); // Simulate network delay
 
     final random = math.Random();
 
@@ -778,7 +787,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
     final bool strengthIncreasing = random.nextBool();
 
     return {
-      'trend': isImproving ? 'improving' : (!isConsistent ? 'declining' : 'plateau'),
+      'trend':
+          isImproving ? 'improving' : (!isConsistent ? 'declining' : 'plateau'),
       'score': 60 + random.nextInt(40), // 60-100
       'consistency': 50 + random.nextInt(50), // 50-100
       'strengthTrend': strengthIncreasing ? 'increasing' : 'decreasing',

@@ -75,4 +75,3 @@ class WorkoutHeroCard extends StatelessWidget {
     );
   }
 }
-

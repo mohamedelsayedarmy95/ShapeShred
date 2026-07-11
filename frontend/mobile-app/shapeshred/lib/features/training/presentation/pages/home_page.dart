@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
@@ -69,8 +66,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
           _userEmail = user.email ?? '';
           _userGoal = await PreferencesService.getUserGoal() ?? '';
-          _userFitnessLevel =
-              await PreferencesService.getFitnessLevel() ?? '';
+          _userFitnessLevel = await PreferencesService.getFitnessLevel() ?? '';
         }
       }
 
@@ -112,7 +108,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
         duration: 30,
-        instructions: ['Jump feet out while raising arms overhead', 'Return to starting position'],
+        instructions: [
+          'Jump feet out while raising arms overhead',
+          'Return to starting position'
+        ],
       ),
       Exercise(
         id: 'mountain_climbers',
@@ -123,7 +122,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'Bodyweight',
         difficulty: 'Intermediate',
         duration: 30,
-        instructions: ['Start in plank position', 'Alternate bringing knees to chest'],
+        instructions: [
+          'Start in plank position',
+          'Alternate bringing knees to chest'
+        ],
       ),
       Exercise(
         id: 'burpees',
@@ -134,7 +136,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'Bodyweight',
         difficulty: 'Advanced',
         duration: 45,
-        instructions: ['From standing, drop to push-up position', 'Do a push-up, then jump back to standing'],
+        instructions: [
+          'From standing, drop to push-up position',
+          'Do a push-up, then jump back to standing'
+        ],
       ),
     ];
 
@@ -148,7 +153,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
         duration: 30,
-        instructions: ['Keep body straight', 'Lower chest to floor', 'Push back up'],
+        instructions: [
+          'Keep body straight',
+          'Lower chest to floor',
+          'Push back up'
+        ],
       ),
       Exercise(
         id: 'squats',
@@ -159,7 +168,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'Bodyweight',
         difficulty: 'Beginner',
         duration: 30,
-        instructions: ['Feet shoulder-width apart', 'Sit back and down', 'Keep chest up'],
+        instructions: [
+          'Feet shoulder-width apart',
+          'Sit back and down',
+          'Keep chest up'
+        ],
       ),
       Exercise(
         id: 'plank',
@@ -170,7 +183,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'Bodyweight',
         difficulty: 'Intermediate',
         duration: 30,
-        instructions: ['Stay on forearms and toes', 'Keep body in straight line', 'Engage core'],
+        instructions: [
+          'Stay on forearms and toes',
+          'Keep body in straight line',
+          'Engage core'
+        ],
       ),
     ];
 
@@ -184,7 +201,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'None',
         difficulty: 'Beginner',
         duration: 45,
-        instructions: ['Start on hands and knees', 'Lift hips up and back', 'Press heels toward floor'],
+        instructions: [
+          'Start on hands and knees',
+          'Lift hips up and back',
+          'Press heels toward floor'
+        ],
       ),
       Exercise(
         id: 'warrior_ii',
@@ -195,7 +216,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'None',
         difficulty: 'Beginner',
         duration: 45,
-        instructions: ['Step feet wide apart', 'Turn front foot out', 'Bend front knee'],
+        instructions: [
+          'Step feet wide apart',
+          'Turn front foot out',
+          'Bend front knee'
+        ],
       ),
       Exercise(
         id: 'tree_pose',
@@ -206,7 +231,11 @@ class _HomePageState extends ConsumerState<HomePage> {
         equipment: 'None',
         difficulty: 'Beginner',
         duration: 30,
-        instructions: ['Stand on one foot', 'Place opposite foot on inner thigh', 'Bring hands to heart'],
+        instructions: [
+          'Stand on one foot',
+          'Place opposite foot on inner thigh',
+          'Bring hands to heart'
+        ],
       ),
     ];
 
@@ -220,22 +249,26 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     // Adjust based on goal
     if (goal == 'Lose Weight') {
-      exercises = hiitExercises.map((e) => WorkoutExercise(
-        exercise: e,
-        sets: 3,
-        reps: 12,
-      )).toList();
+      exercises = hiitExercises
+          .map((e) => WorkoutExercise(
+                exercise: e,
+                sets: 3,
+                reps: 12,
+              ))
+          .toList();
       title = 'Fat Burning HIIT';
       duration = '25 min';
       level = 'Intermediate';
       category = 'HIIT';
       icon = Icons.local_fire_department;
     } else if (goal == 'Build Muscle') {
-      exercises = strengthExercises.map((e) => WorkoutExercise(
-        exercise: e,
-        sets: 4,
-        reps: 10,
-      )).toList();
+      exercises = strengthExercises
+          .map((e) => WorkoutExercise(
+                exercise: e,
+                sets: 4,
+                reps: 10,
+              ))
+          .toList();
       title = 'Strength & Hypertrophy';
       duration = '35 min';
       level = 'Intermediate';
@@ -243,12 +276,17 @@ class _HomePageState extends ConsumerState<HomePage> {
       icon = Icons.fitness_center;
     } else if (goal == 'Endurance') {
       // Mix of cardio and light strength
-      List<Exercise> enduranceExercises = [...hiitExercises.take(2), ...strengthExercises.take(1)];
-      exercises = enduranceExercises.map((e) => WorkoutExercise(
-        exercise: e,
-        sets: 3,
-        reps: 15,
-      )).toList();
+      List<Exercise> enduranceExercises = [
+        ...hiitExercises.take(2),
+        ...strengthExercises.take(1)
+      ];
+      exercises = enduranceExercises
+          .map((e) => WorkoutExercise(
+                exercise: e,
+                sets: 3,
+                reps: 15,
+              ))
+          .toList();
       title = 'Endurance Builder';
       duration = '30 min';
       level = 'Intermediate';
@@ -256,12 +294,18 @@ class _HomePageState extends ConsumerState<HomePage> {
       icon = Icons.airplanemode_active;
     } else if (goal == 'Stay Fit') {
       // Balanced mix
-      List<Exercise> mixedExercises = [...hiitExercises.take(1), ...strengthExercises.take(1), ...yogaExercises.take(1)];
-      exercises = mixedExercises.map((e) => WorkoutExercise(
-        exercise: e,
-        sets: 3,
-        reps: 12,
-      )).toList();
+      List<Exercise> mixedExercises = [
+        ...hiitExercises.take(1),
+        ...strengthExercises.take(1),
+        ...yogaExercises.take(1)
+      ];
+      exercises = mixedExercises
+          .map((e) => WorkoutExercise(
+                exercise: e,
+                sets: 3,
+                reps: 12,
+              ))
+          .toList();
       title = 'Balanced Fitness';
       duration = '20 min';
       level = 'All Levels';
@@ -272,22 +316,28 @@ class _HomePageState extends ConsumerState<HomePage> {
     // Adjust based on fitness level
     if (fitnessLevel == 'Beginner') {
       // Reduce sets and reps for beginners
-      exercises = exercises.map((e) => WorkoutExercise(
-        exercise: e.exercise,
-        sets: (e.sets * 0.8).round(),
-        reps: (e.reps * 0.8).round(),
-      )).toList();
-      if (level == 'Advanced') level = 'Intermediate';
-      else if (level == 'Intermediate') level = 'Beginner';
+      exercises = exercises
+          .map((e) => WorkoutExercise(
+                exercise: e.exercise,
+                sets: (e.sets * 0.8).round(),
+                reps: (e.reps * 0.8).round(),
+              ))
+          .toList();
+      if (level == 'Advanced') {
+        level = 'Intermediate';
+      } else if (level == 'Intermediate') level = 'Beginner';
     } else if (fitnessLevel == 'Advanced') {
       // Increase sets and reps for advanced
-      exercises = exercises.map((e) => WorkoutExercise(
-        exercise: e.exercise,
-        sets: e.sets + 1,
-        reps: e.reps + 5,
-      )).toList();
-      if (level == 'Beginner') level = 'Intermediate';
-      else if (level == 'Intermediate') level = 'Advanced';
+      exercises = exercises
+          .map((e) => WorkoutExercise(
+                exercise: e.exercise,
+                sets: e.sets + 1,
+                reps: e.reps + 5,
+              ))
+          .toList();
+      if (level == 'Beginner') {
+        level = 'Intermediate';
+      } else if (level == 'Intermediate') level = 'Advanced';
     }
 
     return CustomWorkout(
@@ -311,7 +361,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     };
   }
 
-  List<Map<String, dynamic>> _getRecommendations(String goal, String fitnessLevel) {
+  List<Map<String, dynamic>> _getRecommendations(
+      String goal, String fitnessLevel) {
     // Base recommendations
     List<Map<String, dynamic>> recommendations = [
       {
@@ -387,10 +438,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     // Adjust based on fitness level
     if (fitnessLevel == 'Beginner') {
       for (var rec in recommendations) {
-        final int duration = (int.parse(
-                    (rec['duration'] as String).replaceAll(' min', '')) *
-                0.8)
-            .round();
+        final int duration =
+            (int.parse((rec['duration'] as String).replaceAll(' min', '')) *
+                    0.8)
+                .round();
         rec['duration'] = '$duration min';
         if (rec['level'] == 'Advanced') {
           rec['level'] = 'Intermediate';
@@ -400,9 +451,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       }
     } else if (fitnessLevel == 'Advanced') {
       for (var rec in recommendations) {
-        final int duration = int.parse(
-                (rec['duration'] as String).replaceAll(' min', '')) +
-            10;
+        final int duration =
+            int.parse((rec['duration'] as String).replaceAll(' min', '')) + 10;
         rec['duration'] = '$duration min';
         if (rec['level'] == 'Beginner') {
           rec['level'] = 'Intermediate';
@@ -476,15 +526,17 @@ class _HomePageState extends ConsumerState<HomePage> {
       child: ListView(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
-        children: _recommendations.map((rec) => Padding(
-          padding: EdgeInsets.only(right: AppSpacing.space12.w),
-          child: WorkoutCard(
-            title: rec['title'] as String,
-            duration: rec['duration'] as String,
-            level: rec['level'] as String,
-            icon: rec['icon'] as IconData,
-          ),
-        )).toList(),
+        children: _recommendations
+            .map((rec) => Padding(
+                  padding: EdgeInsets.only(right: AppSpacing.space12.w),
+                  child: WorkoutCard(
+                    title: rec['title'] as String,
+                    duration: rec['duration'] as String,
+                    level: rec['level'] as String,
+                    icon: rec['icon'] as IconData,
+                  ),
+                ))
+            .toList(),
       ),
     );
   }
@@ -637,7 +689,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       width: double.infinity,
       padding: EdgeInsets.all(AppSpacing.space24.w),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: AppColors.heroGradient,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -746,7 +798,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
     );
   }
-
 }
 
 /// Fades and slides its child up once, on first build after data loads.

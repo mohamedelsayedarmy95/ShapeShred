@@ -28,11 +28,9 @@ class AppDarkTheme {
         onTertiary: AppColors.onTertiary,
         error: AppColors.error,
         onError: AppColors.onError,
-        background: AppColors.background,
-        onBackground: AppColors.onBackground,
         surface: AppColors.surface,
         onSurface: AppColors.onSurface,
-        surfaceVariant: AppColors.surfaceVariant,
+        surfaceContainerHighest: AppColors.surfaceVariant,
         onSurfaceVariant: AppColors.onSurfaceVariant,
         outline: AppColors.outline,
         shadow: AppColors.shadow,
@@ -117,7 +115,7 @@ class AppDarkTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.onPrimary,
           elevation: 0,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonPaddingHorizontal,
             vertical: AppSpacing.buttonPaddingVertical,
           ),
@@ -134,7 +132,7 @@ class AppDarkTheme {
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
           disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonPaddingHorizontal * 0.75,
             vertical: AppSpacing.buttonPaddingVertical * 0.75,
           ),
@@ -151,7 +149,7 @@ class AppDarkTheme {
             width: AppBorderWidth.regular,
           ),
           disabledForegroundColor: AppColors.onSurface.withOpacity(0.38),
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.buttonPaddingHorizontal,
             vertical: AppSpacing.buttonPaddingVertical,
           ),
@@ -165,7 +163,7 @@ class AppDarkTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surfaceVariant,
-        contentPadding: EdgeInsets.symmetric(
+        contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.inputPaddingHorizontal,
           vertical: AppSpacing.inputPaddingVertical,
         ),
@@ -230,10 +228,10 @@ class AppDarkTheme {
 
       // Checkbox
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.all<Color>(AppColors.surface),
-        side: MaterialStateBorderSide.resolveWith(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.all<Color>(AppColors.surface),
+        side: WidgetStateBorderSide.resolveWith(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return BorderSide(
                 color: AppColors.primary,
                 width: 2.0,
@@ -253,8 +251,8 @@ class AppDarkTheme {
 
       // Radio
       radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.all<Color>(AppColors.surface),
-        overlayColor: MaterialStateProperty.all<Color>(
+        fillColor: WidgetStateProperty.all<Color>(AppColors.surface),
+        overlayColor: WidgetStateProperty.all<Color>(
           AppColors.primary.withOpacity(0.12),
         ),
         splashRadius: 20,
@@ -262,34 +260,34 @@ class AppDarkTheme {
 
       // Switch
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
+        thumbColor: WidgetStateProperty.resolveWith<Color>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return AppColors.primary;
             }
-            if (states.contains(MaterialState.disabled)) {
+            if (states.contains(WidgetState.disabled)) {
               return AppColors.onSurface.withOpacity(0.38);
             }
             return AppColors.surface;
           },
         ),
-        trackColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
+        trackColor: WidgetStateProperty.resolveWith<Color>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return AppColors.primary.withOpacity(0.36);
             }
-            if (states.contains(MaterialState.disabled)) {
+            if (states.contains(WidgetState.disabled)) {
               return AppColors.onSurface.withOpacity(0.12);
             }
             return AppColors.onSurface.withOpacity(0.38);
           },
         ),
-        trackOutlineColor: MaterialStateProperty.all<Color>(
+        trackOutlineColor: WidgetStateProperty.all<Color>(
           AppColors.outline,
         ),
-        thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
+        thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return const Icon(Icons.check);
             }
             return null;
@@ -308,7 +306,7 @@ class AppDarkTheme {
           color: AppColors.onPrimary,
         ),
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12.0),
-        overlayShape: RoundSliderOverlayShape(overlayRadius: 24.0),
+        overlayShape: const RoundSliderOverlayShape(overlayRadius: 24.0),
         valueIndicatorShape: const RectangularSliderValueIndicatorShape(),
         showValueIndicator: ShowValueIndicator.onlyForDiscrete,
       ),
@@ -324,7 +322,7 @@ class AppDarkTheme {
             color: AppColors.primary,
             width: 2.0,
           ),
-          insets: EdgeInsets.symmetric(
+          insets: const EdgeInsets.symmetric(
             horizontal: AppSpacing.layoutSm,
           ),
         ),
@@ -358,8 +356,8 @@ class AppDarkTheme {
           borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
         textStyle: AppTypography.labelMedium,
-        padding: EdgeInsets.all(AppSpacing.componentMd),
-        margin: EdgeInsets.all(AppSpacing.xsmall),
+        padding: const EdgeInsets.all(AppSpacing.componentMd),
+        margin: const EdgeInsets.all(AppSpacing.xsmall),
         verticalOffset: 24,
         preferBelow: false,
         showDuration: AppDurations.slow,
@@ -375,7 +373,7 @@ class AppDarkTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-        insetPadding: EdgeInsets.all(AppSpacing.layoutLg),
+        insetPadding: const EdgeInsets.all(AppSpacing.layoutLg),
       ),
 
       // Animated theme transitions (custom)

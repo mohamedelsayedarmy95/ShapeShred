@@ -3,8 +3,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
-import 'package:shapeshred/core/design_system/tokens/spacing.dart';
-import 'package:shapeshred/core/design_system/tokens/radius.dart';
 
 @immutable
 class ShapeShredThemeExtension
@@ -67,21 +65,20 @@ class ShapeShredThemeExtension
       ThemeExtension<ShapeShredThemeExtension>? other, double t) {
     if (other is! ShapeShredThemeExtension) return this;
     return ShapeShredThemeExtension(
-      workoutCardElevation: _lerpD(
-          workoutCardElevation, other.workoutCardElevation, t),
+      workoutCardElevation:
+          _lerpD(workoutCardElevation, other.workoutCardElevation, t),
       modalElevation: _lerpD(modalElevation, other.modalElevation, t),
       cardBackground: Color.lerp(cardBackground, other.cardBackground, t)!,
-      workoutCardBackground: Color.lerp(
-          workoutCardBackground, other.workoutCardBackground, t)!,
-      premiumCardBackground: Color.lerp(
-          premiumCardBackground, other.premiumCardBackground, t)!,
+      workoutCardBackground:
+          Color.lerp(workoutCardBackground, other.workoutCardBackground, t)!,
+      premiumCardBackground:
+          Color.lerp(premiumCardBackground, other.premiumCardBackground, t)!,
       buttonElevation: _lerpD(buttonElevation, other.buttonElevation, t),
-      inputFieldElevation: _lerpD(
-          inputFieldElevation, other.inputFieldElevation, t),
+      inputFieldElevation:
+          _lerpD(inputFieldElevation, other.inputFieldElevation, t),
       dividerHeight: _lerpD(dividerHeight, other.dividerHeight, t),
       iconSize: _lerpD(iconSize, other.iconSize, t),
-      textScaleFactor: _lerpD(
-          textScaleFactor, other.textScaleFactor, t),
+      textScaleFactor: _lerpD(textScaleFactor, other.textScaleFactor, t),
     );
   }
 

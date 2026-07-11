@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/features/training/data/workout_history_repository.dart';
 
 // Firebase providers
-final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+final firebaseAuthProvider =
+    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 final firebaseFirestoreProvider =
     Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
 
@@ -19,7 +20,8 @@ final workoutUserIdProvider = Provider<String?>((ref) {
 });
 
 // Provider for the workout history repository
-final workoutHistoryRepositoryProvider = Provider<WorkoutHistoryRepository>((ref) {
+final workoutHistoryRepositoryProvider =
+    Provider<WorkoutHistoryRepository>((ref) {
   final firestore = ref.read(firebaseFirestoreProvider);
   final userId = ref.watch(workoutUserIdProvider);
   if (userId == null) {

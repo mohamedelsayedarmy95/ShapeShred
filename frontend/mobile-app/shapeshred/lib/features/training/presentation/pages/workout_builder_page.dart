@@ -24,7 +24,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   String _selectedCategory = 'Strength';
   final List<WorkoutExercise> _exercises = [];
   bool _isLoading = false;
@@ -112,7 +112,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
             duration: const Duration(seconds: 2),
           ),
         );
-        
+
         await Future.delayed(const Duration(milliseconds: 500));
         if (mounted) {
           Navigator.pop(context);
@@ -153,7 +153,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.vertical(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(AppRadius.radiusXL),
             ),
           ),
@@ -174,7 +174,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
 
               // Title
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+                padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.screenPadding.w),
                 child: Text(
                   'Select Exercise',
                   style: AppTypography.headlineSmall.copyWith(
@@ -188,7 +189,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
               Expanded(
                 child: ListView.builder(
                   controller: scrollController,
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.screenPadding.w),
                   itemCount: ExerciseRepository.exercises.length,
                   itemBuilder: (context, index) {
                     final exercise = ExerciseRepository.exercises[index];
@@ -267,7 +269,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
   void _showExerciseConfigDialog(Exercise exercise) {
     final setsController = TextEditingController(text: '3');
     final repsController = TextEditingController(text: '12');
-    final durationController = TextEditingController(text: exercise.duration.toString());
+    final durationController =
+        TextEditingController(text: exercise.duration.toString());
     final weightController = TextEditingController();
 
     showDialog(
@@ -297,7 +300,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   child: TextField(
                     controller: setsController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.inputPaddingHorizontal,
@@ -307,7 +310,6 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   ),
                 ),
                 SizedBox(height: AppSpacing.space16.h),
-
                 Text(
                   'Reps',
                   style: AppTypography.labelMedium,
@@ -322,7 +324,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   child: TextField(
                     controller: repsController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.inputPaddingHorizontal,
@@ -332,7 +334,6 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   ),
                 ),
                 SizedBox(height: AppSpacing.space16.h),
-
                 Text(
                   'Duration (seconds)',
                   style: AppTypography.labelMedium,
@@ -347,7 +348,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   child: TextField(
                     controller: durationController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.inputPaddingHorizontal,
@@ -357,7 +358,6 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   ),
                 ),
                 SizedBox(height: AppSpacing.space16.h),
-
                 Text(
                   'Weight (kg) - Optional',
                   style: AppTypography.labelMedium,
@@ -372,7 +372,7 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                   child: TextField(
                     controller: weightController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.inputPaddingHorizontal,
@@ -512,7 +512,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                           color: isSelected
                               ? AppColors.primary
                               : AppColors.surfaceVariant,
-                          borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.radiusMedium),
                           border: Border.all(
                             color: isSelected
                                 ? AppColors.primary
@@ -559,7 +560,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                     padding: EdgeInsets.all(AppSpacing.space24.w),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusMedium),
                       border: Border.all(color: AppColors.outline),
                     ),
                     child: Center(
@@ -615,7 +617,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                     side: BorderSide(color: AppColors.primary),
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusMedium),
                     ),
                   ),
                 ),
@@ -627,7 +630,8 @@ class _WorkoutBuilderPageState extends State<WorkoutBuilderPage> {
                     padding: EdgeInsets.all(AppSpacing.space16.w),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.radiusMedium),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

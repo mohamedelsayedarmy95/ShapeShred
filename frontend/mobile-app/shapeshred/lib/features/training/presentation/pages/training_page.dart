@@ -120,8 +120,7 @@ class _TrainingPageState extends State<TrainingPage> {
           // Fallback to SharedPreferences for goal and fitness level
           _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
           _userGoal = await PreferencesService.getUserGoal() ?? '';
-          _userFitnessLevel =
-              await PreferencesService.getFitnessLevel() ?? '';
+          _userFitnessLevel = await PreferencesService.getFitnessLevel() ?? '';
         }
       }
 
@@ -185,7 +184,8 @@ class _TrainingPageState extends State<TrainingPage> {
                       child: SkeletonLoader(
                         width: 72.w,
                         height: 36.h,
-                        borderRadius: BorderRadius.circular(AppRadius.radiusPill),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusPill),
                       ),
                     ),
                   ),
@@ -251,7 +251,8 @@ class _TrainingPageState extends State<TrainingPage> {
                   horizontal: AppSpacing.screenPadding.w,
                 ),
                 itemCount: _filteredWorkouts.length,
-                separatorBuilder: (context, index) => SizedBox(height: AppSpacing.space12.h),
+                separatorBuilder: (context, index) =>
+                    SizedBox(height: AppSpacing.space12.h),
                 itemBuilder: (context, index) {
                   final workout = _filteredWorkouts[index];
                   return _StaggeredEntry(

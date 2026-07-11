@@ -28,9 +28,8 @@ class PremiumCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
-          border: hasBorder
-              ? Border.all(color: AppColors.outline, width: 1)
-              : null,
+          border:
+              hasBorder ? Border.all(color: AppColors.outline, width: 1) : null,
           boxShadow: AppShadows.subtle,
         ),
         child: child,

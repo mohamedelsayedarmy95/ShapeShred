@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -18,11 +18,14 @@ class DeepSeekService {
         'Authorization': 'Bearer $_apiKey',
       },
       body: jsonEncode({
-        'model': 'deepseek-chat', 
-        'messages': [{'role': 'user', 'content': prompt}],
+        'model': 'deepseek-chat',
+        'messages': [
+          {'role': 'user', 'content': prompt}
+        ],
       }),
     );
-    return jsonDecode(utf8.decode(response.bodyBytes))['choices'][0]['message']['content'] as String;
+    return jsonDecode(utf8.decode(response.bodyBytes))['choices'][0]['message']
+        ['content'] as String;
   }
 }
 

@@ -54,7 +54,8 @@ class WorkoutRepository {
   static final Workout hiitCardioBlast = Workout(
     id: 'hiit_cardio_blast',
     title: 'HIIT Cardio Blast',
-    description: 'High-intensity interval training to boost your metabolism and burn calories fast.',
+    description:
+        'High-intensity interval training to boost your metabolism and burn calories fast.',
     duration: 20,
     calories: 250,
     level: 'High Intensity',

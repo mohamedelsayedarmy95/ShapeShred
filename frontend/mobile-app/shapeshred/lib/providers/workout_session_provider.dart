@@ -88,8 +88,7 @@ class WorkoutSessionNotifier extends Notifier<WorkoutSessionState> {
 
     final workout = ref.watch(selectedWorkoutProvider);
     if (workout == null) {
-      throw StateError(
-          'No workout selected - cannot start a workout session');
+      throw StateError('No workout selected - cannot start a workout session');
     }
 
     final userId = ref.read(workoutUserIdProvider);
@@ -113,8 +112,8 @@ class WorkoutSessionNotifier extends Notifier<WorkoutSessionState> {
     _sessionStart = DateTime.now().subtract(alreadyElapsed);
     _tickTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!state.isPaused && !state.isFinished && !state.isResting) {
-        state = state.copyWith(
-            elapsed: DateTime.now().difference(_sessionStart!));
+        state =
+            state.copyWith(elapsed: DateTime.now().difference(_sessionStart!));
       }
     });
   }

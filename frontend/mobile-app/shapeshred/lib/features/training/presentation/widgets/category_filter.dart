@@ -25,11 +25,12 @@ class CategoryFilter extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
-        separatorBuilder: (context, index) => SizedBox(width: AppSpacing.space8.w),
+        separatorBuilder: (context, index) =>
+            SizedBox(width: AppSpacing.space8.w),
         itemBuilder: (context, index) {
           final category = categories[index];
           final isSelected = category == selectedCategory;
-          
+
           return GestureDetector(
             onTap: () => onCategorySelected(category),
             child: Container(
@@ -38,14 +39,11 @@ class CategoryFilter extends StatelessWidget {
                 vertical: AppSpacing.space12.h,
               ),
               decoration: BoxDecoration(
-                color: isSelected
-                    ? AppColors.primary
-                    : AppColors.surfaceVariant,
+                color:
+                    isSelected ? AppColors.primary : AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 border: Border.all(
-                  color: isSelected
-                      ? AppColors.primary
-                      : AppColors.outline,
+                  color: isSelected ? AppColors.primary : AppColors.outline,
                 ),
               ),
               child: Center(
@@ -55,9 +53,7 @@ class CategoryFilter extends StatelessWidget {
                     color: isSelected
                         ? AppColors.onPrimary
                         : AppTextColors.secondary,
-                    fontWeight: isSelected
-                        ? FontWeight.w600
-                        : FontWeight.w400,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),
               ),

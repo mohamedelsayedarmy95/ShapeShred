@@ -84,7 +84,8 @@ class ActivityGraph extends StatelessWidget {
                               color: index == 5
                                   ? AppColors.primary
                                   : AppColors.surfaceVariant,
-                              borderRadius: BorderRadius.circular(AppRadius.radiusSmall),
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.radiusSmall),
                             ),
                           ).let((bar) => FractionallySizedBox(
                                 heightFactor: weeklyData[index] / maxValue,
@@ -98,7 +99,8 @@ class ActivityGraph extends StatelessWidget {
                             color: index == 5
                                 ? AppColors.primary
                                 : AppTextColors.secondary,
-                            fontWeight: index == 5 ? FontWeight.w700 : FontWeight.w400,
+                            fontWeight:
+                                index == 5 ? FontWeight.w700 : FontWeight.w400,
                           ),
                         ),
                       ],
@@ -123,11 +125,12 @@ class ActivityGraph extends StatelessWidget {
               ),
               _SummaryItem(
                 label: 'Average',
-                value: '${(weeklyData.reduce((a, b) => a + b) / 7).toStringAsFixed(0)} min',
+                value:
+                    '${(weeklyData.reduce((a, b) => a + b) / 7).toStringAsFixed(0)} min',
               ),
               _SummaryItem(
                 label: 'Best Day',
-                value: '${maxValue} min',
+                value: '$maxValue min',
               ),
             ],
           ),

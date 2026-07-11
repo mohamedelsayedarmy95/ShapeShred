@@ -59,7 +59,8 @@ class _SkeletonLoaderState extends State<SkeletonLoader>
           width: widget.width ?? double.infinity,
           height: widget.height ?? 16.h,
           decoration: BoxDecoration(
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(AppRadius.radiusTiny),
+            borderRadius: widget.borderRadius ??
+                BorderRadius.circular(AppRadius.radiusTiny),
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -139,7 +140,7 @@ class SkeletonList extends StatelessWidget {
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.only(bottom: AppSpacing.space16.h),
-          child: SkeletonCard(),
+          child: const SkeletonCard(),
         );
       },
     );

@@ -31,14 +31,14 @@ class _NutritionPageState extends State<NutritionPage> {
   int _proteinGoal = 150;
   int _carbsGoal = 250;
   int _fatGoal = 70;
-  int _waterGoal = 8;
+  final int _waterGoal = 8;
 
   // Current intake (mock data - in real app this would come from a database)
-  int _caloriesConsumed = 1450;
-  int _proteinConsumed = 95;
-  int _carbsConsumed = 180;
-  int _fatConsumed = 55;
-  int _waterConsumed = 5;
+  final int _caloriesConsumed = 1450;
+  final int _proteinConsumed = 95;
+  final int _carbsConsumed = 180;
+  final int _fatConsumed = 55;
+  final int _waterConsumed = 5;
 
   String _motivationalMessage = '';
 
@@ -70,8 +70,7 @@ class _NutritionPageState extends State<NutritionPage> {
           // Fallback to SharedPreferences for goal and fitness level
           _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
           _userGoal = await PreferencesService.getUserGoal() ?? '';
-          _userFitnessLevel =
-              await PreferencesService.getFitnessLevel() ?? '';
+          _userFitnessLevel = await PreferencesService.getFitnessLevel() ?? '';
         }
       }
 
@@ -194,7 +193,8 @@ class _NutritionPageState extends State<NutritionPage> {
 
             // Divider
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
               child: Divider(
                 color: AppColors.outline,
                 height: 1,
@@ -209,75 +209,75 @@ class _NutritionPageState extends State<NutritionPage> {
                 ),
                 child: _FadeSlideIn(
                   child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Calories Hero Card
-                    CaloriesHeroCard(
-                      consumed: _caloriesConsumed,
-                      goal: _calorieGoal,
-                    ),
-                    SizedBox(height: AppSpacing.space24.h),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Calories Hero Card
+                      CaloriesHeroCard(
+                        consumed: _caloriesConsumed,
+                        goal: _calorieGoal,
+                      ),
+                      SizedBox(height: AppSpacing.space24.h),
 
-                    // Macro Breakdown
-                    MacroBreakdown(
-                      protein: _proteinConsumed,
-                      proteinGoal: _proteinGoal,
-                      carbs: _carbsConsumed,
-                      carbsGoal: _carbsGoal,
-                      fat: _fatConsumed,
-                      fatGoal: _fatGoal,
-                    ),
-                    SizedBox(height: AppSpacing.space32.h),
+                      // Macro Breakdown
+                      MacroBreakdown(
+                        protein: _proteinConsumed,
+                        proteinGoal: _proteinGoal,
+                        carbs: _carbsConsumed,
+                        carbsGoal: _carbsGoal,
+                        fat: _fatConsumed,
+                        fatGoal: _fatGoal,
+                      ),
+                      SizedBox(height: AppSpacing.space32.h),
 
-                    // Section Title: Meals
-                    Text(
-                      'Today\'s Meals',
-                      style: AppTypography.headlineSmall,
-                    ),
-                    SizedBox(height: AppSpacing.space16.h),
+                      // Section Title: Meals
+                      Text(
+                        'Today\'s Meals',
+                        style: AppTypography.headlineSmall,
+                      ),
+                      SizedBox(height: AppSpacing.space16.h),
 
-                    // Meals List
-                    const MealListItem(
-                      mealType: 'Breakfast',
-                      time: '8:30 AM',
-                      calories: 450,
-                      items: 'Oatmeal, Berries, Almonds',
-                      icon: Icons.wb_sunny_outlined,
-                    ),
-                    SizedBox(height: AppSpacing.space12.h),
-                    const MealListItem(
-                      mealType: 'Lunch',
-                      time: '1:00 PM',
-                      calories: 650,
-                      items: 'Grilled Chicken, Quinoa, Vegetables',
-                      icon: Icons.restaurant,
-                    ),
-                    SizedBox(height: AppSpacing.space12.h),
-                    const MealListItem(
-                      mealType: 'Snack',
-                      time: '4:30 PM',
-                      calories: 200,
-                      items: 'Protein Shake, Banana',
-                      icon: Icons.coffee,
-                    ),
-                    SizedBox(height: AppSpacing.space12.h),
-                    const MealListItem(
-                      mealType: 'Dinner',
-                      time: 'Not yet',
-                      calories: 0,
-                      items: 'Tap to add meal',
-                      icon: Icons.nights_stay_outlined,
-                      isEmpty: true,
-                    ),
-                    SizedBox(height: AppSpacing.space32.h),
+                      // Meals List
+                      const MealListItem(
+                        mealType: 'Breakfast',
+                        time: '8:30 AM',
+                        calories: 450,
+                        items: 'Oatmeal, Berries, Almonds',
+                        icon: Icons.wb_sunny_outlined,
+                      ),
+                      SizedBox(height: AppSpacing.space12.h),
+                      const MealListItem(
+                        mealType: 'Lunch',
+                        time: '1:00 PM',
+                        calories: 650,
+                        items: 'Grilled Chicken, Quinoa, Vegetables',
+                        icon: Icons.restaurant,
+                      ),
+                      SizedBox(height: AppSpacing.space12.h),
+                      const MealListItem(
+                        mealType: 'Snack',
+                        time: '4:30 PM',
+                        calories: 200,
+                        items: 'Protein Shake, Banana',
+                        icon: Icons.coffee,
+                      ),
+                      SizedBox(height: AppSpacing.space12.h),
+                      const MealListItem(
+                        mealType: 'Dinner',
+                        time: 'Not yet',
+                        calories: 0,
+                        items: 'Tap to add meal',
+                        icon: Icons.nights_stay_outlined,
+                        isEmpty: true,
+                      ),
+                      SizedBox(height: AppSpacing.space32.h),
 
-                    // Water Tracker
-                    WaterTracker(
-                      current: _waterConsumed,
-                      goal: _waterGoal,
-                    ),
-                    SizedBox(height: AppSpacing.space32.h),
-                  ],
+                      // Water Tracker
+                      WaterTracker(
+                        current: _waterConsumed,
+                        goal: _waterGoal,
+                      ),
+                      SizedBox(height: AppSpacing.space32.h),
+                    ],
                   ),
                 ),
               ),

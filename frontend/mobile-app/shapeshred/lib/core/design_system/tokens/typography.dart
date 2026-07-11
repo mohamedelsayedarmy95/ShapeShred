@@ -141,7 +141,8 @@ class AppTypography {
   static TextStyle applyFontSizeToStyle(TextStyle baseStyle, double fontSize) {
     return baseStyle.copyWith(
       fontSize: fontSize,
-      height: (baseStyle.height ?? 1.0) * (baseStyle.fontSize ?? 14.0) / fontSize,
+      height:
+          (baseStyle.height ?? 1.0) * (baseStyle.fontSize ?? 14.0) / fontSize,
     );
   }
 }

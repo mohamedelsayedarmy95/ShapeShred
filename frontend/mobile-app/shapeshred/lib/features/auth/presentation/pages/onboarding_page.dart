@@ -27,19 +27,21 @@ class _OnboardingPageState extends State<OnboardingPage> {
   String? _selectedFitnessLevel;
 
   final List<OnboardingSlideData> _slides = [
-    OnboardingSlideData(
+    const OnboardingSlideData(
       icon: Icons.fitness_center,
       title: 'Transform Your Body',
-      subtitle: 'AI-powered workouts that adapt to your progress and keep you challenged',
+      subtitle:
+          'AI-powered workouts that adapt to your progress and keep you challenged',
       highlight: 'Personalized',
     ),
-    OnboardingSlideData(
+    const OnboardingSlideData(
       icon: Icons.restaurant,
       title: 'Fuel Your Goals',
-      subtitle: 'Smart nutrition plans that evolve with your tastes and objectives',
+      subtitle:
+          'Smart nutrition plans that evolve with your tastes and objectives',
       highlight: 'Smart Nutrition',
     ),
-    OnboardingSlideData(
+    const OnboardingSlideData(
       icon: Icons.trending_up,
       title: 'Track Your Triumphs',
       subtitle: 'See your progress in real-time and celebrate every milestone',
@@ -48,16 +50,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
   ];
 
   final List<GoalOption> _goalOptions = [
-    GoalOption('Lose Weight', Icons.fitness_center, 'Burn fat and achieve your ideal physique'),
-    GoalOption('Build Muscle', Icons.fitness_center, 'Gain strength and lean muscle mass'),
-    GoalOption('Endurance', Icons.directions_run, 'Improve stamina and cardiovascular health'),
-    GoalOption('Stay Fit', Icons.access_time, 'Maintain a healthy, active lifestyle'),
+    const GoalOption('Lose Weight', Icons.fitness_center,
+        'Burn fat and achieve your ideal physique'),
+    const GoalOption('Build Muscle', Icons.fitness_center,
+        'Gain strength and lean muscle mass'),
+    const GoalOption('Endurance', Icons.directions_run,
+        'Improve stamina and cardiovascular health'),
+    const GoalOption(
+        'Stay Fit', Icons.access_time, 'Maintain a healthy, active lifestyle'),
   ];
 
   final List<FitnessLevelOption> _fitnessLevelOptions = [
-    FitnessLevelOption('Beginner', Icons.emoji_people, 'Just starting your fitness journey'),
-    FitnessLevelOption('Intermediate', Icons.people, 'Some experience, looking to level up'),
-    FitnessLevelOption('Advanced', Icons.star, 'Experienced athlete seeking peak performance'),
+    const FitnessLevelOption(
+        'Beginner', Icons.emoji_people, 'Just starting your fitness journey'),
+    const FitnessLevelOption(
+        'Intermediate', Icons.people, 'Some experience, looking to level up'),
+    const FitnessLevelOption(
+        'Advanced', Icons.star, 'Experienced athlete seeking peak performance'),
   ];
 
   @override
@@ -131,10 +140,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .set({
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'name': user.displayName ?? '',
           'email': user.email ?? '',
           'goal': _selectedGoal,
@@ -161,7 +167,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         // User is not logged in, send to login screen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       }
     }
@@ -224,11 +230,14 @@ class _OnboardingPageState extends State<OnboardingPage> {
           },
         );
       case 1:
-        return _FadeSlideIn(key: const ValueKey('goal'), child: _buildGoalSelection());
+        return _FadeSlideIn(
+            key: const ValueKey('goal'), child: _buildGoalSelection());
       case 2:
-        return _FadeSlideIn(key: const ValueKey('level'), child: _buildFitnessLevelSelection());
+        return _FadeSlideIn(
+            key: const ValueKey('level'), child: _buildFitnessLevelSelection());
       case 3:
-        return _FadeSlideIn(key: const ValueKey('completion'), child: _buildCompletion());
+        return _FadeSlideIn(
+            key: const ValueKey('completion'), child: _buildCompletion());
       default:
         return const SizedBox.shrink();
     }
@@ -410,7 +419,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: 96.w,
             height: 96.h,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: AppColors.heroGradient,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -469,7 +478,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               width: double.infinity,
               padding: EdgeInsets.symmetric(vertical: 18.h),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: AppColors.heroGradient,
                 ),
                 borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
@@ -579,7 +588,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 18.h),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: AppColors.heroGradient,
               ),
               borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
@@ -628,7 +637,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           child: GestureDetector(
             onTap: () => _goToStep(0), // Back to slides
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
               child: Icon(
                 Icons.arrow_back,
                 size: 24.sp,
@@ -637,7 +647,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
         ),
-        Spacer(),
+        const Spacer(),
         SizedBox(height: AppSpacing.space16.h),
       ],
     );
@@ -652,7 +662,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           child: GestureDetector(
             onTap: () => _goToStep(1), // Back to goal selection
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppSpacing.screenPadding.w),
               child: Icon(
                 Icons.arrow_back,
                 size: 24.sp,
@@ -661,7 +672,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
         ),
-        Spacer(),
+        const Spacer(),
         SizedBox(height: AppSpacing.space16.h),
       ],
     );
@@ -671,7 +682,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return Column(
       children: [
         // No back button on completion step
-        Spacer(),
+        const Spacer(),
         SizedBox(height: AppSpacing.space16.h),
       ],
     );
@@ -712,7 +723,7 @@ class OnboardingSlide extends StatelessWidget {
             width: 200.w,
             height: 200.h,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 colors: AppColors.heroGradient,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,

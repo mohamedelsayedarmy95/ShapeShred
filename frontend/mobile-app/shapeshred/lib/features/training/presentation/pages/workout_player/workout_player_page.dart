@@ -30,7 +30,8 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
   bool _isPaused = false;
   Timer? _timer;
 
-  Exercise get _currentExercise => widget.workout.exercises[_currentExerciseIndex];
+  Exercise get _currentExercise =>
+      widget.workout.exercises[_currentExerciseIndex];
 
   @override
   void initState() {
@@ -50,11 +51,11 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
       if (!_isPaused) {
         setState(() {
           _currentTime++;
-          
-          final targetTime = _isResting 
-              ? _currentExercise.restDuration 
+
+          final targetTime = _isResting
+              ? _currentExercise.restDuration
               : _currentExercise.duration;
-          
+
           if (_currentTime >= targetTime) {
             _nextPhase();
           }
@@ -98,9 +99,11 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
       barrierDismissible: false,
       barrierColor: AppColors.shadow,
       transitionDuration: AppDurations.cinematic,
-      pageBuilder: (context, animation, secondaryAnimation) => const SizedBox.shrink(),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const SizedBox.shrink(),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        final curved = CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
+        final curved =
+            CurvedAnimation(parent: animation, curve: AppCurves.premiumBounce);
         return Opacity(
           opacity: animation.value.clamp(0.0, 1.0),
           child: ScaleTransition(
@@ -116,7 +119,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                     width: 88.w,
                     height: 88.h,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: AppColors.heroGradient,
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -164,7 +167,8 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                       foregroundColor: AppColors.onPrimary,
                       padding: EdgeInsets.symmetric(vertical: 16.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.radiusLarge),
                       ),
                     ),
                     child: Text(
@@ -186,10 +190,9 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final targetTime = _isResting 
-        ? _currentExercise.restDuration 
-        : _currentExercise.duration;
-    
+    final targetTime =
+        _isResting ? _currentExercise.restDuration : _currentExercise.duration;
+
     final progress = _currentTime / targetTime;
 
     return Scaffold(
@@ -307,7 +310,7 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                     child: Container(
                       padding: EdgeInsets.all(24.r),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: AppColors.heroGradient,
                         ),
                         shape: BoxShape.circle,
@@ -320,7 +323,9 @@ class _WorkoutPlayerPageState extends State<WorkoutPlayerPage> {
                         ],
                       ),
                       child: Icon(
-                        _isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                        _isPaused
+                            ? Icons.play_arrow_rounded
+                            : Icons.pause_rounded,
                         color: AppColors.onPrimary,
                         size: 40.sp,
                       ),
