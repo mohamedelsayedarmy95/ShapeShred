@@ -32,18 +32,11 @@ dependencies:
   connectivity_plus: ^6.0.3
   dio: ^5.5.0+1
   dio_smart_retry: ^7.0.1
-  freezed_annotation: ^3.1.0
   hive_flutter: ^1.1.0
-  json_annotation: ^4.9.0
   shared_preferences: ^2.3.2
 
   # State Management & DI
-  dartz: ^0.10.1
-  equatable: ^2.0.5
   flutter_secure_storage: ^9.2.4
-  flutter_bloc: ^8.1.6
-  get_it: ^7.7.0
-  injectable: ^2.5.0
   flutter_riverpod: ^3.3.1
   riverpod_annotation: ^4.0.2
 
@@ -70,14 +63,10 @@ dev_dependencies:
   
   # Code Generation
   build_runner: ^2.4.13
-  freezed: ^3.2.5
-  json_serializable: ^6.13.0
-  injectable_generator: ^2.6.0
   riverpod_generator: ^4.0.2
   
   # Tools
   flutter_launcher_icons: ^0.14.4
-  mocktail: ^1.0.5
 
 flutter:
   uses-material-design: true
