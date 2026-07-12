@@ -12,6 +12,9 @@ import 'package:shapeshred/features/nutrition/presentation/widgets/calories_hero
 import 'package:shapeshred/features/nutrition/presentation/widgets/macro_breakdown.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/meal_list_item.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/water_tracker.dart';
+import 'package:shapeshred/features/nutrition/domain/models/food.dart' as food_models;
+import 'package:shapeshred/features/nutrition/presentation/pages/meal_logging_page.dart';
+import 'package:intl/intl.dart';
 
 class NutritionPage extends StatefulWidget {
   const NutritionPage({super.key});
@@ -33,12 +36,18 @@ class _NutritionPageState extends State<NutritionPage> {
   int _fatGoal = 70;
   final int _waterGoal = 8;
 
-  // Current intake (mock data - in real app this would come from a database)
-  final int _caloriesConsumed = 1450;
-  final int _proteinConsumed = 95;
-  final int _carbsConsumed = 180;
-  final int _fatConsumed = 55;
-  final int _waterConsumed = 5;
+  // Today's logged meals (users/{uid}/meals), newest first.
+  List<food_models.Meal> _todayMeals = [];
+  final int _waterConsumed = 0;
+
+  int get _caloriesConsumed =>
+      _todayMeals.fold(0, (sum, m) => sum + m.totalCalories);
+  int get _proteinConsumed =>
+      _todayMeals.fold(0.0, (sum, m) => sum + m.totalProtein).round();
+  int get _carbsConsumed =>
+      _todayMeals.fold(0.0, (sum, m) => sum + m.totalCarbs).round();
+  int get _fatConsumed =>
+      _todayMeals.fold(0.0, (sum, m) => sum + m.totalFat).round();
 
   String _motivationalMessage = '';
 
@@ -113,7 +122,8 @@ class _NutritionPageState extends State<NutritionPage> {
           break;
       }
 
-      // Adjust water goal based on weight? We don't have weight, so keep default
+      // Today's meals drive the consumed totals and the meals list.
+      await _loadTodayMeals();
     } catch (e) {
       debugPrint('Error loading user data: $e');
       // Fallback to defaults
@@ -128,6 +138,59 @@ class _NutritionPageState extends State<NutritionPage> {
       }
     }
   }
+
+  Future<void> _loadTodayMeals() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final DateTime now = DateTime.now();
+    final String dayStart =
+        DateTime(now.year, now.month, now.day).toIso8601String();
+    final String dayEnd =
+        DateTime(now.year, now.month, now.day + 1).toIso8601String();
+
+    // Meal.date is stored as an ISO-8601 string, which sorts
+    // lexicographically in chronological order.
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('meals')
+        .where('date', isGreaterThanOrEqualTo: dayStart)
+        .where('date', isLessThan: dayEnd)
+        .orderBy('date')
+        .get();
+
+    _todayMeals = snapshot.docs
+        .map((doc) => food_models.Meal.fromJson(doc.data()))
+        .toList();
+  }
+
+  Future<void> _openMealLogging() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MealLoggingPage()),
+    );
+    // Refresh totals after a meal may have been saved.
+    if (!mounted) return;
+    await _loadTodayMeals();
+    if (mounted) setState(() {});
+  }
+
+  IconData _mealTypeIcon(String type) {
+    switch (type) {
+      case 'breakfast':
+        return Icons.wb_sunny_outlined;
+      case 'lunch':
+        return Icons.restaurant;
+      case 'dinner':
+        return Icons.nights_stay_outlined;
+      default:
+        return Icons.coffee;
+    }
+  }
+
+  String _capitalize(String s) =>
+      s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
 
   @override
   Widget build(BuildContext context) {
@@ -236,39 +299,34 @@ class _NutritionPageState extends State<NutritionPage> {
                       ),
                       SizedBox(height: AppSpacing.space16.h),
 
-                      // Meals List
-                      const MealListItem(
-                        mealType: 'Breakfast',
-                        time: '8:30 AM',
-                        calories: 450,
-                        items: 'Oatmeal, Berries, Almonds',
-                        icon: Icons.wb_sunny_outlined,
-                      ),
-                      SizedBox(height: AppSpacing.space12.h),
-                      const MealListItem(
-                        mealType: 'Lunch',
-                        time: '1:00 PM',
-                        calories: 650,
-                        items: 'Grilled Chicken, Quinoa, Vegetables',
-                        icon: Icons.restaurant,
-                      ),
-                      SizedBox(height: AppSpacing.space12.h),
-                      const MealListItem(
-                        mealType: 'Snack',
-                        time: '4:30 PM',
-                        calories: 200,
-                        items: 'Protein Shake, Banana',
-                        icon: Icons.coffee,
-                      ),
-                      SizedBox(height: AppSpacing.space12.h),
-                      const MealListItem(
-                        mealType: 'Dinner',
-                        time: 'Not yet',
-                        calories: 0,
-                        items: 'Tap to add meal',
-                        icon: Icons.nights_stay_outlined,
-                        isEmpty: true,
-                      ),
+                      // Meals List (real data from users/{uid}/meals)
+                      if (_todayMeals.isEmpty)
+                        GestureDetector(
+                          onTap: _openMealLogging,
+                          child: const MealListItem(
+                            mealType: 'No meals yet',
+                            time: '',
+                            calories: 0,
+                            items: 'Tap to log your first meal today',
+                            icon: Icons.restaurant_menu,
+                            isEmpty: true,
+                          ),
+                        )
+                      else
+                        ...[
+                          for (final meal in _todayMeals) ...[
+                            MealListItem(
+                              mealType: _capitalize(meal.type),
+                              time: DateFormat('h:mm a').format(meal.date),
+                              calories: meal.totalCalories,
+                              items: meal.items
+                                  .map((i) => i.food.name)
+                                  .join(', '),
+                              icon: _mealTypeIcon(meal.type),
+                            ),
+                            SizedBox(height: AppSpacing.space12.h),
+                          ],
+                        ],
                       SizedBox(height: AppSpacing.space32.h),
 
                       // Water Tracker
@@ -286,7 +344,7 @@ class _NutritionPageState extends State<NutritionPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: _openMealLogging,
         backgroundColor: AppColors.primary,
         icon: Icon(Icons.add, color: AppColors.onPrimary),
         label: Text(

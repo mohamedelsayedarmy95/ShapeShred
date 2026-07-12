@@ -33,6 +33,11 @@ service cloud.firestore {
         allow read, create, delete: if isAuthenticated() && isOwner(userId);
         allow update: if false;
       }
+
+      match /meals/{mealId} {
+        allow read, create, update, delete:
+          if isAuthenticated() && isOwner(userId);
+      }
     }
     
     match /user_profiles/{userId} {
