@@ -1208,9 +1208,83 @@ class _SuperUltraPremiumWorkoutPageState
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              SizedBox(height: AppSpacing.space8.h),
+              Text(
+                state.workout?.name ?? 'Workout',
+                style: AppTypography.titleLarge.copyWith(
+                  color: AppTextColors.secondary,
+                ),
+              ),
+              SizedBox(height: AppSpacing.space24.h),
+
+              _buildFinishedStat(
+                icon: Icons.access_time,
+                label: 'Duration',
+                value: '${state.elapsed.inMinutes} min',
+              ),
+              SizedBox(height: AppSpacing.space12.h),
+              _buildFinishedStat(
+                icon: Icons.local_fire_department,
+                label: 'Calories Burned',
+                value:
+                    '${(6.0 * 70.0 * state.elapsed.inSeconds / 3600).round()} cal',
+              ),
+              SizedBox(height: AppSpacing.space12.h),
+              _buildFinishedStat(
+                icon: Icons.fitness_center,
+                label: 'Exercises',
+                value: '${state.workout?.exercises.length ?? 0}',
+              ),
+              SizedBox(height: AppSpacing.space32.h),
+
+              PremiumButton(
+                label: 'Finish Workout',
+                onPressed: () {
+                  HapticHelper.successImpact();
+                  // Reset the selection so the session doesn't get reused.
+                  ref.read(selectedWorkoutProvider.notifier).select(null);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                fullWidth: true,
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFinishedStat({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Container(
+      padding: EdgeInsets.all(AppSpacing.space16.w),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceVariant,
+        borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+        border: Border.all(color: AppColors.outline),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 28.sp, color: AppTextColors.secondary),
+          SizedBox(width: AppSpacing.space16.w),
+          Expanded(
+            child: Text(
+              label,
+              style: AppTypography.bodyMedium.copyWith(
+                color: AppTextColors.secondary,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: AppTypography.titleMedium.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }

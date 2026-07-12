@@ -175,7 +175,9 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
 
   Widget _buildWorkoutCard(Map<String, dynamic> workout, String workoutId) {
     final completedAt = (workout['completedAt'] as Timestamp).toDate();
-    final duration = workout['duration'] as int? ?? 0;
+    // Older records stored seconds under totalDuration; fall back.
+    final duration = workout['duration'] as int? ??
+        (((workout['totalDuration'] ?? 0) as num) / 60).ceil();
     final calories = workout['caloriesBurned'] as int? ?? 0;
     final exercises = workout['exercises'] as List? ?? [];
     final category = workout['category'] as String? ?? 'Workout';

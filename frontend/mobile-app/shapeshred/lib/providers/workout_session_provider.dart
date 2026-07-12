@@ -102,9 +102,11 @@ class WorkoutSessionNotifier extends Notifier<WorkoutSessionState> {
       workoutLog: {
         'userId': userId,
         'name': workout.name,
+        'category': workout.category,
         'exercises': <Map<String, dynamic>>[],
-        'totalDuration': 0,
-        'totalCalories': 0,
+        // Field names match what the history page and statistics read.
+        'duration': 0, // minutes
+        'caloriesBurned': 0,
         'completedAt': null,
       },
     );
@@ -204,7 +206,8 @@ class WorkoutSessionNotifier extends Notifier<WorkoutSessionState> {
     _stopTimers();
 
     final log = Map<String, dynamic>.from(state.workoutLog)
-      ..['totalDuration'] = state.elapsed.inSeconds
+      ..['duration'] = (state.elapsed.inSeconds / 60).ceil()
+      ..['caloriesBurned'] = _estimateCalories(state.elapsed)
       ..['completedAt'] = FieldValue.serverTimestamp();
 
     try {
@@ -215,6 +218,15 @@ class WorkoutSessionNotifier extends Notifier<WorkoutSessionState> {
     }
 
     state = state.copyWith(isFinished: true);
+  }
+
+  /// Rough MET-based estimate; assumes moderate effort and average body
+  /// weight until per-user body metrics are wired into the session.
+  int _estimateCalories(Duration elapsed) {
+    const double metValue = 6.0;
+    const double weightKg = 70.0;
+    final double hours = elapsed.inSeconds / 3600;
+    return (metValue * weightKg * hours).round();
   }
 
   /// Called by the UI when the user taps "- rep".

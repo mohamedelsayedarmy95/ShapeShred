@@ -73,8 +73,8 @@ class _HomePageState extends ConsumerState<HomePage> {
       // Load today's workout based on goal and fitness level
       _todaysWorkout = _getTodaysWorkout(_userGoal, _userFitnessLevel);
 
-      // Load stats (mock for now, will be replaced with real data)
-      _stats = _getMockStats();
+      // Real stats from the user's workout history
+      _stats = await _loadRealStats();
 
       // Load recommendations based on goal and fitness level
       _recommendations = _getRecommendations(_userGoal, _userFitnessLevel);
@@ -87,7 +87,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       _userGoal = '';
       _userFitnessLevel = '';
       _todaysWorkout = _getTodaysWorkout('', '');
-      _stats = _getMockStats();
+      _stats = _emptyStats();
       _recommendations = _getRecommendations('', '');
     } finally {
       if (mounted) {
@@ -355,15 +355,31 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 
-  Map<String, dynamic> _getMockStats() {
-    // In a real app, this would come from Firestore or a backend
-    return {
-      'caloriesBurned': 450,
-      'workoutsCompleted': 12,
-      'activeDays': 8,
-      'weeklyActivity': [0.3, 0.65, 0.45, 0.9, 0.55, 0.2, 0.75],
-    };
+  /// Real stats from users/{uid}/workout_history via the repository.
+  Future<Map<String, dynamic>> _loadRealStats() async {
+    try {
+      final stats = await ref
+          .read(workoutHistoryRepositoryProvider)
+          .getWorkoutStatistics();
+      return {
+        'caloriesBurned': stats['totalCalories'] ?? 0,
+        'workoutsCompleted': stats['totalWorkouts'] ?? 0,
+        'activeDays': stats['activeDays'] ?? 0,
+        'weeklyActivity':
+            stats['weeklyActivity'] ?? List<double>.filled(7, 0.0),
+      };
+    } catch (e) {
+      debugPrint('Failed to load workout stats: $e');
+      return _emptyStats();
+    }
   }
+
+  Map<String, dynamic> _emptyStats() => {
+        'caloriesBurned': 0,
+        'workoutsCompleted': 0,
+        'activeDays': 0,
+        'weeklyActivity': List<double>.filled(7, 0.0),
+      };
 
   List<Map<String, dynamic>> _getRecommendations(
       String goal, String fitnessLevel) {

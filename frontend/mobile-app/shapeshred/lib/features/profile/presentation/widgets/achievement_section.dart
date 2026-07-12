@@ -87,11 +87,12 @@ class _AchievementBadge extends StatelessWidget {
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 48.w,
-            height: 48.h,
+            width: 44.w,
+            height: 44.h,
             decoration: BoxDecoration(
               color: unlocked ? AppColors.surface : AppColors.outline,
               shape: BoxShape.circle,

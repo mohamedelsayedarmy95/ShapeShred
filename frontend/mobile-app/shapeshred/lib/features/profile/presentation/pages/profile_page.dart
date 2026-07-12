@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shapeshred/features/training/data/workout_history_repository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
@@ -390,10 +392,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           SizedBox(height: AppSpacing.space12.h),
-          // In a real app, this would fetch actual workout history and show real analytics
-          // For demo, we're showing placeholder data
           FutureBuilder<Map<String, dynamic>>(
-            future: _getMockAnalyticsData(),
+            future: _getAnalyticsData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 final Color progressColor = AppColors.primary;
@@ -467,17 +467,41 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Future<Map<String, dynamic>> _getMockAnalyticsData() async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 800));
+  /// Derived from the user's real workout history:
+  /// - trend: this week's workout count vs last week's
+  /// - score: this week's workouts against a 5/week target
+  /// - consistency: active days as a share of days since the first workout
+  ///   (capped at the last 28 days)
+  Future<Map<String, dynamic>> _getAnalyticsData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return {'trend': 'no data', 'score': 0, 'consistency': 0};
+    }
 
-    // In a real app, this would come from the analytics service using actual workout data
-    // For demo purposes, we're returning mock data
-    return {
-      'trend': 'improving',
-      'score': 85,
-      'consistency': 78,
-    };
+    final repo = FirebaseWorkoutHistoryRepository(
+      firestore: FirebaseFirestore.instance,
+      userId: user.uid,
+    );
+    final stats = await repo.getWorkoutStatistics();
+
+    final int thisWeek = (stats['workoutsThisWeek'] as int?) ?? 0;
+    final int lastWeek = (stats['workoutsLastWeek'] as int?) ?? 0;
+    final int activeDays = (stats['activeDays'] as int?) ?? 0;
+    final int totalWorkouts = (stats['totalWorkouts'] as int?) ?? 0;
+
+    final String trend = totalWorkouts == 0
+        ? 'no data'
+        : thisWeek > lastWeek
+            ? 'improving'
+            : thisWeek < lastWeek
+                ? 'declining'
+                : 'steady';
+
+    final int score = ((thisWeek / 5) * 100).clamp(0, 100).round();
+    final int consistency =
+        ((activeDays / 28) * 100).clamp(0, 100).round();
+
+    return {'trend': trend, 'score': score, 'consistency': consistency};
   }
 
   Widget _buildAnalyticsMetric(

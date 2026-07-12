@@ -88,7 +88,12 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
           'totalWorkouts': 0,
           'totalDuration': 0,
           'totalCalories': 0,
-          'recentWorkouts': [],
+          'activeDays': 0,
+          'workoutsThisWeek': 0,
+          'workoutsLastWeek': 0,
+          'weeklyActivity': List<double>.filled(7, 0.0),
+          'recentWorkouts': <Map<String, dynamic>>[],
+          'allWorkouts': <Map<String, dynamic>>[],
         };
       }
 
@@ -96,29 +101,68 @@ class FirebaseWorkoutHistoryRepository implements WorkoutHistoryRepository {
 
       int totalDuration = 0;
       int totalCalories = 0;
-      List<Map<String, dynamic>> recentWorkouts = [];
+      int workoutsThisWeek = 0;
+      int workoutsLastWeek = 0;
+      final Set<String> activeDayKeys = {};
+      // Minutes per weekday (Mon..Sun) of the current week.
+      final List<double> weekMinutes = List.filled(7, 0.0);
 
-      for (var workout in workouts.take(5)) {
-        // Get last 5 workouts for recent activity
-        recentWorkouts.add({
-          'name': workout['name'] ?? 'Workout',
-          'date': workout['completedAt'] != null
-              ? (workout['completedAt'] as Timestamp).toDate()
-              : DateTime.now(),
-          'calories': workout['caloriesBurned'] ?? 0,
-          'duration': workout['duration'] ?? 0,
-        });
+      final DateTime now = DateTime.now();
+      final DateTime today = DateTime(now.year, now.month, now.day);
+      final DateTime weekStart =
+          today.subtract(Duration(days: now.weekday - 1));
+      final DateTime lastWeekStart = weekStart.subtract(const Duration(days: 7));
 
-        final int duration = ((workout['duration'] ?? 0) as num).toInt();
-        final int calories = ((workout['caloriesBurned'] ?? 0) as num).toInt();
+      final List<Map<String, dynamic>> recentWorkouts = [];
+
+      for (final workout in workouts) {
+        final DateTime date = workout['completedAt'] != null
+            ? (workout['completedAt'] as Timestamp).toDate()
+            : DateTime.now();
+        // Older records stored seconds under totalDuration; fall back.
+        final int duration = ((workout['duration'] ??
+                (((workout['totalDuration'] ?? 0) as num) / 60).ceil())
+            as num)
+            .toInt();
+        final int calories =
+            ((workout['caloriesBurned'] ?? 0) as num).toInt();
+
         totalDuration += duration;
         totalCalories += calories;
+        activeDayKeys.add('${date.year}-${date.month}-${date.day}');
+
+        if (!date.isBefore(weekStart)) {
+          workoutsThisWeek++;
+          weekMinutes[date.weekday - 1] += duration;
+        } else if (!date.isBefore(lastWeekStart)) {
+          workoutsLastWeek++;
+        }
+
+        if (recentWorkouts.length < 5) {
+          recentWorkouts.add({
+            'name': workout['name'] ?? 'Workout',
+            'date': date,
+            'calories': calories,
+            'duration': duration,
+          });
+        }
       }
+
+      // Normalize the weekly chart to 0..1 against the busiest day.
+      final double maxMinutes =
+          weekMinutes.reduce((a, b) => a > b ? a : b);
+      final List<double> weeklyActivity = maxMinutes > 0
+          ? weekMinutes.map((m) => m / maxMinutes).toList()
+          : List<double>.filled(7, 0.0);
 
       return {
         'totalWorkouts': workouts.length,
         'totalDuration': totalDuration,
         'totalCalories': totalCalories,
+        'activeDays': activeDayKeys.length,
+        'workoutsThisWeek': workoutsThisWeek,
+        'workoutsLastWeek': workoutsLastWeek,
+        'weeklyActivity': weeklyActivity,
         'recentWorkouts': recentWorkouts,
         'allWorkouts': workouts,
       };
