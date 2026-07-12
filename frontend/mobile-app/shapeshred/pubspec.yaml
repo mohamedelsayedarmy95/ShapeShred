@@ -1,4 +1,4 @@
-﻿name: shapeshred
+name: shapeshred
 description: "A premium black & white home workout ecosystem."
 publish_to: 'none'
 version: 1.0.0+1
@@ -7,13 +7,13 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  flutter_facebook_auth: ^6.0.4
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
 
   # Auth & Social
+  flutter_facebook_auth: ^6.0.4
   google_sign_in: ^6.1.5
   local_auth: ^2.3.0
   sign_in_with_apple: ^6.0.0
@@ -50,28 +50,29 @@ dependencies:
   logger: ^2.7.0
   image_picker: ^1.2.3
   http: ^1.6.0
+  camera: ^0.11.0+1
+  google_mlkit_pose_detection: ^0.12.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
-  
+
   # Code Generation
   build_runner: ^2.4.13
   riverpod_generator: ^4.0.2
-  
+
   # Tools
   flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
   generate: true
-  
+
   assets:
     - .env
     - assets/images/
     - assets/icons/
-
 
 flutter_launcher_icons:
   android: true
@@ -85,8 +86,3 @@ flutter_native_splash:
   image: assets/icons/app_icon.png
   android: true
   ios: false
-
-
-
-
-

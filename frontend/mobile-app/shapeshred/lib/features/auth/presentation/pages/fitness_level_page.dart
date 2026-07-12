@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/features/auth/presentation/pages/login_page.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 
@@ -177,12 +179,25 @@ class _FitnessLevelPageState extends State<FitnessLevelPage> {
                           await PreferencesService.setFitnessLevel(
                               _selectedLevel!);
                           await PreferencesService.setOnboardingComplete(true);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
+                          // Persist the profile to Firestore so every device
+                          // and feature reads the same data.
+                          final user = FirebaseAuth.instance.currentUser;
+                          if (user != null) {
+                            final goal =
+                                await PreferencesService.getUserGoal();
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user.uid)
+                                .set({
+                              'goal': goal,
+                              'fitnessLevel': _selectedLevel,
+                              'updatedAt': FieldValue.serverTimestamp(),
+                            }, SetOptions(merge: true));
+                          }
+                          if (!context.mounted) return;
+                          // Already authenticated after signup: go straight
+                          // to the app instead of bouncing through Login.
+                          context.go('/');
                         }
                       : null,
                   child: Container(

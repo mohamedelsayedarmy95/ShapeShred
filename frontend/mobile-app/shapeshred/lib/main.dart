@@ -12,95 +12,106 @@ import 'core/routes/app_router.dart';
 import 'core/services/secure_storage_service.dart';
 import 'core/services/theme_service.dart';
 import 'core/services/firebase_service.dart';
-// New import
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  WidgetsFlutterBinding.ensureInitialized();
+class ErrorScreen extends StatelessWidget {
+  const ErrorScreen({super.key});
 
-  // Set up global error handling
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    // Optional: Send to crash reporting service in production
-  };
-
-  // Set up global error widget
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    return Material(
-      child: Container(
-        color: AppGreyscale.white,
-        child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: AppGreyscale.gray900,
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Something went wrong',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          color: AppGreyscale.white,
+          child: SafeArea(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 64,
                       color: AppGreyscale.gray900,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'An unexpected error occurred. Please restart the app.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppTextColors.secondary,
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Application Error',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppGreyscale.gray900,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    Text(
+                      'An unexpected error occurred during startup. Please check the console for details.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppTextColors.secondary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
     );
-  };
+  }
+}
 
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase Service
-  await FirebaseService.initialize();
+  try {
+    await dotenv.load(fileName: ".env");
 
-  // Initialize Secure Storage
-  await SecureStorageService.initialize();
+    // Initialize Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  // Initialize Theme Service
-  await ThemeService.initialize();
+    // Initialize Firebase Service
+    await FirebaseService.initialize();
 
-  // Lock orientation to portrait
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+    // Initialize Secure Storage
+    await SecureStorageService.initialize();
 
-  // Set system UI overlay style
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: AppGreyscale.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ),
-  );
+    // Initialize Theme Service
+    await ThemeService.initialize();
 
-  runApp(const ProviderScope(child: ShapeShredApp()));
+    // Set up global error handling
+    FlutterError.onError = (FlutterErrorDetails details) {
+      debugPrint('Flutter Error: ${details.exception}');
+      FlutterError.presentError(details);
+    };
+
+    // Lock orientation to portrait
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    // Set system UI overlay style
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: AppGreyscale.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    );
+
+    runApp(const ProviderScope(child: ShapeShredApp()));
+  } catch (e, stackTrace) {
+    debugPrint('APP STARTUP ERROR: $e');
+    debugPrint('STACK TRACE: $stackTrace');
+    runApp(const ProviderScope(child: ErrorScreen()));
+  }
 }
 
 class ShapeShredApp extends StatefulWidget {

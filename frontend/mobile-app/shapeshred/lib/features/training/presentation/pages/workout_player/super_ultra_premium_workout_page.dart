@@ -5,28 +5,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/atoms/premium_button.dart';
 import 'package:shapeshred/core/design_system/atoms/premium_card.dart';
-import 'package:shapeshred/core/design_system/atoms/premium_text_field.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/design_system/tokens/shadows.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
+import 'package:shapeshred/features/training/presentation/widgets/form_tracker_overlay.dart';
 import 'package:shapeshred/providers/workout_session_provider.dart';
+
+typedef FormFeedbackCallback = void Function(Map<String, dynamic> feedback);
 
 /// Enhanced 3D Exercise Visualization Widget with premium materials and lighting
 class PremiumExerciseVisualization3D extends StatefulWidget {
   final Exercise exercise;
   final bool showFormFeedback;
-  final Function(Map<String, dynamic>)? onFormFeedback;
+  final bool isCameraActive;
+  final FormFeedbackCallback? onFormFeedback;
   final bool showEnvironment;
 
   const PremiumExerciseVisualization3D({
     super.key,
     required this.exercise,
     this.showFormFeedback = false,
+    required this.isCameraActive,
     this.onFormFeedback,
     this.showEnvironment = true,
   });
@@ -41,7 +44,6 @@ class _PremiumExerciseVisualization3DState extends State<PremiumExerciseVisualiz
   late final AnimationController _controller;
   late final Animation<double> _rotationAnimation;
   late final Animation<double> _pulseAnimation;
-  bool _isCameraActive = false;
   Map<String, dynamic>? _latestFormFeedback;
   double _environmentIntensity = 0.0;
 
@@ -82,34 +84,7 @@ class _PremiumExerciseVisualization3DState extends State<PremiumExerciseVisualiz
     super.dispose();
   }
 
-  void _startFormAnalysis() {
-    setState(() => _isCameraActive = true);
-
-    // Simulate periodic feedback
-    Timer.periodic(const Duration(seconds: 3), (timer) {
-      if (!mounted) return;
-      setState(() {
-        // Simulate form feedback data
-        _latestFormFeedback = {
-          'depth': 0.8 + (math.Random().nextDouble() * 0.2), // 0.8-1.0
-          'speed': 0.6 + (math.Random().nextDouble() * 0.4), // 0.6-1.0
-          'alignment': 0.7 + (math.Random().nextDouble() * 0.3), // 0.7-1.0
-          'balance': 0.5 + (math.Random().nextDouble() * 0.5), // 0.5-1.0
-          'stability': 0.75 + (math.Random().nextDouble() * 0.25), // 0.75-1.0
-          'timestamp': DateTime.now().toIso8601String(),
-        };
-
-        if (widget.onFormFeedback != null && _latestFormFeedback != null) {
-          widget.onFormFeedback!(_latestFormFeedback!);
-        }
-      });
-    });
-  }
-
-  void _stopFormAnalysis() {
-    setState(() => _isCameraActive = false);
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     // Determine if we should show 3D visualization or placeholder
@@ -161,12 +136,16 @@ class _PremiumExerciseVisualization3DState extends State<PremiumExerciseVisualiz
             ),
           ),
 
+          // FormTracker Overlay (when camera is active)
+          if (widget.isCameraActive)
+            const FormTrackerOverlay(),
+
           // Form Feedback Overlay
-          if (widget.showFormFeedback && _isCameraActive)
+          if (widget.showFormFeedback && widget.isCameraActive)
             _buildFormFeedbackOverlay(),
 
           // Camera Active Indicator
-          if (_isCameraActive)
+          if (widget.isCameraActive)
             Positioned(
               top: 12.h,
               right: 12.w,
@@ -579,6 +558,7 @@ class _SuperUltraPremiumWorkoutPageState
                 PremiumExerciseVisualization3D(
                   exercise: state.currentExercise!.exercise,
                   showFormFeedback: _showFormFeedback,
+                  isCameraActive: _isCameraActive,
                   onFormFeedback: _onFormFeedback,
                   showEnvironment: true,
                 ),
@@ -1011,17 +991,16 @@ class _SuperUltraPremiumWorkoutPageState
             children: [
               Expanded(
                 child: Slider(
-                  value:
-                      5.0, // Placeholder - we don't store RPE in the notifier yet
+                  value: 5.0, // Placeholder - we don't store RPE in the notifier yet
                   min: 1,
                   max: 10,
                   divisions: 9,
                   label: '5',
                   activeColor: AppColors.primary,
                   onChanged: (value) {
-                      // We don't store RPE in the notifier; if needed, extend workout log.
-                      HapticHelper.lightImpact();
-                    },
+                    // We don't store RPE in the notifier; if needed, extend workout log.
+                    HapticHelper.lightImpact();
+                  },
                 ),
               ),
               SizedBox(width: AppSpacing.space16.w),
@@ -1228,190 +1207,17 @@ class _SuperUltraPremiumWorkoutPageState
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: AppSpacing.space16.h),
-
-              Text(
-                state.workout?.name ?? 'Workout',
-                style: AppTypography.titleLarge.copyWith(
-                  color: AppTextColors.secondary,
-                ),
-              ),
-              SizedBox(height: AppSpacing.space24.h),
-
-              // Workout Stats with Biometrics and premium styling
-              _buildPremiumStatCard(
-                label: 'Duration',
-                value: '${state.elapsed.inMinutes} min',
-                icon: Icons.access_time,
-                color: AppColors.primary,
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-              _buildPremiumStatCard(
-                label: 'Calories Burned',
-                value: '${_calculateCalories(state.elapsed)} cal',
-                icon: Icons.local_fire_department,
-                color: AppColors.error,
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-              _buildPremiumStatCard(
-                label: 'Avg Heart Rate',
-                value:
-                    '${_biometrics.value > 0 ? (_biometrics.value * 200).round() : 0} bpm',
-                icon: Icons.favorite,
-                color: AppColors.error,
-              ),
-              SizedBox(height: AppSpacing.space16.h),
-              _buildPremiumStatCard(
-                label: 'Form Score',
-                value: _formScores.isNotEmpty
-                    ? '${(_formScores.values.reduce((a, b) => a + b) / _formScores.length * 100).toStringAsFixed(0)}%'
-                    : 'N/A',
-                icon: Icons.health_and_safety,
-                color: AppColors.warning,
-              ),
-              SizedBox(height: AppSpacing.space32.h),
-
-              // Achievement Badges with animation
-              Wrap(
-                spacing: 8.w,
-                runSpacing: 8.h,
-                children: [
-                  if ((state.workout?.exercises.length ?? 0) >= 5)
-                    _buildAnimatedAchievementBadge('Consistency',
-                        Icons.local_fire_department, AppColors.success),
-                  if (_biometrics.value > 0.7)
-                    _buildAnimatedAchievementBadge(
-                        'Intensity', Icons.favorite, AppColors.error),
-                  if (_formScores.isNotEmpty &&
-                      _formScores.values.where((score) => score > 0.8).length >=
-                          3)
-                    _buildAnimatedAchievementBadge(
-                        'Form Master', Icons.emoji_events, AppColors.warning),
-                ],
-              ),
-              SizedBox(height: AppSpacing.space32.h),
-
-              // Finish Workout Button with celebration animation
-              PremiumButton(
-                label: 'Finish Workout',
-                onPressed: () {
-                  HapticHelper.successImpact();
-                  // Reset the selected workout provider so we don't reuse the same workout
-                  ref.read(selectedWorkoutProvider.notifier).select(null);
-                  // Pop to home
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                fullWidth: true,
-              ),
             ],
           ),
         ),
       ),
     );
   }
-
-  int _calculateCalories(Duration duration) {
-    // More accurate calorie calculation using MET values and heart rate
-    final double durationHours = duration.inSeconds / 3600;
-    const double weightKg = 70.0; // Would come from user profile
-    const double metValue = 6.0; // Moderate effort MET value
-    return (metValue * weightKg * durationHours).round();
-  }
-
-  Widget _buildPremiumStatCard({
-    required String label,
-    required String value,
-    required IconData icon,
-    required Color color,
-  }) {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.space20.w),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceVariant,
-        borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-        border: Border.all(
-          color: AppColors.outline.withValues(alpha: 0.5),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 32.sp, color: AppTextColors.secondary),
-          SizedBox(width: AppSpacing.space16.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppTextColors.secondary,
-                  ),
-                ),
-                SizedBox(height: AppSpacing.space4.h),
-                Text(
-                  value,
-                  style: AppTypography.titleLarge.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: color,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAnimatedAchievementBadge(String label, IconData icon, Color color) {
-    return AnimatedContainer(
-      duration: AppDurations.moderate,
-      curve: AppCurves.premiumFluid,
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16.sp, color: color),
-          SizedBox(width: 4.w),
-          Text(
-            label,
-            style: TextStyle(
-              color: color,
-              fontSize: 10.sp,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
-// ---------------------------------------------------------------------------
-// Helper class for biometric monitoring (enhanced version)
-// ---------------------------------------------------------------------------
+// Biometrics monitor for workout intensity and heart rate simulation
 class WorkoutBiometricsMonitor extends ValueNotifier<double> {
-  WorkoutBiometricsMonitor(
-      super.value); // value represents workout intensity 0.0-1.0
+  WorkoutBiometricsMonitor(super.value); // value represents workout intensity 0.0-1.0
 
   bool get isHighIntensity => value > 0.7;
   bool get isRecovery => value < 0.3;
