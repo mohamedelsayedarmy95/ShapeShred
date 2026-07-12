@@ -104,19 +104,25 @@ class SkeletonCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.radiusLarge),
         border: Border.all(color: AppColors.outline),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SkeletonLoader(
-            width: 60.w,
-            height: 60.h,
-            borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
-          ),
-          SizedBox(height: AppSpacing.space12.h),
-          SkeletonLoader(width: 120.w, height: 16.h),
-          SizedBox(height: AppSpacing.space8.h),
-          SkeletonLoader(width: 80.w, height: 12.h),
-        ],
+      // scaleDown keeps short cards (height < content) from overflowing.
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.topLeft,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SkeletonLoader(
+              width: 60.w,
+              height: 60.h,
+              borderRadius: BorderRadius.circular(AppRadius.radiusMedium),
+            ),
+            SizedBox(height: AppSpacing.space12.h),
+            SkeletonLoader(width: 120.w, height: 16.h),
+            SizedBox(height: AppSpacing.space8.h),
+            SkeletonLoader(width: 80.w, height: 12.h),
+          ],
+        ),
       ),
     );
   }

@@ -449,12 +449,8 @@ class _ProfilePageState extends State<ProfilePage> {
             child: TextButton(
               onPressed: () {
                 HapticHelper.light();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SuperUltraPremiumAnalyticsDetailPage(),
-                  ),
-                );
+                // Root-navigator route: full-screen, no bottom bar.
+                context.push('/super-ultra-premium-analytics');
               },
               child: Text(
                 'View Detailed Analytics',

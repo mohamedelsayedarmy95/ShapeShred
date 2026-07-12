@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
@@ -12,7 +13,6 @@ import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/core/design_system/molecules/stat_card.dart';
 import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
 import 'package:shapeshred/core/design_system/molecules/weekly_activity_chart.dart';
-import 'package:shapeshred/features/training/presentation/pages/workout_player/super_ultra_premium_workout_page.dart';
 import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
 import 'package:shapeshred/core/services/preferences_service.dart';
@@ -239,8 +239,12 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
     ];
 
-    // Default workout
-    List<WorkoutExercise> exercises = [];
+    // Default workout: balanced mix, so an unknown/empty goal still
+    // yields a startable workout (empty exercises would crash the player).
+    List<WorkoutExercise> exercises = [
+      ...hiitExercises.take(1),
+      ...strengthExercises.take(2),
+    ].map((e) => WorkoutExercise(exercise: e, sets: 3, reps: 12)).toList();
     String title = 'Full Body Blast';
     String duration = '20 min';
     String level = 'Beginner';
@@ -480,13 +484,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     if (_todaysWorkout == null) return;
     // Set the selected workout in the provider
     ref.read(selectedWorkoutProvider.notifier).select(_todaysWorkout);
-    // Navigate to the Super Ultra Premium player page
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SuperUltraPremiumWorkoutPage(),
-      ),
-    );
+    // Root-navigator route: full-screen player without the bottom bar.
+    context.push('/super-ultra-premium-workout');
   }
 
   Widget _buildStatsRow() {

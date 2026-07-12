@@ -510,8 +510,9 @@ class _SuperUltraPremiumWorkoutPageState
   Widget build(BuildContext context) {
     final WorkoutSessionState state = ref.watch(workoutSessionProvider);
 
-    // If no workout is selected, go back.
-    if (state.workout == null) {
+    // If no workout is selected or it has no exercises, go back.
+    if (state.workout == null ||
+        (!state.isFinished && state.currentExercise == null)) {
       Future.microtask(() => Navigator.of(context).maybePop());
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
