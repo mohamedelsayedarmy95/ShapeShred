@@ -38,6 +38,12 @@ service cloud.firestore {
         allow read, create, update, delete:
           if isAuthenticated() && isOwner(userId);
       }
+
+      match /daily_logs/{dayId} {
+        allow read, create, update:
+          if isAuthenticated() && isOwner(userId);
+        allow delete: if false;
+      }
     }
     
     match /user_profiles/{userId} {

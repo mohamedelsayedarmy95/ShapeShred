@@ -38,7 +38,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
   // Today's logged meals (users/{uid}/meals), newest first.
   List<food_models.Meal> _todayMeals = [];
-  final int _waterConsumed = 0;
+  int _waterConsumed = 0;
 
   int get _caloriesConsumed =>
       _todayMeals.fold(0, (sum, m) => sum + m.totalCalories);
@@ -124,6 +124,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
       // Today's meals drive the consumed totals and the meals list.
       await _loadTodayMeals();
+      await _loadTodayWater();
     } catch (e) {
       debugPrint('Error loading user data: $e');
       // Fallback to defaults
@@ -163,6 +164,46 @@ class _NutritionPageState extends State<NutritionPage> {
     _todayMeals = snapshot.docs
         .map((doc) => food_models.Meal.fromJson(doc.data()))
         .toList();
+  }
+
+  String get _todayKey {
+    final now = DateTime.now();
+    return '${now.year}-${now.month.toString().padLeft(2, '0')}-'
+        '${now.day.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> _loadTodayWater() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('daily_logs')
+        .doc(_todayKey)
+        .get();
+
+    _waterConsumed = (doc.data()?['water'] as num?)?.toInt() ?? 0;
+  }
+
+  Future<void> _setWater(int glasses) async {
+    setState(() => _waterConsumed = glasses);
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('daily_logs')
+          .doc(_todayKey)
+          .set({
+        'water': glasses,
+        'updatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+    } catch (e) {
+      debugPrint('Failed to save water intake: $e');
+    }
   }
 
   Future<void> _openMealLogging() async {
@@ -333,6 +374,7 @@ class _NutritionPageState extends State<NutritionPage> {
                       WaterTracker(
                         current: _waterConsumed,
                         goal: _waterGoal,
+                        onChanged: _setWater,
                       ),
                       SizedBox(height: AppSpacing.space32.h),
                     ],

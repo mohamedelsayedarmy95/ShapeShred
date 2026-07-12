@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
+import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
+import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 
+/// Interactive daily water tracker.
+///
+/// Tapping glass N sets the count to N+1; tapping the last filled glass
+/// removes it (undo). [onChanged] reports the new count for persistence.
 class WaterTracker extends StatelessWidget {
   final int current;
   final int goal;
+  final ValueChanged<int>? onChanged;
 
   const WaterTracker({
     super.key,
     required this.current,
     required this.goal,
+    this.onChanged,
   });
+
+  void _onGlassTap(int index) {
+    if (onChanged == null) return;
+    HapticHelper.light();
+    final int tapped = index + 1;
+    // Tapping the last filled glass empties it; anything else fills up to it.
+    onChanged!(tapped == current ? index : tapped);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +73,35 @@ class WaterTracker extends StatelessWidget {
               (index) => Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: Container(
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: index < current
-                          ? AppColors.info
-                          : AppColors.surfaceVariant,
-                      borderRadius:
-                          BorderRadius.circular(AppRadius.radiusSmall),
-                      border: Border.all(
-                        color: AppColors.outline,
-                        width: 1,
+                  child: Semantics(
+                    button: true,
+                    label: 'Glass ${index + 1} of $goal',
+                    child: GestureDetector(
+                      onTap: () => _onGlassTap(index),
+                      child: AnimatedContainer(
+                        duration: AppDurations.quick,
+                        curve: Curves.easeOutCubic,
+                        height: 44.h,
+                        decoration: BoxDecoration(
+                          color: index < current
+                              ? AppColors.info
+                              : AppColors.surfaceVariant,
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.radiusSmall),
+                          border: Border.all(
+                            color: AppColors.outline,
+                            width: 1,
+                          ),
+                        ),
+                        child: index < current
+                            ? Icon(
+                                Icons.water_drop,
+                                color: AppColors.onSecondary,
+                                size: 16.sp,
+                              )
+                            : null,
                       ),
                     ),
-                    child: index < current
-                        ? Icon(
-                            Icons.water_drop,
-                            color: AppColors.onSecondary,
-                            size: 16.sp,
-                          )
-                        : null,
                   ),
                 ),
               ),
