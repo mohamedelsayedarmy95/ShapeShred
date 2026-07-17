@@ -69,4 +69,135 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingDesc3 => 'تواصل مع مدربك عبر مكالمات فيديو ومهام يومية.';
+
+  @override
+  String get tabHome => 'الرئيسية';
+
+  @override
+  String get tabTraining => 'التمارين';
+
+  @override
+  String get tabNutrition => 'التغذية';
+
+  @override
+  String get tabProfile => 'حسابي';
+
+  @override
+  String get goodMorning => 'صباح الخير،';
+
+  @override
+  String get goodAfternoon => 'مساء الخير،';
+
+  @override
+  String get goodEvening => 'مساء الخير،';
+
+  @override
+  String get todaysWorkout => 'تمرين اليوم';
+
+  @override
+  String get startWorkout => 'ابدأ التمرين';
+
+  @override
+  String get caloriesBurned => 'سعرات محروقة';
+
+  @override
+  String get workouts => 'تمارين';
+
+  @override
+  String get activeDays => 'أيام نشطة';
+
+  @override
+  String get thisWeek => 'هذا الأسبوع';
+
+  @override
+  String get minutes => 'دقيقة';
+
+  @override
+  String get exercisesCount => 'تمارين';
+
+  @override
+  String get trackNutrition => 'تابع تغذيتك لتحقق أهدافك.';
+
+  @override
+  String get dailyCalories => 'سعرات اليوم';
+
+  @override
+  String get kcalRemaining => 'سعرة متبقية';
+
+  @override
+  String get protein => 'بروتين';
+
+  @override
+  String get carbs => 'كربوهيدرات';
+
+  @override
+  String get fat => 'دهون';
+
+  @override
+  String get todaysMeals => 'وجبات اليوم';
+
+  @override
+  String get addMeal => 'أضف وجبة';
+
+  @override
+  String get noMealsYet => 'لا توجد وجبات بعد';
+
+  @override
+  String get tapToLogFirstMeal => 'اضغط لتسجيل أول وجبة اليوم';
+
+  @override
+  String get waterIntake => 'شرب الماء';
+
+  @override
+  String get glasses => 'أكواب';
+
+  @override
+  String get logMeal => 'تسجيل وجبة';
+
+  @override
+  String get mealType => 'نوع الوجبة';
+
+  @override
+  String get breakfast => 'فطور';
+
+  @override
+  String get lunch => 'غداء';
+
+  @override
+  String get dinner => 'عشاء';
+
+  @override
+  String get snack => 'سناك';
+
+  @override
+  String get addFood => 'أضف طعاماً';
+
+  @override
+  String get saveMeal => 'حفظ الوجبة';
+
+  @override
+  String get mealSaved => 'تم حفظ الوجبة بنجاح!';
+
+  @override
+  String get workoutComplete => 'اكتمل التمرين!';
+
+  @override
+  String get finishWorkout => 'إنهاء التمرين';
+
+  @override
+  String get duration => 'المدة';
+
+  @override
+  String get findPerfectWorkout => 'لنجد تمرينك المثالي';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get systemDefault => 'لغة النظام';
+
+  @override
+  String helloUser(String name) {
+    return 'أهلاً، $name!';
+  }
 }

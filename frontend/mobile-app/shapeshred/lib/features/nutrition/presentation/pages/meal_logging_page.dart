@@ -11,6 +11,7 @@ import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/nutrition/domain/models/food.dart'
     as food_models;
 import 'package:shapeshred/features/nutrition/presentation/pages/food_database_page.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 class MealLoggingPage extends StatefulWidget {
   const MealLoggingPage({super.key});
@@ -24,12 +25,27 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
   final List<food_models.MealItem> _mealItems = [];
   bool _isLoading = false;
 
+  // Internal values stay English: they are stored in Firestore.
   final List<String> _mealTypes = [
     'Breakfast',
     'Lunch',
     'Dinner',
     'Snack',
   ];
+
+  String _mealTypeLabel(BuildContext context, String type) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (type) {
+      case 'Breakfast':
+        return l10n.breakfast;
+      case 'Lunch':
+        return l10n.lunch;
+      case 'Dinner':
+        return l10n.dinner;
+      default:
+        return l10n.snack;
+    }
+  }
 
   int get _totalCalories =>
       _mealItems.fold(0, (sum, item) => sum + item.calories);
@@ -51,7 +67,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Log Meal',
+          AppLocalizations.of(context)!.logMeal,
           style: AppTypography.headlineSmall,
         ),
       ),
@@ -65,7 +81,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
 
               // Meal Type Selection
               Text(
-                'Meal Type',
+                AppLocalizations.of(context)!.mealType,
                 style: AppTypography.labelMedium.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -99,7 +115,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                         ),
                       ),
                       child: Text(
-                        type,
+                        _mealTypeLabel(context, type),
                         style: AppTypography.labelMedium.copyWith(
                           color: isSelected
                               ? AppColors.onPrimary
@@ -132,7 +148,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
                 },
                 icon: Icon(Icons.add, color: AppColors.primary),
                 label: Text(
-                  'Add Food',
+                  AppLocalizations.of(context)!.addFood,
                   style: AppTypography.labelMedium.copyWith(
                     color: AppColors.primary,
                   ),
@@ -219,7 +235,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
 
               // Save Button
               PremiumButton(
-                label: 'Save Meal',
+                label: AppLocalizations.of(context)!.saveMeal,
                 onPressed: _mealItems.isEmpty ? null : _saveMeal,
                 isLoading: _isLoading,
                 fullWidth: true,
@@ -327,7 +343,7 @@ class _MealLoggingPageState extends State<MealLoggingPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Meal saved successfully!',
+              AppLocalizations.of(context)!.mealSaved,
               style: AppTypography.bodyMedium.copyWith(
                 color: AppColors.onTertiary,
               ),

@@ -5,6 +5,7 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/atoms/animated_progress_bar.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 class CaloriesHeroCard extends StatelessWidget {
   final int consumed;
@@ -53,7 +54,7 @@ class CaloriesHeroCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppRadius.radiusPill),
                 ),
                 child: Text(
-                  ' DAILY CALORIES',
+                  ' ${AppLocalizations.of(context)!.dailyCalories}',
                   style: AppTypography.labelSmall.copyWith(
                     color: AppColors.onPrimary,
                     letterSpacing: 1.2,
@@ -95,7 +96,7 @@ class CaloriesHeroCard extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.space4.h),
           Text(
-            '$remaining kcal remaining',
+            '$remaining ${AppLocalizations.of(context)!.kcalRemaining}',
             style: AppTypography.bodyMedium.copyWith(
               color: AppColors.onPrimary.withValues(alpha: 0.6),
             ),

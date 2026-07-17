@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shapeshred/features/training/data/workout_history_repository.dart';
+import 'package:shapeshred/providers/user_data_provider.dart';
+import 'package:shapeshred/core/services/locale_service.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
@@ -25,14 +29,14 @@ import 'package:shapeshred/features/profile/presentation/pages/super_ultra_premi
 import 'package:shapeshred/features/auth/presentation/pages/super_ultra_premium_onboarding_page.dart';
 import 'package:shapeshred/features/training/presentation/pages/workout_player/super_ultra_premium_workout_page.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
   String? _fitnessLevel;
@@ -48,26 +52,22 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadData();
   }
 
-  Future<void> _loadUserData() async {
-    final user = _auth.currentUser;
-    if (user != null) {
-      setState(() {
-        _user = user;
-      });
-    }
+  Future<void> _loadData() async {
+    _user = _auth.currentUser;
+    setState(() => _isLoading = true);
     try {
-      // Load additional data from PreferencesService
-      _fitnessLevel = await PreferencesService.getFitnessLevel();
-      _goal = await PreferencesService.getUserGoal();
-      _height = await PreferencesService.getUserHeight();
-      _weight = await PreferencesService.getUserWeight();
-      _age = await PreferencesService.getUserAge();
-      _gender = await PreferencesService.getUserGender();
-
-      // Set motivational message based on goal
+      final profile = await ref.read(userDataProvider.future);
+      if (profile != null && mounted) {
+        _fitnessLevel = profile.fitnessLevel.isEmpty ? null : profile.fitnessLevel;
+        _goal = profile.goal.isEmpty ? null : profile.goal;
+        _height = profile.height;
+        _weight = profile.weight;
+        _age = profile.age;
+        _gender = profile.gender;
+      }
       switch (_goal) {
         case 'Lose Weight':
           _motivationalMessage =
@@ -89,6 +89,8 @@ class _ProfilePageState extends State<ProfilePage> {
           _motivationalMessage = 'Track your progress and reach your goals!';
           break;
       }
+    } catch (e) {
+      debugPrint('ProfilePage: error loading data: $e');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -624,6 +626,15 @@ class _ProfilePageState extends State<ProfilePage> {
               _showUiExperienceDialog(context);
             },
           ),
+      () => _buildFeatureCard(
+            icon: Icons.language,
+            title: AppLocalizations.of(context)!.language,
+            subtitle: _currentLanguageName(context),
+            onTap: () {
+              HapticHelper.light();
+              _showLanguagePicker(context);
+            },
+          ),
     ];
 
     return List.generate(cards.length, (index) {
@@ -635,6 +646,73 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
     });
+  }
+
+  static const Map<String, String> _languageNames = {
+    'en': 'English',
+    'ar': 'العربية',
+    'de': 'Deutsch',
+    'es': 'Español',
+    'fr': 'Français',
+    'ja': '日本語',
+    'zh': '中文',
+  };
+
+  String _currentLanguageName(BuildContext context) {
+    final locale = LocaleService.localeNotifier.value;
+    if (locale == null) return AppLocalizations.of(context)!.systemDefault;
+    return _languageNames[locale.languageCode] ?? locale.languageCode;
+  }
+
+  void _showLanguagePicker(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final current = LocaleService.localeNotifier.value?.languageCode;
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadius.radiusLarge),
+        ),
+      ),
+      builder: (sheetContext) {
+        Widget option(String? code, String label) {
+          final selected = code == current;
+          return ListTile(
+            title: Text(
+              label,
+              style: AppTypography.bodyLarge.copyWith(
+                color: AppTextColors.primary,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+              ),
+            ),
+            trailing: selected
+                ? Icon(Icons.check, color: AppColors.primary)
+                : null,
+            onTap: () async {
+              HapticHelper.selectionClick();
+              await LocaleService.setLocale(
+                  code == null ? null : Locale(code));
+              if (sheetContext.mounted) Navigator.pop(sheetContext);
+              if (mounted) setState(() {});
+            },
+          );
+        }
+
+        return SafeArea(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.space8.h),
+            children: [
+              option(null, l10n.systemDefault),
+              for (final entry in _languageNames.entries)
+                option(entry.key, entry.value),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildStat(String label, String value) {

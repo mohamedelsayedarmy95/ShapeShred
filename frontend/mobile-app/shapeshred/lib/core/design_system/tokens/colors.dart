@@ -10,26 +10,26 @@ import 'package:shapeshred/core/services/theme_service.dart';
 class AppColors {
   // Core semantic roles - these should be used throughout the app
   static Color get primary => _getColorFromScheme(
-        const Color(0xFF6D28D9), // Electric violet (light)
-        const Color(0xFF8B5CF6), // Electric violet, brighter for pop on black
+        const Color(0xFF111111), // Premium charcoal black (light)
+        const Color(0xFFFFFFFF), // White for pop on dark background
       );
   static Color get onPrimary => _getColorFromScheme(
         Colors.white,
-        Colors.white,
+        const Color(0xFF111111),
       );
 
   static Color get secondary => _getColorFromScheme(
-        const Color(0xFF0D9488), // Electric teal (light)
-        const Color(0xFF2DD4BF), // Electric teal, brighter for dark
+        const Color(0xFF444444), // Dark gray (light)
+        const Color(0xFF9CA3AF), // Medium gray (dark)
       );
   static Color get onSecondary => _getColorFromScheme(
         Colors.white,
-        const Color(0xFF042F2E),
+        const Color(0xFF111111),
       );
 
   static Color get tertiary => _getColorFromScheme(
-        const Color(0xFF16A34A), // Performance lime-green (light)
-        const Color(0xFF4ADE80), // Performance lime-green (dark)
+        const Color(0xFF16A34A), // Performance green (light)
+        const Color(0xFF4ADE80), // Performance green (dark)
       );
   static Color get onTertiary => _getColorFromScheme(
         Colors.white,
@@ -115,10 +115,10 @@ class AppColors {
         const Color(0xFF16161D), // Dark-on-light text
       );
 
-  // HERO GRADIENT - violet -> teal, used for CTAs, hero cards, progress rings
+  // HERO GRADIENT - premium charcoal, used for CTAs, hero cards
   static const List<Color> heroGradient = [
-    Color(0xFF8B5CF6),
-    Color(0xFF2DD4BF),
+    Color(0xFF1A1A1A),
+    Color(0xFF404040),
   ];
 
   // ACCENT COLORS FOR DATA VISUALIZATION

@@ -14,6 +14,7 @@ import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
 import 'package:shapeshred/features/training/presentation/widgets/form_tracker_overlay.dart';
 import 'package:shapeshred/providers/workout_session_provider.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 typedef FormFeedbackCallback = void Function(Map<String, dynamic> feedback);
 
@@ -1203,7 +1204,7 @@ class _SuperUltraPremiumWorkoutPageState
               SizedBox(height: AppSpacing.space32.h),
 
               Text(
-                'Workout Complete!',
+                AppLocalizations.of(context)!.workoutComplete,
                 style: AppTypography.headlineMedium.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -1219,13 +1220,13 @@ class _SuperUltraPremiumWorkoutPageState
 
               _buildFinishedStat(
                 icon: Icons.access_time,
-                label: 'Duration',
+                label: AppLocalizations.of(context)!.duration,
                 value: '${state.elapsed.inMinutes} min',
               ),
               SizedBox(height: AppSpacing.space12.h),
               _buildFinishedStat(
                 icon: Icons.local_fire_department,
-                label: 'Calories Burned',
+                label: AppLocalizations.of(context)!.caloriesBurned,
                 value:
                     '${(6.0 * 70.0 * state.elapsed.inSeconds / 3600).round()} cal',
               ),
@@ -1238,7 +1239,7 @@ class _SuperUltraPremiumWorkoutPageState
               SizedBox(height: AppSpacing.space32.h),
 
               PremiumButton(
-                label: 'Finish Workout',
+                label: AppLocalizations.of(context)!.finishWorkout,
                 onPressed: () {
                   HapticHelper.successImpact();
                   // Reset the selection so the session doesn't get reused.

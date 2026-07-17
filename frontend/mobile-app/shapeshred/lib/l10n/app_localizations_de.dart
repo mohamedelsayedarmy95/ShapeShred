@@ -70,4 +70,136 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get onboardingDesc3 =>
       'Verbinden Sie sich mit Ihrem Coach über Videoanrufe und tägliche Aufgaben.';
+
+  @override
+  String get tabHome => 'Start';
+
+  @override
+  String get tabTraining => 'Training';
+
+  @override
+  String get tabNutrition => 'Ernährung';
+
+  @override
+  String get tabProfile => 'Profil';
+
+  @override
+  String get goodMorning => 'Guten Morgen,';
+
+  @override
+  String get goodAfternoon => 'Guten Tag,';
+
+  @override
+  String get goodEvening => 'Guten Abend,';
+
+  @override
+  String get todaysWorkout => 'HEUTIGES WORKOUT';
+
+  @override
+  String get startWorkout => 'WORKOUT STARTEN';
+
+  @override
+  String get caloriesBurned => 'Verbrannte Kalorien';
+
+  @override
+  String get workouts => 'Workouts';
+
+  @override
+  String get activeDays => 'Aktive Tage';
+
+  @override
+  String get thisWeek => 'Diese Woche';
+
+  @override
+  String get minutes => 'Min.';
+
+  @override
+  String get exercisesCount => 'Übungen';
+
+  @override
+  String get trackNutrition =>
+      'Verfolge deine Ernährung, um deine Ziele zu erreichen.';
+
+  @override
+  String get dailyCalories => 'TAGESKALORIEN';
+
+  @override
+  String get kcalRemaining => 'kcal übrig';
+
+  @override
+  String get protein => 'Protein';
+
+  @override
+  String get carbs => 'Kohlenhydrate';
+
+  @override
+  String get fat => 'Fett';
+
+  @override
+  String get todaysMeals => 'Heutige Mahlzeiten';
+
+  @override
+  String get addMeal => 'Mahlzeit hinzufügen';
+
+  @override
+  String get noMealsYet => 'Noch keine Mahlzeiten';
+
+  @override
+  String get tapToLogFirstMeal => 'Tippe, um deine erste Mahlzeit einzutragen';
+
+  @override
+  String get waterIntake => 'Wasseraufnahme';
+
+  @override
+  String get glasses => 'Gläser';
+
+  @override
+  String get logMeal => 'Mahlzeit eintragen';
+
+  @override
+  String get mealType => 'Mahlzeitentyp';
+
+  @override
+  String get breakfast => 'Frühstück';
+
+  @override
+  String get lunch => 'Mittagessen';
+
+  @override
+  String get dinner => 'Abendessen';
+
+  @override
+  String get snack => 'Snack';
+
+  @override
+  String get addFood => 'Lebensmittel hinzufügen';
+
+  @override
+  String get saveMeal => 'Mahlzeit speichern';
+
+  @override
+  String get mealSaved => 'Mahlzeit gespeichert!';
+
+  @override
+  String get workoutComplete => 'Workout abgeschlossen!';
+
+  @override
+  String get finishWorkout => 'Workout beenden';
+
+  @override
+  String get duration => 'Dauer';
+
+  @override
+  String get findPerfectWorkout => 'Finden wir dein perfektes Workout';
+
+  @override
+  String get language => 'Sprache';
+
+  @override
+  String get systemDefault => 'Systemstandard';
+
+  @override
+  String helloUser(String name) {
+    return 'Hallo, $name!';
+  }
 }

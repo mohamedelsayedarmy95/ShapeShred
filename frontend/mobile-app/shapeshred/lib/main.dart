@@ -10,7 +10,9 @@ import 'core/design_system/theme/dark_theme.dart';
 import 'core/design_system/tokens/colors.dart';
 import 'core/routes/app_router.dart';
 import 'core/services/secure_storage_service.dart';
+import 'core/services/locale_service.dart';
 import 'core/services/theme_service.dart';
+import 'l10n/app_localizations.dart';
 import 'core/services/firebase_service.dart';
 
 class ErrorScreen extends StatelessWidget {
@@ -84,6 +86,9 @@ void main() async {
     // Initialize Theme Service
     await ThemeService.initialize();
 
+    // Restore the user's chosen app language (null = system).
+    await LocaleService.initialize();
+
     // Set up global error handling
     FlutterError.onError = (FlutterErrorDetails details) {
       debugPrint('Flutter Error: ${details.exception}');
@@ -132,13 +137,22 @@ class _ShapeShredAppState extends State<ShapeShredApp> {
         return ValueListenableBuilder<ThemeMode>(
           valueListenable: ThemeService.modeNotifier,
           builder: (context, themeMode, _) {
-            return MaterialApp.router(
-              title: 'ShapeShred',
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppDarkTheme.theme,
-              themeMode: themeMode,
-              routerConfig: AppRouter.router,
+            return ValueListenableBuilder<Locale?>(
+              valueListenable: LocaleService.localeNotifier,
+              builder: (context, locale, _) {
+                return MaterialApp.router(
+                  title: 'ShapeShred',
+                  debugShowCheckedModeBanner: false,
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppDarkTheme.theme,
+                  themeMode: themeMode,
+                  locale: locale,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  routerConfig: AppRouter.router,
+                );
+              },
             );
           },
         );

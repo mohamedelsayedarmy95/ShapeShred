@@ -11,7 +11,7 @@ class ThemeService {
   /// Notifies listeners (e.g. the root MaterialApp) whenever the theme
   /// mode changes, so the whole app rebuilds with the new palette.
   static final ValueNotifier<ThemeMode> modeNotifier =
-      ValueNotifier<ThemeMode>(ThemeMode.dark);
+      ValueNotifier<ThemeMode>(ThemeMode.light);
 
   /// Initialize theme service
   static Future<void> initialize() async {

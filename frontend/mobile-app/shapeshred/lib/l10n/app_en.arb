@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "en",
   "appTitle": "ShapeShred",
   "welcome": "Welcome",
@@ -19,9 +19,55 @@
   "onboardingTitle2": "AI-Powered Progress",
   "onboardingDesc2": "Get personalized plans and instant feedback using smart technology.",
   "onboardingTitle3": "Live Coach Connection",
-  "onboardingDesc3": "Connect with your coach via video calls and daily tasks."
+  "onboardingDesc3": "Connect with your coach via video calls and daily tasks.",
+  "tabHome": "Home",
+  "tabTraining": "Training",
+  "tabNutrition": "Nutrition",
+  "tabProfile": "Profile",
+  "goodMorning": "Good morning,",
+  "goodAfternoon": "Good afternoon,",
+  "goodEvening": "Good evening,",
+  "todaysWorkout": "TODAY'S WORKOUT",
+  "startWorkout": "START WORKOUT",
+  "caloriesBurned": "Calories Burned",
+  "workouts": "Workouts",
+  "activeDays": "Active Days",
+  "thisWeek": "This Week",
+  "minutes": "min",
+  "exercisesCount": "exercises",
+  "trackNutrition": "Track your nutrition to reach your goals.",
+  "dailyCalories": "DAILY CALORIES",
+  "kcalRemaining": "kcal remaining",
+  "protein": "Protein",
+  "carbs": "Carbs",
+  "fat": "Fat",
+  "todaysMeals": "Today's Meals",
+  "addMeal": "Add Meal",
+  "noMealsYet": "No meals yet",
+  "tapToLogFirstMeal": "Tap to log your first meal today",
+  "waterIntake": "Water Intake",
+  "glasses": "glasses",
+  "logMeal": "Log Meal",
+  "mealType": "Meal Type",
+  "breakfast": "Breakfast",
+  "lunch": "Lunch",
+  "dinner": "Dinner",
+  "snack": "Snack",
+  "addFood": "Add Food",
+  "saveMeal": "Save Meal",
+  "mealSaved": "Meal saved successfully!",
+  "workoutComplete": "Workout Complete!",
+  "finishWorkout": "Finish Workout",
+  "duration": "Duration",
+  "findPerfectWorkout": "Let's find your perfect workout",
+  "language": "Language",
+  "systemDefault": "System default",
+  "helloUser": "Hello, {name}!",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
-
-
-
-

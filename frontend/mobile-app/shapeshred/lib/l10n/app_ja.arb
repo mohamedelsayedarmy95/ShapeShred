@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ja",
   "appTitle": "ShapeShred",
   "welcome": "ようこそ",
@@ -19,9 +19,55 @@
   "onboardingTitle2": "AIによる進捗管理",
   "onboardingDesc2": "スマートテクノロジーでパーソナライズされたプランと即時フィードバックを。",
   "onboardingTitle3": "コーチとの直接連携",
-  "onboardingDesc3": "ビデオ通話と日々のタスクでコーチとつながる。"
+  "onboardingDesc3": "ビデオ通話と日々のタスクでコーチとつながる。",
+  "tabHome": "ホーム",
+  "tabTraining": "トレーニング",
+  "tabNutrition": "栄養",
+  "tabProfile": "プロフィール",
+  "goodMorning": "おはようございます、",
+  "goodAfternoon": "こんにちは、",
+  "goodEvening": "こんばんは、",
+  "todaysWorkout": "今日のワークアウト",
+  "startWorkout": "ワークアウト開始",
+  "caloriesBurned": "消費カロリー",
+  "workouts": "ワークアウト",
+  "activeDays": "アクティブ日数",
+  "thisWeek": "今週",
+  "minutes": "分",
+  "exercisesCount": "種目",
+  "trackNutrition": "目標達成のために栄養を記録しましょう。",
+  "dailyCalories": "今日のカロリー",
+  "kcalRemaining": "kcal 残り",
+  "protein": "タンパク質",
+  "carbs": "炭水化物",
+  "fat": "脂質",
+  "todaysMeals": "今日の食事",
+  "addMeal": "食事を追加",
+  "noMealsYet": "まだ食事がありません",
+  "tapToLogFirstMeal": "タップして最初の食事を記録",
+  "waterIntake": "水分補給",
+  "glasses": "杯",
+  "logMeal": "食事を記録",
+  "mealType": "食事の種類",
+  "breakfast": "朝食",
+  "lunch": "昼食",
+  "dinner": "夕食",
+  "snack": "間食",
+  "addFood": "食品を追加",
+  "saveMeal": "食事を保存",
+  "mealSaved": "食事を保存しました！",
+  "workoutComplete": "ワークアウト完了！",
+  "finishWorkout": "ワークアウト終了",
+  "duration": "時間",
+  "findPerfectWorkout": "最適なワークアウトを見つけましょう",
+  "language": "言語",
+  "systemDefault": "システム設定に従う",
+  "helloUser": "こんにちは、{name}さん！",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
-
-
-
-

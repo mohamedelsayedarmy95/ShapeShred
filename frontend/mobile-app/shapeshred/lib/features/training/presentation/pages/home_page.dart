@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
@@ -15,9 +13,10 @@ import 'package:shapeshred/core/design_system/molecules/workout_card.dart';
 import 'package:shapeshred/core/design_system/molecules/weekly_activity_chart.dart';
 import 'package:shapeshred/features/training/domain/models/custom_workout.dart';
 import 'package:shapeshred/features/training/domain/models/exercise.dart';
-import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/providers/firebase_providers.dart';
+import 'package:shapeshred/providers/user_data_provider.dart';
 import 'package:shapeshred/providers/workout_session_provider.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -39,60 +38,29 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadData();
   }
 
-  Future<void> _loadUserData() async {
+  Future<void> _loadData() async {
     setState(() => _isLoading = true);
     try {
-      final user = ref.read(firebaseAuthProvider).currentUser;
-      if (user != null) {
-        // Try to get data from Firestore first
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        if (doc.exists && doc.data() != null) {
-          final data = doc.data()!;
-          setState(() {
-            _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-            _userEmail = user.email ?? '';
-            _userGoal = data['goal'] as String? ?? '';
-            _userFitnessLevel = data['fitnessLevel'] as String? ?? '';
-          });
-        } else {
-          // Fallback to SharedPreferences for goal and fitness level only
-          _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-          _userEmail = user.email ?? '';
-          _userGoal = await PreferencesService.getUserGoal() ?? '';
-          _userFitnessLevel = await PreferencesService.getFitnessLevel() ?? '';
-        }
+      final profile = await ref.read(userDataProvider.future);
+      if (profile != null && mounted) {
+        _userName = profile.displayName;
+        _userEmail = profile.email;
+        _userGoal = profile.goal;
+        _userFitnessLevel = profile.fitnessLevel;
       }
-
-      // Load today's workout based on goal and fitness level
       _todaysWorkout = _getTodaysWorkout(_userGoal, _userFitnessLevel);
-
-      // Real stats from the user's workout history
       _stats = await _loadRealStats();
-
-      // Load recommendations based on goal and fitness level
       _recommendations = _getRecommendations(_userGoal, _userFitnessLevel);
     } catch (e) {
-      debugPrint('Error loading user data: $e');
-      // Fallback to defaults
-      final user = ref.read(firebaseAuthProvider).currentUser;
-      _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
-      _userEmail = user?.email ?? '';
-      _userGoal = '';
-      _userFitnessLevel = '';
+      debugPrint('HomePage: error loading data: $e');
       _todaysWorkout = _getTodaysWorkout('', '');
       _stats = _emptyStats();
       _recommendations = _getRecommendations('', '');
     } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -486,13 +454,14 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   String _getGreeting() {
+    final l10n = AppLocalizations.of(context)!;
     final hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'Good morning,';
+      return l10n.goodMorning;
     } else if (hour < 17) {
-      return 'Good afternoon,';
+      return l10n.goodAfternoon;
     } else {
-      return 'Good evening,';
+      return l10n.goodEvening;
     }
   }
 
@@ -511,7 +480,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           child: StatCard(
             icon: '🔥',
             value: _stats?['caloriesBurned'].toString() ?? '0',
-            label: 'Calories Burned',
+            label: AppLocalizations.of(context)!.caloriesBurned,
           ),
         ),
         SizedBox(width: AppSpacing.space12.w),
@@ -519,7 +488,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           child: StatCard(
             icon: '💪',
             value: _stats?['workoutsCompleted'].toString() ?? '0',
-            label: 'Workouts',
+            label: AppLocalizations.of(context)!.workouts,
           ),
         ),
         SizedBox(width: AppSpacing.space12.w),
@@ -527,7 +496,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           child: StatCard(
             icon: '📅',
             value: _stats?['activeDays'].toString() ?? '0',
-            label: 'Active Days',
+            label: AppLocalizations.of(context)!.activeDays,
           ),
         ),
       ],
@@ -622,7 +591,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                 // This Week Activity Chart
                 Text(
-                  'This Week',
+                  AppLocalizations.of(context)!.thisWeek,
                   style: AppTypography.headlineSmall,
                 ),
                 SizedBox(height: AppSpacing.space16.h),
@@ -781,7 +750,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
               SizedBox(width: 4.w),
               Text(
-                'exercises',
+                AppLocalizations.of(context)!.exercisesCount,
                 style: AppTypography.bodyMedium.copyWith(
                   color: AppColors.onPrimary.withValues(alpha: 0.8),
                 ),
@@ -799,7 +768,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
               child: Center(
                 child: Text(
-                  'START WORKOUT',
+                  AppLocalizations.of(context)!.startWorkout,
                   style: AppTypography.labelLarge.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w800,

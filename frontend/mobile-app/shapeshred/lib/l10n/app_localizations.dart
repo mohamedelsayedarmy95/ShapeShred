@@ -227,6 +227,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connect with your coach via video calls and daily tasks.'**
   String get onboardingDesc3;
+
+  /// No description provided for @tabHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
+  /// No description provided for @tabTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Training'**
+  String get tabTraining;
+
+  /// No description provided for @tabNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get tabNutrition;
+
+  /// No description provided for @tabProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get tabProfile;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning,'**
+  String get goodMorning;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon,'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening,'**
+  String get goodEvening;
+
+  /// No description provided for @todaysWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'TODAY\'S WORKOUT'**
+  String get todaysWorkout;
+
+  /// No description provided for @startWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'START WORKOUT'**
+  String get startWorkout;
+
+  /// No description provided for @caloriesBurned.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories Burned'**
+  String get caloriesBurned;
+
+  /// No description provided for @workouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts'**
+  String get workouts;
+
+  /// No description provided for @activeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Days'**
+  String get activeDays;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get minutes;
+
+  /// No description provided for @exercisesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'exercises'**
+  String get exercisesCount;
+
+  /// No description provided for @trackNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your nutrition to reach your goals.'**
+  String get trackNutrition;
+
+  /// No description provided for @dailyCalories.
+  ///
+  /// In en, this message translates to:
+  /// **'DAILY CALORIES'**
+  String get dailyCalories;
+
+  /// No description provided for @kcalRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'kcal remaining'**
+  String get kcalRemaining;
+
+  /// No description provided for @protein.
+  ///
+  /// In en, this message translates to:
+  /// **'Protein'**
+  String get protein;
+
+  /// No description provided for @carbs.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbs'**
+  String get carbs;
+
+  /// No description provided for @fat.
+  ///
+  /// In en, this message translates to:
+  /// **'Fat'**
+  String get fat;
+
+  /// No description provided for @todaysMeals.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Meals'**
+  String get todaysMeals;
+
+  /// No description provided for @addMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Meal'**
+  String get addMeal;
+
+  /// No description provided for @noMealsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No meals yet'**
+  String get noMealsYet;
+
+  /// No description provided for @tapToLogFirstMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to log your first meal today'**
+  String get tapToLogFirstMeal;
+
+  /// No description provided for @waterIntake.
+  ///
+  /// In en, this message translates to:
+  /// **'Water Intake'**
+  String get waterIntake;
+
+  /// No description provided for @glasses.
+  ///
+  /// In en, this message translates to:
+  /// **'glasses'**
+  String get glasses;
+
+  /// No description provided for @logMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Meal'**
+  String get logMeal;
+
+  /// No description provided for @mealType.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal Type'**
+  String get mealType;
+
+  /// No description provided for @breakfast.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get breakfast;
+
+  /// No description provided for @lunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get lunch;
+
+  /// No description provided for @dinner.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get dinner;
+
+  /// No description provided for @snack.
+  ///
+  /// In en, this message translates to:
+  /// **'Snack'**
+  String get snack;
+
+  /// No description provided for @addFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Food'**
+  String get addFood;
+
+  /// No description provided for @saveMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Meal'**
+  String get saveMeal;
+
+  /// No description provided for @mealSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal saved successfully!'**
+  String get mealSaved;
+
+  /// No description provided for @workoutComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Complete!'**
+  String get workoutComplete;
+
+  /// No description provided for @finishWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Workout'**
+  String get finishWorkout;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @findPerfectWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s find your perfect workout'**
+  String get findPerfectWorkout;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get systemDefault;
+
+  /// No description provided for @helloUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello, {name}!'**
+  String helloUser(String name);
 }
 
 class _AppLocalizationsDelegate

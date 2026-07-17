@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "fr",
   "appTitle": "ShapeShred",
   "welcome": "Bienvenue",
@@ -19,9 +19,55 @@
   "onboardingTitle2": "Progression alimentée par l'IA",
   "onboardingDesc2": "Obtenez des plans personnalisés et des retours instantanés grâce à la technologie intelligente.",
   "onboardingTitle3": "Connexion directe avec votre coach",
-  "onboardingDesc3": "Connectez-vous avec votre coach via des appels vidéo et des tâches quotidiennes."
+  "onboardingDesc3": "Connectez-vous avec votre coach via des appels vidéo et des tâches quotidiennes.",
+  "tabHome": "Accueil",
+  "tabTraining": "Entraînement",
+  "tabNutrition": "Nutrition",
+  "tabProfile": "Profil",
+  "goodMorning": "Bonjour,",
+  "goodAfternoon": "Bon après-midi,",
+  "goodEvening": "Bonsoir,",
+  "todaysWorkout": "SÉANCE DU JOUR",
+  "startWorkout": "COMMENCER LA SÉANCE",
+  "caloriesBurned": "Calories brûlées",
+  "workouts": "Séances",
+  "activeDays": "Jours actifs",
+  "thisWeek": "Cette semaine",
+  "minutes": "min",
+  "exercisesCount": "exercices",
+  "trackNutrition": "Suivez votre nutrition pour atteindre vos objectifs.",
+  "dailyCalories": "CALORIES DU JOUR",
+  "kcalRemaining": "kcal restantes",
+  "protein": "Protéines",
+  "carbs": "Glucides",
+  "fat": "Lipides",
+  "todaysMeals": "Repas du jour",
+  "addMeal": "Ajouter un repas",
+  "noMealsYet": "Aucun repas pour l'instant",
+  "tapToLogFirstMeal": "Touchez pour enregistrer votre premier repas",
+  "waterIntake": "Hydratation",
+  "glasses": "verres",
+  "logMeal": "Enregistrer un repas",
+  "mealType": "Type de repas",
+  "breakfast": "Petit-déjeuner",
+  "lunch": "Déjeuner",
+  "dinner": "Dîner",
+  "snack": "Collation",
+  "addFood": "Ajouter un aliment",
+  "saveMeal": "Enregistrer le repas",
+  "mealSaved": "Repas enregistré !",
+  "workoutComplete": "Séance terminée !",
+  "finishWorkout": "Terminer la séance",
+  "duration": "Durée",
+  "findPerfectWorkout": "Trouvons votre séance idéale",
+  "language": "Langue",
+  "systemDefault": "Langue du système",
+  "helloUser": "Bonjour, {name} !",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
-
-
-
-

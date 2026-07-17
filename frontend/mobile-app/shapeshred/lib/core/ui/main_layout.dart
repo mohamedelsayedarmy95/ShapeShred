@@ -6,6 +6,7 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 /// Shell for the four main tabs.
 ///
@@ -44,15 +45,22 @@ class _PremiumNavBar extends StatelessWidget {
 
   const _PremiumNavBar({required this.currentIndex, required this.onTap});
 
-  static const _items = [
-    (Icons.home_outlined, Icons.home_rounded, 'Home'),
-    (Icons.fitness_center_outlined, Icons.fitness_center_rounded, 'Training'),
-    (Icons.restaurant_outlined, Icons.restaurant_rounded, 'Nutrition'),
-    (Icons.person_outline_rounded, Icons.person_rounded, 'Profile'),
+  static const _icons = [
+    (Icons.home_outlined, Icons.home_rounded),
+    (Icons.fitness_center_outlined, Icons.fitness_center_rounded),
+    (Icons.restaurant_outlined, Icons.restaurant_rounded),
+    (Icons.person_outline_rounded, Icons.person_rounded),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final labels = [
+      l10n.tabHome,
+      l10n.tabTraining,
+      l10n.tabNutrition,
+      l10n.tabProfile,
+    ];
     // RepaintBoundary keeps tab-content repaints from invalidating the bar.
     return RepaintBoundary(
       child: DecoratedBox(
@@ -68,12 +76,12 @@ class _PremiumNavBar extends StatelessWidget {
             height: 64.h,
             child: Row(
               children: [
-                for (var i = 0; i < _items.length; i++)
+                for (var i = 0; i < _icons.length; i++)
                   Expanded(
                     child: _NavItem(
-                      outlinedIcon: _items[i].$1,
-                      filledIcon: _items[i].$2,
-                      label: _items[i].$3,
+                      outlinedIcon: _icons[i].$1,
+                      filledIcon: _icons[i].$2,
+                      label: labels[i],
                       selected: i == currentIndex,
                       onTap: () => onTap(i),
                     ),

@@ -5,6 +5,7 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/design_system/atoms/animated_progress_bar.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 class MacroBreakdown extends StatelessWidget {
   final int protein;
@@ -30,7 +31,7 @@ class MacroBreakdown extends StatelessWidget {
       children: [
         Expanded(
           child: _MacroItem(
-            label: 'Protein',
+            label: AppLocalizations.of(context)!.protein,
             current: protein,
             goal: proteinGoal,
             unit: 'g',
@@ -40,7 +41,7 @@ class MacroBreakdown extends StatelessWidget {
         SizedBox(width: AppSpacing.space12.w),
         Expanded(
           child: _MacroItem(
-            label: 'Carbs',
+            label: AppLocalizations.of(context)!.carbs,
             current: carbs,
             goal: carbsGoal,
             unit: 'g',
@@ -50,7 +51,7 @@ class MacroBreakdown extends StatelessWidget {
         SizedBox(width: AppSpacing.space12.w),
         Expanded(
           child: _MacroItem(
-            label: 'Fat',
+            label: AppLocalizations.of(context)!.fat,
             current: fat,
             goal: fatGoal,
             unit: 'g',

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "de",
   "appTitle": "ShapeShred",
   "welcome": "Willkommen",
@@ -19,9 +19,55 @@
   "onboardingTitle2": "KI-gestützter Fortschritt",
   "onboardingDesc2": "Personalisierte Pläne und sofortiges Feedback durch intelligente Technologie.",
   "onboardingTitle3": "Direkte Verbindung zum Coach",
-  "onboardingDesc3": "Verbinden Sie sich mit Ihrem Coach über Videoanrufe und tägliche Aufgaben."
+  "onboardingDesc3": "Verbinden Sie sich mit Ihrem Coach über Videoanrufe und tägliche Aufgaben.",
+  "tabHome": "Start",
+  "tabTraining": "Training",
+  "tabNutrition": "Ernährung",
+  "tabProfile": "Profil",
+  "goodMorning": "Guten Morgen,",
+  "goodAfternoon": "Guten Tag,",
+  "goodEvening": "Guten Abend,",
+  "todaysWorkout": "HEUTIGES WORKOUT",
+  "startWorkout": "WORKOUT STARTEN",
+  "caloriesBurned": "Verbrannte Kalorien",
+  "workouts": "Workouts",
+  "activeDays": "Aktive Tage",
+  "thisWeek": "Diese Woche",
+  "minutes": "Min.",
+  "exercisesCount": "Übungen",
+  "trackNutrition": "Verfolge deine Ernährung, um deine Ziele zu erreichen.",
+  "dailyCalories": "TAGESKALORIEN",
+  "kcalRemaining": "kcal übrig",
+  "protein": "Protein",
+  "carbs": "Kohlenhydrate",
+  "fat": "Fett",
+  "todaysMeals": "Heutige Mahlzeiten",
+  "addMeal": "Mahlzeit hinzufügen",
+  "noMealsYet": "Noch keine Mahlzeiten",
+  "tapToLogFirstMeal": "Tippe, um deine erste Mahlzeit einzutragen",
+  "waterIntake": "Wasseraufnahme",
+  "glasses": "Gläser",
+  "logMeal": "Mahlzeit eintragen",
+  "mealType": "Mahlzeitentyp",
+  "breakfast": "Frühstück",
+  "lunch": "Mittagessen",
+  "dinner": "Abendessen",
+  "snack": "Snack",
+  "addFood": "Lebensmittel hinzufügen",
+  "saveMeal": "Mahlzeit speichern",
+  "mealSaved": "Mahlzeit gespeichert!",
+  "workoutComplete": "Workout abgeschlossen!",
+  "finishWorkout": "Workout beenden",
+  "duration": "Dauer",
+  "findPerfectWorkout": "Finden wir dein perfektes Workout",
+  "language": "Sprache",
+  "systemDefault": "Systemstandard",
+  "helloUser": "Hallo, {name}!",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
-
-
-
-

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ar",
   "appTitle": "ShapeShred",
   "welcome": "مرحباً",
@@ -19,9 +19,55 @@
   "onboardingTitle2": "تقدم مدعوم بالذكاء الاصطناعي",
   "onboardingDesc2": "احصل على خطط مخصصة وتغذية راجعة فورية باستخدام تقنيات ذكية.",
   "onboardingTitle3": "اتصال مباشر مع المدرب",
-  "onboardingDesc3": "تواصل مع مدربك عبر مكالمات فيديو ومهام يومية."
+  "onboardingDesc3": "تواصل مع مدربك عبر مكالمات فيديو ومهام يومية.",
+  "tabHome": "الرئيسية",
+  "tabTraining": "التمارين",
+  "tabNutrition": "التغذية",
+  "tabProfile": "حسابي",
+  "goodMorning": "صباح الخير،",
+  "goodAfternoon": "مساء الخير،",
+  "goodEvening": "مساء الخير،",
+  "todaysWorkout": "تمرين اليوم",
+  "startWorkout": "ابدأ التمرين",
+  "caloriesBurned": "سعرات محروقة",
+  "workouts": "تمارين",
+  "activeDays": "أيام نشطة",
+  "thisWeek": "هذا الأسبوع",
+  "minutes": "دقيقة",
+  "exercisesCount": "تمارين",
+  "trackNutrition": "تابع تغذيتك لتحقق أهدافك.",
+  "dailyCalories": "سعرات اليوم",
+  "kcalRemaining": "سعرة متبقية",
+  "protein": "بروتين",
+  "carbs": "كربوهيدرات",
+  "fat": "دهون",
+  "todaysMeals": "وجبات اليوم",
+  "addMeal": "أضف وجبة",
+  "noMealsYet": "لا توجد وجبات بعد",
+  "tapToLogFirstMeal": "اضغط لتسجيل أول وجبة اليوم",
+  "waterIntake": "شرب الماء",
+  "glasses": "أكواب",
+  "logMeal": "تسجيل وجبة",
+  "mealType": "نوع الوجبة",
+  "breakfast": "فطور",
+  "lunch": "غداء",
+  "dinner": "عشاء",
+  "snack": "سناك",
+  "addFood": "أضف طعاماً",
+  "saveMeal": "حفظ الوجبة",
+  "mealSaved": "تم حفظ الوجبة بنجاح!",
+  "workoutComplete": "اكتمل التمرين!",
+  "finishWorkout": "إنهاء التمرين",
+  "duration": "المدة",
+  "findPerfectWorkout": "لنجد تمرينك المثالي",
+  "language": "اللغة",
+  "systemDefault": "لغة النظام",
+  "helloUser": "أهلاً، {name}!",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
-
-
-
-

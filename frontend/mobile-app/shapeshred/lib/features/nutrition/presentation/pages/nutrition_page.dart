@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +7,6 @@ import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
-import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/calories_hero_card.dart';
 import 'package:shapeshred/features/nutrition/presentation/widgets/macro_breakdown.dart';
@@ -14,16 +14,18 @@ import 'package:shapeshred/features/nutrition/presentation/widgets/meal_list_ite
 import 'package:shapeshred/features/nutrition/presentation/widgets/water_tracker.dart';
 import 'package:shapeshred/features/nutrition/domain/models/food.dart' as food_models;
 import 'package:shapeshred/features/nutrition/presentation/pages/meal_logging_page.dart';
+import 'package:shapeshred/providers/user_data_provider.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-class NutritionPage extends StatefulWidget {
+class NutritionPage extends ConsumerStatefulWidget {
   const NutritionPage({super.key});
 
   @override
-  State<NutritionPage> createState() => _NutritionPageState();
+  ConsumerState<NutritionPage> createState() => _NutritionPageState();
 }
 
-class _NutritionPageState extends State<NutritionPage> {
+class _NutritionPageState extends ConsumerState<NutritionPage> {
   String _userName = 'User';
   String _userGoal = '';
   String _userFitnessLevel = '';
@@ -60,35 +62,17 @@ class _NutritionPageState extends State<NutritionPage> {
   Future<void> _loadUserData() async {
     setState(() => _isLoading = true);
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        // Try to get data from Firestore first
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        if (doc.exists && doc.data() != null) {
-          final data = doc.data()!;
-          setState(() {
-            _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-            _userGoal = data['goal'] as String? ?? '';
-            _userFitnessLevel = data['fitnessLevel'] as String? ?? '';
-          });
-        } else {
-          // Fallback to SharedPreferences for goal and fitness level
-          _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-          _userGoal = await PreferencesService.getUserGoal() ?? '';
-          _userFitnessLevel = await PreferencesService.getFitnessLevel() ?? '';
-        }
+      final profile = await ref.read(userDataProvider.future);
+      if (profile != null && mounted) {
+        _userName = profile.displayName;
+        _userGoal = profile.goal;
+        _userFitnessLevel = profile.fitnessLevel;
       }
 
-      // Set motivational message based on goal
       switch (_userGoal) {
         case 'Lose Weight':
           _motivationalMessage =
               'You\'re on a weight loss journey. Aim for a calorie deficit.';
-          // Adjust goals for weight loss (example values)
           _calorieGoal = 1800;
           _proteinGoal = 120;
           _carbsGoal = 200;
@@ -97,7 +81,6 @@ class _NutritionPageState extends State<NutritionPage> {
         case 'Build Muscle':
           _motivationalMessage =
               'You\'re building muscle. Make sure to get enough protein.';
-          // Adjust goals for muscle gain (example values)
           _calorieGoal = 2500;
           _proteinGoal = 180;
           _carbsGoal = 250;
@@ -106,7 +89,6 @@ class _NutritionPageState extends State<NutritionPage> {
         case 'Endurance':
           _motivationalMessage =
               'You\'re building endurance. Focus on carbs for energy.';
-          // Adjust goals for endurance (example values)
           _calorieGoal = 2400;
           _proteinGoal = 100;
           _carbsGoal = 300;
@@ -115,28 +97,19 @@ class _NutritionPageState extends State<NutritionPage> {
         case 'Stay Fit':
           _motivationalMessage =
               'Maintain a balanced diet to stay healthy and active.';
-          // Keep default goals for general fitness
           break;
         default:
           _motivationalMessage = 'Track your nutrition to reach your goals.';
           break;
       }
 
-      // Today's meals drive the consumed totals and the meals list.
       await _loadTodayMeals();
       await _loadTodayWater();
     } catch (e) {
-      debugPrint('Error loading user data: $e');
-      // Fallback to defaults
-      final user = FirebaseAuth.instance.currentUser;
-      _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
-      _userGoal = '';
-      _userFitnessLevel = '';
+      debugPrint('NutritionPage: error loading data: $e');
       _motivationalMessage = 'Track your nutrition to reach your goals.';
     } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -230,6 +203,22 @@ class _NutritionPageState extends State<NutritionPage> {
     }
   }
 
+  String _mealTypeLabel(BuildContext context, String type) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (type) {
+      case 'breakfast':
+        return l10n.breakfast;
+      case 'lunch':
+        return l10n.lunch;
+      case 'dinner':
+        return l10n.dinner;
+      case 'snack':
+        return l10n.snack;
+      default:
+        return _capitalize(type);
+    }
+  }
+
   String _capitalize(String s) =>
       s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
 
@@ -279,7 +268,7 @@ class _NutritionPageState extends State<NutritionPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello, $_userName!',
+                    AppLocalizations.of(context)!.helloUser(_userName),
                     style: AppTypography.headlineLarge.copyWith(
                       color: AppTextColors.primary,
                     ),
@@ -335,7 +324,7 @@ class _NutritionPageState extends State<NutritionPage> {
 
                       // Section Title: Meals
                       Text(
-                        'Today\'s Meals',
+                        AppLocalizations.of(context)!.todaysMeals,
                         style: AppTypography.headlineSmall,
                       ),
                       SizedBox(height: AppSpacing.space16.h),
@@ -344,11 +333,13 @@ class _NutritionPageState extends State<NutritionPage> {
                       if (_todayMeals.isEmpty)
                         GestureDetector(
                           onTap: _openMealLogging,
-                          child: const MealListItem(
-                            mealType: 'No meals yet',
+                          child: MealListItem(
+                            mealType:
+                                AppLocalizations.of(context)!.noMealsYet,
                             time: '',
                             calories: 0,
-                            items: 'Tap to log your first meal today',
+                            items: AppLocalizations.of(context)!
+                                .tapToLogFirstMeal,
                             icon: Icons.restaurant_menu,
                             isEmpty: true,
                           ),
@@ -357,7 +348,7 @@ class _NutritionPageState extends State<NutritionPage> {
                         ...[
                           for (final meal in _todayMeals) ...[
                             MealListItem(
-                              mealType: _capitalize(meal.type),
+                              mealType: _mealTypeLabel(context, meal.type),
                               time: DateFormat('h:mm a').format(meal.date),
                               calories: meal.totalCalories,
                               items: meal.items
@@ -390,7 +381,7 @@ class _NutritionPageState extends State<NutritionPage> {
         backgroundColor: AppColors.primary,
         icon: Icon(Icons.add, color: AppColors.onPrimary),
         label: Text(
-          'Add Meal',
+          AppLocalizations.of(context)!.addMeal,
           style: AppTypography.labelLarge.copyWith(
             color: AppColors.onPrimary,
           ),

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shapeshred/core/design_system/tokens/colors.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/motion.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
-import 'package:shapeshred/core/services/preferences_service.dart';
 import 'package:shapeshred/core/design_system/atoms/skeleton_loader.dart';
 import 'package:shapeshred/features/training/presentation/widgets/category_filter.dart';
 import 'package:shapeshred/features/training/presentation/widgets/workout_list_item.dart';
+import 'package:shapeshred/providers/user_data_provider.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
-class TrainingPage extends StatefulWidget {
+class TrainingPage extends ConsumerStatefulWidget {
   const TrainingPage({super.key});
 
   @override
-  State<TrainingPage> createState() => _TrainingPageState();
+  ConsumerState<TrainingPage> createState() => _TrainingPageState();
 }
 
-class _TrainingPageState extends State<TrainingPage> {
+class _TrainingPageState extends ConsumerState<TrainingPage> {
   String _selectedCategory = 'All';
   String _userName = 'User';
   String _userGoal = '';
@@ -95,59 +95,30 @@ class _TrainingPageState extends State<TrainingPage> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadData();
   }
 
-  Future<void> _loadUserData() async {
+  Future<void> _loadData() async {
     setState(() => _isLoading = true);
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        // Try to get data from Firestore first
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        if (doc.exists && doc.data() != null) {
-          final data = doc.data()!;
-          setState(() {
-            _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-            _userGoal = data['goal'] as String? ?? '';
-            _userFitnessLevel = data['fitnessLevel'] as String? ?? '';
-          });
-        } else {
-          // Fallback to SharedPreferences for goal and fitness level
-          _userName = user.displayName ?? user.email?.split('@')[0] ?? 'User';
-          _userGoal = await PreferencesService.getUserGoal() ?? '';
-          _userFitnessLevel = await PreferencesService.getFitnessLevel() ?? '';
-        }
+      final profile = await ref.read(userDataProvider.future);
+      if (profile != null && mounted) {
+        _userName = profile.displayName;
+        _userGoal = profile.goal;
+        _userFitnessLevel = profile.fitnessLevel;
       }
-
-      // Set initial category based on goal
-      if (_userGoal == 'Lose Weight') {
+      if (_userGoal == 'Lose Weight' || _userGoal == 'Endurance') {
         _selectedCategory = 'Cardio';
       } else if (_userGoal == 'Build Muscle') {
         _selectedCategory = 'Strength';
-      } else if (_userGoal == 'Endurance') {
-        _selectedCategory = 'Cardio';
-      } else if (_userGoal == 'Stay Fit') {
-        _selectedCategory = 'All';
       } else {
         _selectedCategory = 'All';
       }
     } catch (e) {
-      debugPrint('Error loading user data: $e');
-      // Fallback to defaults
-      final user = FirebaseAuth.instance.currentUser;
-      _userName = user?.displayName ?? user?.email?.split('@')[0] ?? 'User';
-      _userGoal = '';
-      _userFitnessLevel = '';
+      debugPrint('TrainingPage: error loading data: $e');
       _selectedCategory = 'All';
     } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -215,14 +186,14 @@ class _TrainingPageState extends State<TrainingPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello, $_userName!',
+                    AppLocalizations.of(context)!.helloUser(_userName),
                     style: AppTypography.headlineLarge.copyWith(
                       color: AppTextColors.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.space4.h),
                   Text(
-                    'Let\'s find your perfect workout',
+                    AppLocalizations.of(context)!.findPerfectWorkout,
                     style: AppTypography.bodyLarge.copyWith(
                       color: AppTextColors.secondary,
                     ),

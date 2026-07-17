@@ -70,4 +70,135 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingDesc3 =>
       'Connect with your coach via video calls and daily tasks.';
+
+  @override
+  String get tabHome => 'Home';
+
+  @override
+  String get tabTraining => 'Training';
+
+  @override
+  String get tabNutrition => 'Nutrition';
+
+  @override
+  String get tabProfile => 'Profile';
+
+  @override
+  String get goodMorning => 'Good morning,';
+
+  @override
+  String get goodAfternoon => 'Good afternoon,';
+
+  @override
+  String get goodEvening => 'Good evening,';
+
+  @override
+  String get todaysWorkout => 'TODAY\'S WORKOUT';
+
+  @override
+  String get startWorkout => 'START WORKOUT';
+
+  @override
+  String get caloriesBurned => 'Calories Burned';
+
+  @override
+  String get workouts => 'Workouts';
+
+  @override
+  String get activeDays => 'Active Days';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get minutes => 'min';
+
+  @override
+  String get exercisesCount => 'exercises';
+
+  @override
+  String get trackNutrition => 'Track your nutrition to reach your goals.';
+
+  @override
+  String get dailyCalories => 'DAILY CALORIES';
+
+  @override
+  String get kcalRemaining => 'kcal remaining';
+
+  @override
+  String get protein => 'Protein';
+
+  @override
+  String get carbs => 'Carbs';
+
+  @override
+  String get fat => 'Fat';
+
+  @override
+  String get todaysMeals => 'Today\'s Meals';
+
+  @override
+  String get addMeal => 'Add Meal';
+
+  @override
+  String get noMealsYet => 'No meals yet';
+
+  @override
+  String get tapToLogFirstMeal => 'Tap to log your first meal today';
+
+  @override
+  String get waterIntake => 'Water Intake';
+
+  @override
+  String get glasses => 'glasses';
+
+  @override
+  String get logMeal => 'Log Meal';
+
+  @override
+  String get mealType => 'Meal Type';
+
+  @override
+  String get breakfast => 'Breakfast';
+
+  @override
+  String get lunch => 'Lunch';
+
+  @override
+  String get dinner => 'Dinner';
+
+  @override
+  String get snack => 'Snack';
+
+  @override
+  String get addFood => 'Add Food';
+
+  @override
+  String get saveMeal => 'Save Meal';
+
+  @override
+  String get mealSaved => 'Meal saved successfully!';
+
+  @override
+  String get workoutComplete => 'Workout Complete!';
+
+  @override
+  String get finishWorkout => 'Finish Workout';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get findPerfectWorkout => 'Let\'s find your perfect workout';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get systemDefault => 'System default';
+
+  @override
+  String helloUser(String name) {
+    return 'Hello, $name!';
+  }
 }

@@ -6,6 +6,7 @@ import 'package:shapeshred/core/design_system/tokens/typography.dart';
 import 'package:shapeshred/core/design_system/tokens/spacing.dart';
 import 'package:shapeshred/core/design_system/tokens/radius.dart';
 import 'package:shapeshred/core/utils/helpers/haptic_helper.dart';
+import 'package:shapeshred/l10n/app_localizations.dart';
 
 /// Interactive daily water tracker.
 ///
@@ -52,12 +53,12 @@ class WaterTracker extends StatelessWidget {
               ),
               SizedBox(width: AppSpacing.space8.w),
               Text(
-                'Water Intake',
+                AppLocalizations.of(context)!.waterIntake,
                 style: AppTypography.titleMedium,
               ),
               const Spacer(),
               Text(
-                '$current / $goal glasses',
+                '$current / $goal ${AppLocalizations.of(context)!.glasses}',
                 style: AppTypography.labelLarge.copyWith(
                   color: AppTextColors.secondary,
                 ),

@@ -411,17 +411,8 @@ class _CustomPageTransition extends PageTransitionsBuilder {
     Widget child,
   ) {
     return FadeTransition(
-      opacity: CurvedAnimation(
-        parent: animation,
-        curve: AppCurves.standard,
-      ),
-      child: ScaleTransition(
-        scale: CurvedAnimation(
-          parent: animation,
-          curve: AppCurves.standard,
-        ),
-        child: child,
-      ),
+      opacity: CurvedAnimation(parent: animation, curve: AppCurves.standard),
+      child: child,
     );
   }
 }

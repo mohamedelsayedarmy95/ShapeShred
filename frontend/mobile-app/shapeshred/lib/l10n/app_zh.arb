@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "zh",
   "appTitle": "ShapeShred",
   "welcome": "欢迎",
@@ -19,9 +19,55 @@
   "onboardingTitle2": "AI驱动的进步",
   "onboardingDesc2": "通过智能技术获得个性化计划和即时反馈。",
   "onboardingTitle3": "与教练直接连接",
-  "onboardingDesc3": "通过视频通话和日常任务与教练保持联系。"
+  "onboardingDesc3": "通过视频通话和日常任务与教练保持联系。",
+  "tabHome": "首页",
+  "tabTraining": "训练",
+  "tabNutrition": "营养",
+  "tabProfile": "我的",
+  "goodMorning": "早上好，",
+  "goodAfternoon": "下午好，",
+  "goodEvening": "晚上好，",
+  "todaysWorkout": "今日训练",
+  "startWorkout": "开始训练",
+  "caloriesBurned": "消耗卡路里",
+  "workouts": "训练次数",
+  "activeDays": "活跃天数",
+  "thisWeek": "本周",
+  "minutes": "分钟",
+  "exercisesCount": "个动作",
+  "trackNutrition": "记录营养，达成目标。",
+  "dailyCalories": "今日卡路里",
+  "kcalRemaining": "千卡剩余",
+  "protein": "蛋白质",
+  "carbs": "碳水化合物",
+  "fat": "脂肪",
+  "todaysMeals": "今日餐食",
+  "addMeal": "添加餐食",
+  "noMealsYet": "还没有餐食",
+  "tapToLogFirstMeal": "点击记录今天的第一餐",
+  "waterIntake": "饮水量",
+  "glasses": "杯",
+  "logMeal": "记录餐食",
+  "mealType": "餐食类型",
+  "breakfast": "早餐",
+  "lunch": "午餐",
+  "dinner": "晚餐",
+  "snack": "加餐",
+  "addFood": "添加食物",
+  "saveMeal": "保存餐食",
+  "mealSaved": "餐食已保存！",
+  "workoutComplete": "训练完成！",
+  "finishWorkout": "结束训练",
+  "duration": "时长",
+  "findPerfectWorkout": "找到最适合你的训练",
+  "language": "语言",
+  "systemDefault": "跟随系统",
+  "helloUser": "你好，{name}！",
+  "@helloUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
-
-
-
-
