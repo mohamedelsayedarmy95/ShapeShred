@@ -23,8 +23,13 @@ class FirebaseService {
     // Initialize with privacy compliance
     await _initializeWithPrivacy();
 
-    // Configure Messaging
-    await _configureMessaging();
+    // Configure Messaging — non-fatal: FCM token may be unavailable on
+    // devices without Google Play Services connectivity.
+    try {
+      await _configureMessaging();
+    } catch (e) {
+      _logger.w('FCM initialization skipped (non-fatal): $e');
+    }
   }
 
   static Future<void> _initializeWithPrivacy() async {
